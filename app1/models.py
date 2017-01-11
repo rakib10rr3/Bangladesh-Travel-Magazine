@@ -9,7 +9,7 @@ class Division(models.Model):
             # Uncomment if you don't want the slug to change every time the name changes
             #if self.id is None:
                     #self.slug = slugify(self.name)
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.title)
             super(Division, self).save(*args, **kwargs)
     def __str__(self):
         return self.title
@@ -22,6 +22,7 @@ class Page(models.Model):
     name=models.CharField(max_length=10,unique=True)
     views = models.IntegerField(default=0)
     slug = models.SlugField( )
+    des=models.CharField(max_length=500)
     likes = models.IntegerField(default=0)
     images=models.ImageField(upload_to=desti, null=True ,blank=True)
     division=models.ForeignKey(Division)

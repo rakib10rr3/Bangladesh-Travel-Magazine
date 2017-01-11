@@ -1,0 +1,11 @@
+{% if divs %}
+
+    <ul class="nav nav-sidebar">
+    {% for c in divs %}
+        <li><a href="#">{{ c.title }}</a></li>
+    {% endfor %}
+{% else %}
+    <li> <strong >There are no Division present.</strong></li>
+    </ul>
+
+{% endif %}

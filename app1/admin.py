@@ -1,5 +1,13 @@
 from django.contrib import admin
 from .models import Division,Page
 
-admin.site.register(Division)
-admin.site.register(Page)
+
+class DivisionAdmin(admin.ModelAdmin):          # this is for to simplify urls
+    prepopulated_fields = {'slug':('title',)}
+class PageAdmin(admin.ModelAdmin):          # this is for to simplify urls
+    prepopulated_fields = {'slug':('name',)}
+
+
+
+admin.site.register(Division,DivisionAdmin)
+admin.site.register(Page,PageAdmin)
