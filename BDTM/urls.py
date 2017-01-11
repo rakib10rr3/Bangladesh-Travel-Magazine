@@ -16,8 +16,26 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from registration.backends.simple.views import RegistrationView
+# Create a new class that redirects the user to the index page, if successful at logging
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self,request, user):
+        return '/app1/'
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('app1.urls')),
+    url(r'^$', include('app1.urls')),
+    url(r'^app1/', include('app1.urls')),
+    #Add in this url pattern to override the default pattern in accounts.
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ]
+
+if settings.DEBUG:
+            urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+            urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#if debug is true,then anything starting with the static/ should be passed to static root,same fo
