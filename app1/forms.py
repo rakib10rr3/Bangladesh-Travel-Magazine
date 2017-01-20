@@ -1,15 +1,19 @@
 from django import forms
-from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import Page,Division
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
 
+
+class PageForm(forms.ModelForm):
+    images = forms.ImageField(label='Select a profile Image')
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
+        # Provide an association between the ModelForm and a model
+        model = Page
+        # What fields do we want to include in our form?
+        # This way we don't need every field in the model present.
+        # Some fields may allow NULL values, so we may not want to include them...
+        # Here, we are hiding the foreign key.
+        # we can either exclude the category field from the form,
+        #exclude = ('category',)
+        #or specify the fields to include (i.e. not include the category field)
+        fields = ('name','des', 'images', 'division')
 
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('website', 'picture')

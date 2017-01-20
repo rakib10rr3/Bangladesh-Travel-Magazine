@@ -1,0 +1,31 @@
+{% extends 'app1/base.html' %}
+
+
+{% block body_block %}
+
+    {% if division %}
+
+                <form role="form"  id="page_form" method="post" action="/app1/{{division.slug}}/add_page/" enctype="multipart/form-data" >
+
+                 <h2 class="form-signin-heading">Add a Page to <a href="/app1/{{division.slug}}/"> {{ division.title }}</a></h2>
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+
+                        <p class="required">{{ field.help_text }}</p><br/>
+                        {{ field }}
+                         {{ field.errors }}
+                    {% endfor %}
+            <button class="btn btn-primary" type="submit" name="submit">Add Page</button>
+
+                </form>
+
+            {%  else %}
+
+
+            <p>This  division does not exist.</p>
+
+    {%  endif %}
+{% endblock %}

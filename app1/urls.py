@@ -14,22 +14,14 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import url,include
-from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls import url
+from app1 import views
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', include('app1.urls')),
-    url(r'^app1/', include('app1.urls')),
-    url(r'^accounts/', include('registration.backends.simple.urls')),
-
-
+    url(r'^$', views.index,name='index'),
+    url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
+     url(r'^goto/$', views.track_url, name='goto'),
+     url(r'^(?P<division_name_slug>[\w\-]+)/add_page/$',views.add_page, name='add_page'),
+     url(r'^like/$', views.like, name='like'),
 ]
-
-if settings.DEBUG:
-            urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-            urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#if debug is true,then anything starting with the static/ should be passed to static root,same fo
