@@ -9,10 +9,20 @@ try:
 except ImportError:
     import json
 from django.shortcuts import get_object_or_404
-# Create your views here.
+
+
+# this acquires all the pages and sends it to index html with 'page_list' dictionary
+
 def index(request):
      page_list = Page.objects.order_by('-views')[:5]
      return render(request,'app1/index.html',{'page_list':page_list})
+
+
+
+
+
+
+
 
 def division_detail(request,division_name_slug):
      # Create a context dictionary which we can pass to the template rendering engine.

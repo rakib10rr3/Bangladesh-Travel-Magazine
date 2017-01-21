@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Division,Page
+from .models import Division,Page,like,image
 
 
 class DivisionAdmin(admin.ModelAdmin):          # this is for to simplify urls
@@ -11,3 +11,5 @@ class PageAdmin(admin.ModelAdmin):          # this is for to simplify urls
 
 admin.site.register(Division,DivisionAdmin)
 admin.site.register(Page,PageAdmin)
+admin.site.register(like)
+admin.site.register(image)
