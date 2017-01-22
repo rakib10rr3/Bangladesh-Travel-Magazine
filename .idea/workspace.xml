@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="">
+    <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="size fixed">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BDTM.iws" />
@@ -669,7 +669,13 @@
       <option name="project" value="LOCAL" />
       <updated>1485097342683</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="size fixed">
+      <created>1485097480799</created>
+      <option name="number" value="00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1485097480799</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
