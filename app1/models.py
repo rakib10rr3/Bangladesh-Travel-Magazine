@@ -27,8 +27,6 @@ class Page(models.Model):
     slug = models.SlugField( )
     #description field
     des=models.TextField(max_length=500,blank=False)
-    #likes = models.ManyToManyField(User, related_name='likes')
-    #images=models.ImageField(upload_to=desti, null=False ,blank=False)
     division=models.ForeignKey(Division)
     #changing default save method to save slug field
     def save(self, *args, **kwargs):
@@ -47,12 +45,15 @@ class like(models.Model):
 
 #upload destination for images
 def desti (instance,filename):
-    return "%s/%s/%s"%(instance.page,instance.user,filename) #EITAI KAJ BAKI ASE
+    return "%s/%s/%s"%(instance.page,instance.user,filename)
+
 
 class image(models.Model):
     user=models.ForeignKey(User)
-    page=models.ForeignKey(Page)
-    images=models.ImageField(upload_to=desti, null=False ,blank=False)
+    page=models.ForeignKey(Page,related_name='pages')
+    pic=models.ImageField(upload_to=desti, null=False ,blank=False)
+    def get_images(self):
+        return self.page
 
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Division,Page
+from .models import Division,Page,image,like
 from .forms import PageForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -15,7 +15,8 @@ from django.shortcuts import get_object_or_404
 
 def index(request):
      page_list = Page.objects.order_by('-views')[:5]
-     return render(request,'app1/index.html',{'page_list':page_list})
+     image_list= image.objects.all()
+     return render(request,'app1/index.html',{'page_list':page_list,'image_list':image_list,})
 
 
 
