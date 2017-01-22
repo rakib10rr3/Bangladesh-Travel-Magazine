@@ -19,7 +19,7 @@
               <div class="card-block">
             <div class="container">
                 <br>
-                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 950px;">
 
 
                     <!-- Wrapper for slides -->
@@ -29,11 +29,11 @@
                           {% if forloop.first %}
 
                                       <div class="item active">
-                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="460" height="345">
+                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="100" height="345">
                                    </div>
                         {% else %}
                                <div class="item">
-                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="460" height="345">
+                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
                                 </div>
                           {% endif %}
                           {% endfor %}
