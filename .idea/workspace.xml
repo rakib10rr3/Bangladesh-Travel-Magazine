@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/base.html" afterPath="$PROJECT_DIR$/templates/app1/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/index.html" afterPath="$PROJECT_DIR$/templates/app1/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BDTM.iws" />
@@ -640,7 +638,13 @@
       <option name="project" value="LOCAL" />
       <updated>1485077145813</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Made slideshow of the images">
+      <created>1485082871344</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1485082871344</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -692,7 +696,8 @@
     <MESSAGE value="media file for testing purpose" />
     <MESSAGE value="Fixed trending list algo,, &#10;Every page will now fetch all of its images regardless of the user.&#10;added some testing pic. &#10;&#10;" />
     <MESSAGE value="media file and migrated file" />
-    <option name="LAST_COMMIT_MESSAGE" value="media file and migrated file" />
+    <MESSAGE value="Made slideshow of the images" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made slideshow of the images" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
