@@ -6,38 +6,24 @@
 {% block body_block %}
     <h1>Welcome {{ user.username }}</h1>
     <h1>Trending places ---  </h1>
-
     {% if page_list %}
 
-    {% for obj in page_list %}
+    {% for page in page_list %}
+        <div class="card" style="width: 20rem;">
+            {% for image_obj in page.pages.all %}
+                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE">
 
-        <div class="card" style="width: 20rem;">)
+                    {% endfor %}
 
-            {% for obj2 in obj.images %}
-                <img class="card-img-top" src="{{  }}" alt="IMAGE GOES HERE">
-            {% endfor %}
-
-            <h1>this page has {{ obj.images }} images </h1>
                   <div class="card-block">
-                    <h4 class="card-title">{{ obj.name }}</h4>
-                    <p class="card-text">{{ obj.des }}</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
+                    <h4 class="card-title">{{ page.name }}</h4>
+                    <p class="card-text">{{ page.des }}</p>
+                    <a href="#" class="btn btn-primary">ViewDetails</a>
                   </div>
-
-            <!--
-             if user.is_authenticated
-                          <p>
-                                <strong id="like_count">   obj.likes     </strong> people like this category
-                                        <button id="likes" data-catid=" obj.id  " class="btn btn-primary" type="button">
-                                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                                        Like
-                                        </button>
-                          </p>
-                 endif
-            -->
         </div>
         <hr>
     {% endfor %}
+
 
      {% else %}
             <br>
