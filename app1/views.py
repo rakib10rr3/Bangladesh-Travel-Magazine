@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Division,Page,image,like
+from .models import Division,Page,image,like,Story
+
 from .forms import PageForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -39,7 +40,7 @@ def division_detail(request,division_name_slug):
         # Note that filter returns >= 1 model instance.
         pages = Page.objects.filter(division=division).order_by('-views')
         # Adds our results list to the template context under name pages.
-        context_dict['pages'] = pages
+        context_dict['page_list'] = pages
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['division'] = division
@@ -89,6 +90,16 @@ def add_page(request, division_name_slug):
 
     context_dict = {'form':form, 'division': cat, 'division_name_slug':division_name_slug}
     return render(request,'app1/add_page.html', context_dict)
+
+
+def story(request,division_name_slug,page_name_slug):
+  # try:
+    #    stories = Story.objects.filter(story_page__slug=page_name_slug)
+  # except Story.DoesNotExist:
+   #     stories = None
+   return  render(request,'app1/story.html',{})
+
+
 
 @login_required
 def like_catagory(request):

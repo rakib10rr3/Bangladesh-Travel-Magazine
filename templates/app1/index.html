@@ -50,15 +50,9 @@
                   </div>
             </div>
 
-
-
-
-
-
-
                     <h4 class="card-title">{{ page.name }}</h4>
                     <p class="card-text">{{ page.des }}</p>
-                    <a href="#" class="btn btn-primary">ViewDetails</a>
+                    <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">ViewDetails</a>
                   </div>
         </div>
         <hr>

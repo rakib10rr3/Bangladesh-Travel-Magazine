@@ -43,6 +43,7 @@ class like(models.Model):
     page=models.ForeignKey(Page)
 
 
+
 #upload destination for images
 def desti (instance,filename):
     return "%s/%s/%s"%(instance.page,instance.user,filename)
@@ -53,16 +54,23 @@ class image(models.Model):
     page=models.ForeignKey(Page,related_name='pages')
     pic=models.ImageField(upload_to=desti, null=False ,blank=False)
     def get_images(self):
-        return self.page
+        return self.pages.name
+
+
+class Story(models.Model):
+    user=models.ForeignKey(User)
+    story_page=models.ForeignKey(Page)
+    def __str__(self):
+        return  self.user.username
+
 
 
 
 #user class
-
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     #comes up with some basic attributes(username,passward,email)
     user = models.OneToOneField(User)
     # The additional attributes we wish to include.
     def __str__(self):
-        return self.username
+        return self.user.username
