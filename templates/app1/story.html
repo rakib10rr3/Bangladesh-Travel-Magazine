@@ -1,0 +1,28 @@
+{% extends 'app1/base.html' %}
+
+{% block body_block %}
+    {% if stories %}
+        <h3>Total {{ stories.count }} stories shared ! </h3>
+   {% for obj in stories %}
+            <h3>name:{{ obj.user }}</h3>
+            <h3>Place:{{ obj.story_page }}</h3>
+                        {% for obj2 in  image_list.all %}
+                            {% if obj2.user == obj.user %}
+                                <!--<img src=" bj2.pic.url">-->
+                                {% if forloop.first %}
+                                    <div class="item active">
+                                        <img class="card-img-top" src="{{ obj2.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+                                    </div>
+                                {% else %}
+                                    <div class="item">
+                                        <img class="card-img-top" src="{{ obj2.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+          <hr>
+        {% endfor %}
+    {% else %}
+        <h3>Sorry no stories Shared yet!</h3>
+    {% endif %}
+{% endblock %}

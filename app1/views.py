@@ -16,12 +16,7 @@ from django.shortcuts import get_object_or_404
 
 def index(request):
      page_list = Page.objects.order_by('-views')[:5]
-     image_list= image.objects.all()
-     return render(request,'app1/index.html',{'page_list':page_list,'image_list':image_list,})
-
-
-
-
+     return render(request,'app1/index.html',{'page_list':page_list})
 
 
 
@@ -93,11 +88,12 @@ def add_page(request, division_name_slug):
 
 
 def story(request,division_name_slug,page_name_slug):
-  # try:
-    #    stories = Story.objects.filter(story_page__slug=page_name_slug)
-  # except Story.DoesNotExist:
-   #     stories = None
-   return  render(request,'app1/story.html',{})
+   try:
+        stories = Story.objects.filter(story_page__slug=page_name_slug)
+        image_list=image.objects.filter(page__slug=page_name_slug)
+   except Story.DoesNotExist:
+        stories = None
+   return  render(request,'app1/story.html',{'stories':stories,'image_list':image_list})
 
 
 
