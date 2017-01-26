@@ -23,9 +23,6 @@ urlpatterns = [
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/add_page/$',views.add_page, name='add_page'),
     url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/$',views.story, name='story'),  # New!
-
-
-     url(r'^goto/$', views.track_url, name='goto'),
-
-     url(r'^like/$', views.like, name='like'),
+    url(r'^goto/$', views.track_url, name='goto'),
+    url(r'^like/$', views.like, name='like'),
 ]

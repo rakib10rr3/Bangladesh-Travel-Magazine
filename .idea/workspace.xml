@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="fixed add_page link&#10;image_object view&#10;problem--&gt; division view&#10;">
+    <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/base.html" afterPath="$PROJECT_DIR$/templates/app1/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/division_detail.html" afterPath="$PROJECT_DIR$/templates/app1/division_detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/index.html" afterPath="$PROJECT_DIR$/templates/app1/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/registration/registration_form.html" afterPath="$PROJECT_DIR$/templates/registration/registration_form.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/app1/story.html" afterPath="$PROJECT_DIR$/templates/app1/story.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app1/urls.py" afterPath="$PROJECT_DIR$/app1/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app1/views.py" afterPath="$PROJECT_DIR$/app1/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -45,8 +44,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app1/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="11" max-vertical-offset="629">
-              <caret line="22" column="59" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding>
                 <element signature="e#693#725#0" expanded="true" />
               </folding>
@@ -64,6 +63,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="story.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/app1/story.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.43669724" vertical-offset="51" max-vertical-offset="901">
+              <caret line="17" column="59" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
+              <folding>
+                <element signature="e#205#226#0#HTML" expanded="true" />
+                <element signature="e#434#455#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="app1_extras.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app1/templatetags/app1_extras.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -74,14 +86,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="division_detail.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="division_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/app1/division_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6434783" vertical-offset="84" max-vertical-offset="1496">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+            <state vertical-scroll-proportion="1.3076923" vertical-offset="357" max-vertical-offset="1241">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="56" selection-end-column="14" />
               <folding>
-                <element signature="e#487#508#0#HTML" expanded="true" />
-                <element signature="e#710#731#0#HTML" expanded="true" />
+                <element signature="e#485#506#0#HTML" expanded="true" />
+                <element signature="e#708#729#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,14 +102,14 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app1/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="474" max-vertical-offset="1377">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="627" max-vertical-offset="1377">
+              <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
-                <element signature="e#2059#2449#0" expanded="false" />
-                <element signature="e#2500#3118#0" expanded="false" />
-                <element signature="e#3515#3902#0" expanded="false" />
-                <element signature="e#3945#4604#0" expanded="false" />
+                <element signature="e#2058#2448#0" expanded="false" />
+                <element signature="e#2499#3117#0" expanded="false" />
+                <element signature="e#3514#3901#0" expanded="false" />
+                <element signature="e#3944#4603#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -106,9 +118,10 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/app1/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.961538" vertical-offset="408" max-vertical-offset="1156">
-              <caret line="53" column="14" selection-start-line="16" selection-start-column="7" selection-end-line="53" selection-end-column="14" />
+            <state vertical-scroll-proportion="-13.115385" vertical-offset="611" max-vertical-offset="1156">
+              <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
               <folding>
+                <element signature="e#221#242#0#HTML" expanded="true" />
                 <element signature="e#444#465#0#HTML" expanded="true" />
               </folding>
             </state>
@@ -119,7 +132,7 @@
         <entry file="file://$PROJECT_DIR$/app1/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="742" max-vertical-offset="1377">
-              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+              <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -142,16 +155,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-16.884615" vertical-offset="190" max-vertical-offset="748">
               <caret line="37" column="8" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app1/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
-              <caret line="1" column="33" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -186,15 +189,15 @@
         <option value="$PROJECT_DIR$/static/app1/js/rango-ajax.js" />
         <option value="$PROJECT_DIR$/app1/templatetags/app1_extras.py" />
         <option value="$PROJECT_DIR$/app1/admin.py" />
-        <option value="$PROJECT_DIR$/templates/app1/story.html" />
-        <option value="$PROJECT_DIR$/app1/urls.py" />
         <option value="$PROJECT_DIR$/app1/forms.py" />
         <option value="$PROJECT_DIR$/app1/models.py" />
         <option value="$PROJECT_DIR$/templates/registration/registration_form.html" />
         <option value="$PROJECT_DIR$/templates/app1/base.html" />
+        <option value="$PROJECT_DIR$/app1/urls.py" />
         <option value="$PROJECT_DIR$/app1/views.py" />
-        <option value="$PROJECT_DIR$/templates/app1/index.html" />
         <option value="$PROJECT_DIR$/templates/app1/division_detail.html" />
+        <option value="$PROJECT_DIR$/templates/app1/index.html" />
+        <option value="$PROJECT_DIR$/templates/app1/story.html" />
       </list>
     </option>
   </component>
@@ -742,15 +745,22 @@
       <option name="project" value="LOCAL" />
       <updated>1485420833541</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Fixed Carousel division view and indicator">
+      <created>1485439827576</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1485439827576</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3267974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -763,7 +773,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25718608" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -800,7 +809,8 @@
     <MESSAGE value="workspace.xml (dont know what it is -_- )" />
     <MESSAGE value="made all the necessay link" />
     <MESSAGE value="fixed add_page link&#10;image_object view&#10;problem--&gt; division view&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed add_page link&#10;image_object view&#10;problem--&gt; division view&#10;" />
+    <MESSAGE value="Fixed Carousel division view and indicator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Carousel division view and indicator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -815,10 +825,10 @@
           <caret line="92" column="65" selection-start-line="92" selection-start-column="65" selection-end-line="92" selection-end-column="65" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
-            <element signature="e#2059#2449#0" expanded="false" />
-            <element signature="e#2500#3118#0" expanded="false" />
-            <element signature="e#3515#3902#0" expanded="false" />
-            <element signature="e#3945#4604#0" expanded="false" />
+            <element signature="e#2058#2448#0" expanded="false" />
+            <element signature="e#2499#3117#0" expanded="false" />
+            <element signature="e#3514#3901#0" expanded="false" />
+            <element signature="e#3944#4603#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -828,6 +838,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1190">
           <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
           <folding>
+            <element signature="e#221#242#0#HTML" expanded="true" />
             <element signature="e#444#465#0#HTML" expanded="true" />
           </folding>
         </state>
@@ -887,6 +898,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="527">
           <caret line="11" column="89" selection-start-line="11" selection-start-column="89" selection-end-line="11" selection-end-column="89" />
           <folding>
+            <element signature="e#221#242#0#HTML" expanded="true" />
             <element signature="e#444#465#0#HTML" expanded="true" />
           </folding>
         </state>
@@ -960,6 +972,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="30" />
           <folding>
+            <element signature="e#221#242#0#HTML" expanded="true" />
             <element signature="e#444#465#0#HTML" expanded="true" />
           </folding>
         </state>
@@ -1021,6 +1034,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="459">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
+            <element signature="e#221#242#0#HTML" expanded="true" />
             <element signature="e#444#465#0#HTML" expanded="true" />
           </folding>
         </state>
@@ -1129,14 +1143,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/app1/story.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="561">
-          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/app1/add_page.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="41" max-vertical-offset="612">
@@ -1150,16 +1156,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="584">
           <caret line="1" column="33" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app1/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="742" max-vertical-offset="1377">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1195,47 +1191,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app1/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="474" max-vertical-offset="1377">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-            <element signature="e#2059#2449#0" expanded="false" />
-            <element signature="e#2500#3118#0" expanded="false" />
-            <element signature="e#3515#3902#0" expanded="false" />
-            <element signature="e#3945#4604#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app1/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="11" max-vertical-offset="629">
-          <caret line="22" column="59" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="e#693#725#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/app1/index.html">
+    <entry file="file://$PROJECT_DIR$/app1/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.961538" vertical-offset="408" max-vertical-offset="1156">
-          <caret line="53" column="14" selection-start-line="16" selection-start-column="7" selection-end-line="53" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="474" max-vertical-offset="1377">
+          <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
           <folding>
-            <element signature="e#444#465#0#HTML" expanded="true" />
+            <element signature="e#0#44#0" expanded="true" />
+            <element signature="e#2058#2448#0" expanded="false" />
+            <element signature="e#2499#3117#0" expanded="false" />
+            <element signature="e#3514#3901#0" expanded="false" />
+            <element signature="e#3944#4603#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/app1/division_detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6434783" vertical-offset="84" max-vertical-offset="1496">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.3076923" vertical-offset="357" max-vertical-offset="1241">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="56" selection-end-column="14" />
           <folding>
-            <element signature="e#487#508#0#HTML" expanded="true" />
-            <element signature="e#710#731#0#HTML" expanded="true" />
+            <element signature="e#485#506#0#HTML" expanded="true" />
+            <element signature="e#708#729#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/app1/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.115385" vertical-offset="611" max-vertical-offset="1156">
+          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+          <folding>
+            <element signature="e#221#242#0#HTML" expanded="true" />
+            <element signature="e#444#465#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app1/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="742" max-vertical-offset="1377">
+          <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/app1/story.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43669724" vertical-offset="51" max-vertical-offset="901">
+          <caret line="17" column="59" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
+          <folding>
+            <element signature="e#205#226#0#HTML" expanded="true" />
+            <element signature="e#434#455#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

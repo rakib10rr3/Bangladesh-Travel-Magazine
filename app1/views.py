@@ -35,7 +35,7 @@ def division_detail(request,division_name_slug):
         # Note that filter returns >= 1 model instance.
         pages = Page.objects.filter(division=division).order_by('-views')
         # Adds our results list to the template context under name pages.
-        context_dict['pages_list'] = pages
+        context_dict['page_list'] = pages
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['division'] = division

@@ -3,23 +3,43 @@
 {% block body_block %}
     {% if stories %}
         <h3>Total {{ stories.count }} stories shared ! </h3>
-   {% for obj in stories %}
-            <h3>name:{{ obj.user }}</h3>
-            <h3>Place:{{ obj.story_page }}</h3>
-                        {% for obj2 in  image_list.all %}
-                            {% if obj2.user == obj.user %}
-                                <!--<img src=" bj2.pic.url">-->
-                                {% if forloop.first %}
+           {% for obj in stories %}
+
+             <div class="card" style="width: 20rem;">
+                <div class="card-block">
+                <div class="container">
+                <br>
+                  <div id="myCarousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel" style="width: 950px;">
+                    <!-- Wrapper for slides -->
+                    {{ forloop.counter }}
+                    <div  class="carousel-inner" role="listbox">
+                     {% for obj2 in  image_list.all %}
+                         {% if obj2.user == obj.user %}
                                     <div class="item active">
                                         <img class="card-img-top" src="{{ obj2.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-                                    </div>
-                                {% else %}
-                                    <div class="item">
-                                        <img class="card-img-top" src="{{ obj2.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-                                    </div>
-                                {% endif %}
+                                     </div>
                             {% endif %}
-                        {% endfor %}
+                      {% endfor %}
+                     </div>
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+            </div>
+
+                    <h4 class="card-title">{{ obj.user}}</h4>
+                    <p class="card-text">{{ obj.story_page }}</p>
+                    <a href="" class="btn btn-primary">ViewDetails</a>
+                  </div>
+        </div>
+
+
           <hr>
         {% endfor %}
     {% else %}

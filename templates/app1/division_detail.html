@@ -9,9 +9,9 @@
              {% if division %}
                 <h1>{{ division_name_name }}</h1>
 
-                 {% if pages_list %}
+                 {% if page_list %}
                 <ul>
-                    {% for page in pages_list %}
+                    {% for page in page_list %}
 
 
 
@@ -55,21 +55,6 @@
                     <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">ViewDetails</a>
                   </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     <hr>
                     {% endfor %}
