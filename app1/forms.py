@@ -1,10 +1,6 @@
 from django import forms
 from .models import Page,Division
-
-
-
 class PageForm(forms.ModelForm):
-    images = forms.ImageField(label='Select a profile Image')
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Page
@@ -15,5 +11,5 @@ class PageForm(forms.ModelForm):
         # we can either exclude the category field from the form,
         #exclude = ('category',)
         #or specify the fields to include (i.e. not include the category field)
-        fields = ('name','des', 'images', 'division')
+        fields = ('name','des','division')
 

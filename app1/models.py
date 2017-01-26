@@ -53,9 +53,8 @@ class image(models.Model):
     user=models.ForeignKey(User)
     page=models.ForeignKey(Page,related_name='pages')
     pic=models.ImageField(upload_to=desti, null=False ,blank=False)
-    def get_images(self):
-        return self.pages.name
-
+    def __str__(self):
+        return  self.user.username+"->"+self.page.name
 
 class Story(models.Model):
     user=models.ForeignKey(User)
