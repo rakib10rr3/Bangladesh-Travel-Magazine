@@ -4,8 +4,6 @@ from django.contrib.auth.models import User  # for using the USer one to one mod
 
 
 
-
-
 class Division(models.Model):
     title=models.CharField(max_length=10,unique=True)
     views = models.IntegerField(default=0)
@@ -61,6 +59,7 @@ class Story(models.Model):
     story_page=models.ForeignKey(Page)
     def __str__(self):
         return  self.user.username
+
 
 
 
