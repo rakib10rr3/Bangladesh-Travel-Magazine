@@ -15,18 +15,19 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url,include
+from django.http import HttpResponseRedirect
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
+    #url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
+    #url(r'^upload/', include('fileupload.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('app1.urls')),
+    url(r'^$',include('app1.urls')),
     url(r'^app1/', include('app1.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-
-
 ]
 
 if settings.DEBUG:

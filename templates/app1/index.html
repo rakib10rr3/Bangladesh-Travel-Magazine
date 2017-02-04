@@ -8,11 +8,6 @@
     <h1>Trending places ---  </h1>
     {% if page_list %}
 
-
-
-
-
-
     {% for page in page_list %}
         <div class="card" style="width: 20rem;">
               <div class="card-block">
@@ -21,15 +16,15 @@
                   <div id="myCarousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel" style="width: 950px;">
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
-                      {% for image_obj in page.pages.all %}
+                      {% for image_obj in page.pages.all   %}
 
                           {% if forloop.first %}
                               <div class="item active">
-                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
                               </div>
                           {% else %}
                                <div class="item">
-                                    <img class="card-img-top" src="{{ image_obj.pic.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
                                 </div>
                           {% endif %}
 
@@ -49,7 +44,7 @@
 
                     <h4 class="card-title">{{ page.name }}</h4>
                     <p class="card-text">{{ page.des }}</p>
-                    <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">ViewDetails</a>
+                    <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">View Tour Plan</a>
                   </div>
         </div>
         <hr>

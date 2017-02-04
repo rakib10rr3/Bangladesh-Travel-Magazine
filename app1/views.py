@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Division,Page,image,like,Story
+from .models import Division,Page,Picture,like,Story
 
-from .forms import PageForm
+from .forms import PageForm,storyForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 try:
@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404
 
 def index(request):
      page_list = Page.objects.order_by('-views')[:5]
+
      return render(request,'app1/index.html',{'page_list':page_list})
 
 
@@ -90,10 +91,24 @@ def add_page(request, division_name_slug):
 def story(request,division_name_slug,page_name_slug):
    try:
         stories = Story.objects.filter(story_page__slug=page_name_slug)
-        image_list=image.objects.filter(page__slug=page_name_slug)
    except Story.DoesNotExist:
         stories = None
-   return  render(request,'app1/story.html',{'stories':stories,'image_list':image_list})
+   return  render(request,'app1/story.html',{'stories':stories,'division':division_name_slug,'page':page_name_slug})
+
+def story_share(request,division_name_slug,page_name_slug):
+    if request.method == 'POST':
+        form = storyForm(request.POST, request.FILES)
+        if form.is_valid():
+            bet = form.save(commit=False)
+            bet.user = request.user
+            bet.save()
+            return redirect('/upload/new/')
+        else:
+            print (form.errors)
+    else:
+        form = storyForm()
+    context_dict = {'form':form}
+    return render(request,'app1/story_share.html', context_dict)
 
 
 

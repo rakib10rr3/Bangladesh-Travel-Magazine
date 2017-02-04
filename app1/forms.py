@@ -1,5 +1,5 @@
 from django import forms
-from .models import Page,Division
+from .models import Page,Division,Story
 class PageForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
@@ -13,3 +13,15 @@ class PageForm(forms.ModelForm):
         #or specify the fields to include (i.e. not include the category field)
         fields = ('name','des','division')
 
+
+
+class storyForm(forms.ModelForm):
+    class Meta:
+        model=Story
+        fields = ('story_page','title_name','member','des')
+        help_texts = {
+            'story_page': 'Select a Page',
+            'title_name': 'Give a title',
+            'memeber': 'how many member ?',
+            'des': 'How was your travel ?',
+        }
