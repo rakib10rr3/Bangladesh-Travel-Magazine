@@ -1,5 +1,5 @@
 from django import forms
-from .models import Page,Division,Story
+from .models import Page,Division,Story,Picture
 class PageForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
@@ -25,3 +25,8 @@ class storyForm(forms.ModelForm):
             'memeber': 'how many member ?',
             'des': 'How was your travel ?',
         }
+class imageForm(forms.ModelForm):
+    class Meta:
+        model=Picture
+        fields=('file','page','story')
+        help_texts={'file':'Upload an image '}

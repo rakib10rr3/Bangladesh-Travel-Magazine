@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^(?P<division_name_slug>[\w\-]+)/add_page/$',views.add_page, name='add_page'),
     url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/$',views.story, name='story'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/share/$',views.story_share, name='story_share'),  # New!
+    url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/share/image$',views.image_share, name='image_share'),  # New!
     #url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/view/$',views.story_view, name='story_view'),  # New!
     url(r'^goto/$', views.track_url, name='goto'),
     url(r'^like/$', views.like, name='like'),

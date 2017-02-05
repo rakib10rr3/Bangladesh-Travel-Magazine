@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Division,Page,Picture,like,Story
 
-from .forms import PageForm,storyForm
+from .forms import PageForm,storyForm,imageForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 try:
@@ -102,7 +102,7 @@ def story_share(request,division_name_slug,page_name_slug):
             bet = form.save(commit=False)
             bet.user = request.user
             bet.save()
-            return redirect('/upload/new/')
+            return  redirect('image_share',division_name_slug,page_name_slug)
         else:
             print (form.errors)
     else:
@@ -110,6 +110,25 @@ def story_share(request,division_name_slug,page_name_slug):
     context_dict = {'form':form}
     return render(request,'app1/story_share.html', context_dict)
 
+
+
+def image_share(request,division_name_slug,page_name_slug):
+
+    page_o=Page.objects.get(name=page_name_slug.title())
+    if request.method == 'POST':
+        form = imageForm(request.POST, request.FILES)
+        if form.is_valid():
+            bet = form.save(commit=False)
+            bet.user = request.user
+            bet.save()
+            return redirect('image_share',division_name_slug,page_name_slug)
+        else:
+            print(form.errors)
+    else:
+        form = imageForm()
+    context_dict = {'form': form,'division':division_name_slug,'page':page_name_slug}
+
+    return render(request, 'app1/image_upload.html', context_dict)
 
 
 @login_required

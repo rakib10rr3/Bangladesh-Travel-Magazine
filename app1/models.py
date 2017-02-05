@@ -59,7 +59,7 @@ class Picture(models.Model):
     user=models.ForeignKey(User)
     page=models.ForeignKey(Page,related_name='pages')
     story=models.ForeignKey(Story,related_name='stories')
-    file = models.ImageField(upload_to="picture")
+    file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
     def __str__(self):
         return  self.user.username+"->"+self.page.name
