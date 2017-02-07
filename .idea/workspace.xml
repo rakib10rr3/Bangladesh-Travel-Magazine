@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="demo-version-1">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/kaptai-lake-1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/kaptai_2jpg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/ratargul.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Sajek/test3/Rakib.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Sajek/test3/mitun.jpg" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/Coxsbazar.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/Coxsbazar4.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160310_150257.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160310_150257_gZKe64d.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_155354.jpg" afterPath="" />
@@ -39,7 +32,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_090929_001.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_090929_001_Xqsmu8r.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20161217_161427.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MOVED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/wallpaper2.jpg" afterPath="$PROJECT_DIR$/media/Ratargul/test3/wallpaper2.jpg" />
       <change type="MOVED" beforePath="$PROJECT_DIR$/media/Sajek/test1/sajek.jpg" afterPath="$PROJECT_DIR$/media/Sajek/test3/sajek.jpg" />
@@ -724,7 +716,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486482069105</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="demo-version-1">
+      <created>1486483154422</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1486483154422</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
