@@ -24,7 +24,7 @@
 
                  <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-primary" type="submit">Delete</button>
                 </form>
                 <hr>
             {% endfor %}
