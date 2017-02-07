@@ -2,19 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e58daf1-c187-4562-b791-ec0c7e29aae4" name="Default" comment="demo-version-1">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/20160313_150633.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/20160313_163633.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Sajek/test3/20160817_045832.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/kaptai-lake-1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/kaptai_2jpg.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Ratargul/test3/ratargul.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Sajek/test3/Rakib.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/media/Sajek/test3/mitun.jpg" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/Coxsbazar.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/Coxsbazar4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/wallpaper2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160310_150257.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160310_150257_gZKe64d.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_155354.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_155354_h0COvs1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_155959.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_155959_uFR7lFn.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_161654.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160311_165431.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160313_150633.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160313_163633.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Ratargul/test3/20160313_163826.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test1/sajek.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test1/sajek2.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160201_114720.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160201_114720_EhQZNjA.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160201_114720_uTzuWlU.jpg" afterPath="" />
@@ -23,15 +28,22 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160201_114938.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160816_132338.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160816_154739_002.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160816_170551.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160816_180646_001.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_045832.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_053828_002.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_054501_001.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_060205.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_062037.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_080237.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_090929_001.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20160817_090929_001_Xqsmu8r.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/media/Sajek/test3/20161217_161427.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/media/Coxsbazar/test1/wallpaper2.jpg" afterPath="$PROJECT_DIR$/media/Ratargul/test3/wallpaper2.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/media/Sajek/test1/sajek.jpg" afterPath="$PROJECT_DIR$/media/Sajek/test3/sajek.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/media/Sajek/test1/sajek2.jpg" afterPath="$PROJECT_DIR$/media/Sajek/test3/sajek2.jpg" />
     </list>
     <ignored path="BDTM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -171,36 +183,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="media" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sajek" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BDTM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BDTM" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="media" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ratargul" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -735,7 +717,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486479450222</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="demo-version-1">
+      <created>1486482069105</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1486482069105</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -751,11 +740,11 @@
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23358779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23358779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3255814" sideWeight="0.5030534" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3255814" sideWeight="0.49694657" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3255814" sideWeight="0.49694657" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32890365" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30232558" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1030,7 +1019,7 @@
         <state relative-caret-position="188">
           <caret line="27" column="151" lean-forward="false" selection-start-line="27" selection-start-column="151" selection-end-line="27" selection-end-column="151" />
           <folding>
-            <element signature="e#693#725#0" expanded="true" />
+            <element signature="e#693#725#0" expanded="false" />
           </folding>
         </state>
       </provider>
