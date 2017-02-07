@@ -102,7 +102,10 @@ def story_share(request,division_name_slug,page_name_slug):
             bet = form.save(commit=False)
             bet.user = request.user
             bet.save()
-            return  redirect('image_share',division_name_slug,page_name_slug)
+            context_dict = {'division': division_name_slug,'page': page_name_slug,'story_obj':bet}
+            #return  redirect('image_share',context_dict)
+            #return render(request, 'app1/image_upload.html', context_dict)
+            return  image_redirect(request,context_dict)
         else:
             print (form.errors)
     else:
@@ -112,23 +115,44 @@ def story_share(request,division_name_slug,page_name_slug):
 
 
 
-def image_share(request,division_name_slug,page_name_slug):
+def image_redirect(request,context_dict):
+    division=context_dict['division']
+    print(division)
 
-    page_o=Page.objects.get(name=page_name_slug.title())
-    if request.method == 'POST':
+    page=context_dict['page']
+    print (page)
+
+    story_obj=context_dict['story_obj']
+    story_obj_id=story_obj.id
+    print(story_obj.id)
+    return  redirect('image_share',division,page,story_obj_id)
+
+
+def image_share(request,division_name_slug,page_name_slug,story_id):
+
+   page_name=page_name_slug.title()
+   page=Page.objects.get(name=page_name)
+   story_save=Story.objects.get(id=story_id)
+   print(story_save)
+   if request.method == 'POST':
         form = imageForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.user = request.user
+            bet.page = page
+            bet.story = story_save
             bet.save()
-            return redirect('image_share',division_name_slug,page_name_slug)
+            context_dict = {'division': division_name_slug,'page': page_name_slug,'story_obj':bet}
+            #return  redirect('image_share',context_dict)
+            #return render(request, 'app1/image_upload.html', context_dict)
+            return redirect('image_share', division_name_slug, page_name_slug, story_id)
         else:
-            print(form.errors)
-    else:
+            print (form.errors)
+   else:
         form = imageForm()
-    context_dict = {'form': form,'division':division_name_slug,'page':page_name_slug}
+   context_dict = {'form':form,'story_obj':story_save,'division':division_name_slug,'page':page_name_slug}
+   return render(request,'app1/image_upload.html', context_dict)
 
-    return render(request, 'app1/image_upload.html', context_dict)
 
 
 @login_required
@@ -170,3 +194,7 @@ def like(request):
     # use mimetype instead of content_type if django < 5
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
+def image_delete(request,division_name_slug,page_name_slug,story_id,value_id):
+    obj = Picture.objects.get(pk=value_id)
+    obj.delete()
+    return redirect('image_share', division_name_slug, page_name_slug, story_id)

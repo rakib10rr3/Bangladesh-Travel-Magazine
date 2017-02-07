@@ -15,7 +15,22 @@
                          {{ field.errors }}
                     {% endfor %}
             <button class="btn btn-primary" type="submit" name="submit">Add Image</button>
-
                 </form>
+
+        {% if story_obj.stories %}
+
+            {% for value in story_obj.stories.all %}
+                <img class="card-img-top" src="{{ value.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+
+                 <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                </form>
+                <hr>
+            {% endfor %}
+        {% else %}
+             No images Shared yet.
+        {% endif %}
+
 
 {% endblock %}

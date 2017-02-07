@@ -28,5 +28,5 @@ class storyForm(forms.ModelForm):
 class imageForm(forms.ModelForm):
     class Meta:
         model=Picture
-        fields=('file','page','story')
+        fields=('file',)
         help_texts={'file':'Upload an image '}
