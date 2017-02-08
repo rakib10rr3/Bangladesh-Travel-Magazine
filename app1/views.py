@@ -76,7 +76,9 @@ def add_page(request, division_name_slug):
     if request.method == 'POST':
         form = PageForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            bet=form.save(commit=False)
+            bet.division=cat
+            bet.save()
             # probably better to use a redirect here.
             return division_detail(request,division_name_slug)
         else:
@@ -96,11 +98,14 @@ def story(request,division_name_slug,page_name_slug):
    return  render(request,'app1/story.html',{'stories':stories,'division':division_name_slug,'page':page_name_slug})
 
 def story_share(request,division_name_slug,page_name_slug):
+    page_name = page_name_slug.title()
+    page = Page.objects.get(name=page_name)
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.user = request.user
+            bet.story_page = page
             bet.save()
             context_dict = {'division': division_name_slug,'page': page_name_slug,'story_obj':bet}
             #return  redirect('image_share',context_dict)

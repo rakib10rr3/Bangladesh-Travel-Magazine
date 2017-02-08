@@ -11,16 +11,21 @@ class PageForm(forms.ModelForm):
         # we can either exclude the category field from the form,
         #exclude = ('category',)
         #or specify the fields to include (i.e. not include the category field)
-        fields = ('name','des','division')
+        fields = ('name','des')
+        help_texts = {
 
+            'name': 'Provide a Title Name For the page',
+
+            'des': 'One line description',
+        }
 
 
 class storyForm(forms.ModelForm):
     class Meta:
         model=Story
-        fields = ('story_page','title_name','member','des')
+        fields = ('title_name','member','des')
         help_texts = {
-            'story_page': 'Select a Page',
+
             'title_name': 'Give a title',
             'memeber': 'how many member ?',
             'des': 'How was your travel ?',
