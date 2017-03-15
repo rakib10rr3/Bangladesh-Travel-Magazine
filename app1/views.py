@@ -65,7 +65,7 @@ def track_url(request):
                 pass
     return redirect(url)
 
-
+@login_required
 def add_page(request, division_name_slug):
 
     try:
@@ -89,14 +89,14 @@ def add_page(request, division_name_slug):
     context_dict = {'form':form, 'division': cat, 'division_name_slug':division_name_slug}
     return render(request,'app1/add_page.html', context_dict)
 
-
+@login_required
 def story(request,division_name_slug,page_name_slug):
    try:
         stories = Story.objects.filter(story_page__slug=page_name_slug)
    except Story.DoesNotExist:
         stories = None
    return  render(request,'app1/story.html',{'stories':stories,'division':division_name_slug,'page':page_name_slug})
-
+@login_required
 def story_share(request,division_name_slug,page_name_slug):
     page_name = page_name_slug.title()
     page = Page.objects.get(name=page_name)
@@ -119,7 +119,7 @@ def story_share(request,division_name_slug,page_name_slug):
     return render(request,'app1/story_share.html', context_dict)
 
 
-
+@login_required
 def image_redirect(request,context_dict):
     division=context_dict['division']
 
@@ -130,7 +130,7 @@ def image_redirect(request,context_dict):
 
     return  redirect('image_share',division,page,story_obj_id)
 
-
+@login_required
 def image_share(request,division_name_slug,page_name_slug,story_id):
 
    page_name=page_name_slug.title()

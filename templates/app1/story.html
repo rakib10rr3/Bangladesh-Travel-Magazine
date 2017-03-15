@@ -8,13 +8,34 @@
         <h3>Total {{ stories.count }} stories shared ! </h3><br>
             {% for obj in stories %}
 
-                <h3>{{ forloop.counter }}</h3>>
-                <ul>
-                <li class="card-title">USER: {{ obj.user }}</li> <br>
-                <li  class="card-title">TITLE: {{ obj.title_name }}</li> <br>
-                <li class="card-title">Member: {{ obj.member }}</li> <br>
+                <h3>{{ forloop.counter }}</h3>
+{#                <ul>#}
+{#                <li class="card-title">USER: {{ obj.user }}</li> <br>#}
+{#                <li  class="card-title">TITLE: {{ obj.title_name }}</li> <br>#}
+{#                <li class="card-title">Member: {{ obj.member }}</li> <br>#}
                 <li class="card-text">DESCRIPTION: {{ obj.des }}</li> <br>
-                </ul>>
+{#                </ul>#}
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Story-Title</th>
+                            <th>Number of member</th>
+                            {#  <th>Description</th> #}
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>{{ obj.user }}</td>
+                                <td>{{ obj.title_name }}</td>
+                                <td>{{ obj.member }}</td>
+                                {# <td>{{ obj.des }}</td> #}
+                            </tr>
+
+                    </tbody>
+                </table>
+
+               {% if obj.stories.all.exists %}
              <div class="card" style="width: 20rem;">
                 <div class="card-block">
                 <div class="container">
@@ -23,15 +44,13 @@
                     <!-- Wrapper for slides -->
 
                     <div  class="carousel-inner" role="listbox">
-                        {% if obj.stories %}
+
                         {% for obj2 in  obj.stories.all %}
                          <div class="item {% if forloop.first %}active{% endif %}">
                              <img class="card-img-top" src="{{ obj2.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
                          </div>
                         {% endfor %}
-                        {% else %}
-                        <h3>No images Shared by the user </h3>
-                        {% endif %}
+
                     </div>
                     <!-- Left and right controls -->
                     <a class="left carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="prev">
@@ -44,10 +63,11 @@
                     </a>
                   </div>
             </div>
-
-
-                  </div>
+                </div>
         </div>
+        {% else %}
+            <h3>No images Shared by the {{ user.username }} </h3>
+               {% endif %}
 
 
           <hr>

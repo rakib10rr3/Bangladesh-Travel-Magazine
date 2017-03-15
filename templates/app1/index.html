@@ -4,18 +4,23 @@
 
 
 {% block body_block %}
-    <h1>Welcome {{ user.username }}</h1>
-    <h1>Trending places ---  </h1>
-    {% if page_list %}
 
-    {% for page in page_list %}
-        <div class="card" style="width: 20rem;">
-              <div class="card-block">
-            <div class="container">
+    <h3>Welcome to BanglaDesh Travel Megazine </h3>
+    <h3>Most recently Active Locations are -</h3>
+
+    {% if page_list %}
+        <!-- trending list start-->
+        {% for page in page_list %}
+
+                  <!-- image part for each page -->
+              {% if page.pages.all.exists %}
+                  <div class="container">
                 <br>
                   <div id="myCarousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel" style="width: 950px;">
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
+
+                    <!-- showing every image in that page -->
                       {% for image_obj in page.pages.all   %}
 
                           {% if forloop.first %}
@@ -41,12 +46,13 @@
                     </a>
                   </div>
             </div>
-
+              {% else %}
+                  <h3>No images Shared Yet </h3>
+              {% endif %}
                     <h4 class="card-title">{{ page.name }}</h4>
                     <p class="card-text">{{ page.des }}</p>
                     <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">View Tour Plan</a>
-                  </div>
-        </div>
+
         <hr>
 
     {% endfor %}
