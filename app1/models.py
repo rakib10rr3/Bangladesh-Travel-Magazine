@@ -31,6 +31,8 @@ class Page(models.Model):
             super(Page, self).save(*args, **kwargs)
     def __str__(self):
         return self.name
+    def __int__(self):
+        return self.views
 
 class like(models.Model):
     user=models.ForeignKey(User)

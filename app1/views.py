@@ -50,20 +50,12 @@ def division_detail(request,division_name_slug):
     return render(request, 'app1/division_detail.html', context_dict)
 
 
-def track_url(request):
-    page_id = None
-    url = '/app1/'
-    if request.method == 'GET':
-        if 'page_id' in request.GET:
-            page_id = request.GET['page_id']
-            try:
-                paage = Page.objects.get(id=page_id)
-                paage.views = paage.views + 1
-                paage.save()
-                url = paage.url
-            except:
-                pass
-    return redirect(url)
+def track_url(request,page_name):
+    what = Page.objects.get(slug=page_name)
+    what.views=what.views+1
+    what.save()
+    return
+
 
 @login_required
 def add_page(request, division_name_slug):
@@ -93,6 +85,8 @@ def add_page(request, division_name_slug):
 def story(request,division_name_slug,page_name_slug):
    try:
         stories = Story.objects.filter(story_page__slug=page_name_slug)
+        track_url(request,page_name_slug)
+
    except Story.DoesNotExist:
         stories = None
    return  render(request,'app1/story.html',{'stories':stories,'division':division_name_slug,'page':page_name_slug})

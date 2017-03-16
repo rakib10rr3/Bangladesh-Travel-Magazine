@@ -49,58 +49,54 @@
           </button>
           <a class="navbar-brand" href="/app1/">BDTM</a>
 
-        </div>
 
+        </div>
           <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-
-              <li><a href="{% url 'index' %}">Home</a></li>
               {% if user.is_authenticated %}
+                    <li>
+                        <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Divisions
+                        <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'division_detail' "dhaka" %}">Dhaka</a></li>
+                                <li><a href="{% url 'division_detail' "chittagong" %}">Chittagong</a></li>
+                                <li><a href="{% url 'division_detail' "rajshahi" %}">Rajshahi</a></li>
+                                <li><a href="{% url 'division_detail' "sylhet" %}">Sylhet</a></li>
+                                <li><a href="{% url 'division_detail' "khulna" %}">Khulna</a></li>
+                                <li><a href="{% url 'division_detail' "barisal" %}">Barisal</a></li>
+                            </ul>
+                        </div>
+                    </li>
 
+                         <li><a href="{% url 'index' %}">Home</a></li>
                         <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
                         <li><a href="http://127.0.0.1:8000/admin/">{{ user.username }}</a></li>
                         <li><a href="{% url 'auth_logout' %}?next=/app1/">Logout</a></li>
-
               {% else %}
                         <li><a href="{% url 'registration_register' %}">Register Here</a></li>
                         <li><a href="{% url 'auth_login' %}">Login</a></li>
             {% endif %}
-
           </ul>
         </div>
       </div>
     </div>
-
     <div class="container-fluid">
-      <div class="row">
 
-        <div class="col-sm-3 col-md-1 sidebar">
-                {% block side_block %}
-
-                 {% get_division_list  %}
-
-
-                {% endblock %}
-
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="">
            <div>
                 {% block body_block %}
-
-
 
                 {% endblock %}
                 </div>
         </div>
       </div>
-    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    <!--  -->
+
   </body>
 </html>
