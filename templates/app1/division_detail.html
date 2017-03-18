@@ -3,61 +3,70 @@
 
 {% block body_block %}
 
-                  {% if user.is_authenticated %}
-                     <a href="/app1/{{ division_name_slug }}/add_page/">Add a New page to the Division</a>
-                  {% endif %}
-             {% if division %}
-                <h1>{{ division_name_name }}</h1>
+    {% if user.is_authenticated %}
+        <a href="/app1/{{ division_name_slug }}/add_page/" class="btn btn-primary btn-block">Add a new Place to this
+            Division</a>
+    {% endif %}
+    {% if division %}
+        <h1>{{ division_name_name }}</h1>
 
-                 {% if page_list %}
-                <ul>
-                    {% for page in page_list %}
-                                <div class="card" style="width: 20rem;">
-              <div class="card-block">
-            <div class="container">
-                <br>
-                  <div id="myCarousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel" style="width: 950px;">
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                      {% for image_obj in page.pages.all %}
+        {% if page_list %}
+            {% for page in page_list %}
 
-                          {% if forloop.first %}
-                              <div class="item active">
-                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-                              </div>
-                          {% else %}
-                               <div class="item">
-                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
+                <div class="container gp-div-post-summery">
+                    {% if page.pages.all.exists %}
+                        <div class="gp-slide-show">
+                            <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                                 data-ride="carousel">
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    {% for image_obj in page.pages.all %}
+
+                                        {% if forloop.first %}
+                                            <div class="item active">
+                                                <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                            </div>
+                                        {% else %}
+                                            <div class="item">
+                                                <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                            </div>
+                                        {% endif %}
+
+                                    {% endfor %}
                                 </div>
-                          {% endif %}
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" id="gp-carousel-control"
+                                   href="#myCarousel{{ forloop.counter }}" role="button"
+                                   data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"
+                                      aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" id="gp-carousel-control"
+                                   href="#myCarousel{{ forloop.counter }}" role="button"
+                                   data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"
+                                      aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
 
-                      {% endfor %}
+                    <div class="gp-desc">
+                        <h4 class="card-title">{{ page.name }}</h4>
+                        <p class="card-text">{{ page.des }}</p>
+                        <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary btn-block">View Tour
+                            Plans</a>
                     </div>
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-            </div>
+                </div>
 
-                    <h4 class="card-title">{{ page.name }}</h4>
-                    <p class="card-text">{{ page.des }}</p>
-                    <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">View Tour Plan</a>
-                  </div>
-        </div>
+            {% endfor %}
 
-                    <hr>
-                    {% endfor %}
-
-                 {% else %}
-                    <strong>No pages currently in Division.</strong>
-                {% endif %}
-            {% else %}
-                The specified division->{{ division_name}} does not exist!
-            {% endif %}
+        {% else %}
+            <h1 class="gp-page-title">No place currently in this Division.</h1>
+        {% endif %}
+    {% else %}
+        <h1 class="gp-page-title">The specified division -> {{ division_name }} does not exist!</h1>
+    {% endif %}
 {% endblock %}

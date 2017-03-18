@@ -1,9 +1,9 @@
 {% load app1_extras %}
 {% load static %}
- <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,90 +13,86 @@
 
     <title>BDTM - {% block title %}Home{% endblock %}</title>
 
-  <!--
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
-      -->
+    <!--
+      <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+        -->
 
-      <link rel="stylesheet" type="text/css" href="{% static 'app1/CSS/bootstrap_cerulean.css' %}" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static "app1/CSS/style.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'app1/CSS/bootstrap_lumen.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-      {% load staticfiles %}
-        <script src="{% static "app1/js/rango-ajax.js" %}"></script>
-        <script src="{% static "app1/js/rango-jquery.js" %}"></script>
-      <!--[if lt IE 9]>
+    {% load staticfiles %}
+    <script src="{% static "app1/js/rango-ajax.js" %}"></script>
+    <script src="{% static "app1/js/rango-jquery.js" %}"></script>
+    <!--[if lt IE 9]>
 
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
     <![endif]-->
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/app1/">BDTM</a>
-
-
-        </div>
-          <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-              {% if user.is_authenticated %}
-                    <li>
-                        <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Divisions
-                        <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'division_detail' "dhaka" %}">Dhaka</a></li>
-                                <li><a href="{% url 'division_detail' "chittagong" %}">Chittagong</a></li>
-                                <li><a href="{% url 'division_detail' "rajshahi" %}">Rajshahi</a></li>
-                                <li><a href="{% url 'division_detail' "sylhet" %}">Sylhet</a></li>
-                                <li><a href="{% url 'division_detail' "khulna" %}">Khulna</a></li>
-                                <li><a href="{% url 'division_detail' "barisal" %}">Barisal</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                         <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
-                        <li><a href="http://127.0.0.1:8000/admin/">{{ user.username }}</a></li>
-                        <li><a href="{% url 'auth_logout' %}?next=/app1/">Logout</a></li>
-              {% else %}
-                        <li><a href="{% url 'registration_register' %}">Register Here</a></li>
-                        <li><a href="{% url 'auth_login' %}">Login</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </div>
+<nav class="navbar navbar-default navbar-fixed-top gp-navbar" role="navigation">
     <div class="container-fluid">
-
-        <div class="">
-           <div>
-                {% block body_block %}
-
-                {% endblock %}
-                </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {#            <a class="navbar-brand" href="/app1/">BDTM</a>#}
         </div>
-      </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav gp-navbar-nav">
+                {% if user.is_authenticated %}
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Divisions
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'division_detail' "dhaka" %}">Dhaka</a></li>
+                            <li><a href="{% url 'division_detail' "chittagong" %}">Chittagong</a></li>
+                            <li><a href="{% url 'division_detail' "rajshahi" %}">Rajshahi</a></li>
+                            <li><a href="{% url 'division_detail' "sylhet" %}">Sylhet</a></li>
+                            <li><a href="{% url 'division_detail' "khulna" %}">Khulna</a></li>
+                            <li><a href="{% url 'division_detail' "barisal" %}">Barisal</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
+                    <li><a href="http://127.0.0.1:8000/admin/">{{ user.username }}</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/app1/">Logout</a></li>
 
+                {% else %}
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'registration_register' %}">Register Here</a></li>
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid gp-container-main">
+    {% block body_block %}
 
-    <!--  -->
+    {% endblock %}
+</div>
+<div class="footer">
+    <p>Copyright &copy; Traitorz. All rights reserved.</p>
+</div>
 
-  </body>
+<!-- Bootstrap core JavaScript
+================================================== -->
+
+<!--  -->
+
+</body>
 </html>

@@ -1,5 +1,9 @@
 from django import forms
-from .models import Page,Division,Story,Picture
+from django.forms import Textarea, TextInput, NumberInput, FileInput
+
+from .models import Page, Story, Picture
+
+
 class PageForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
@@ -9,29 +13,41 @@ class PageForm(forms.ModelForm):
         # Some fields may allow NULL values, so we may not want to include them...
         # Here, we are hiding the foreign key.
         # we can either exclude the category field from the form,
-        #exclude = ('category',)
-        #or specify the fields to include (i.e. not include the category field)
-        fields = ('name','des')
+        # exclude = ('category',)
+        # or specify the fields to include (i.e. not include the category field)
+        fields = ('name', 'des')
         help_texts = {
-
-            'name': 'Provide a Title Name For the page',
-
-            'des': 'One line description',
+            'name': 'Place Name',
+            'des': 'One line description for the place',
+        }
+        # Widgets Name: https://docs.djangoproject.com/en/dev/ref/forms/widgets/
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'des': Textarea(attrs={'class': 'form-control'}),
         }
 
 
 class storyForm(forms.ModelForm):
     class Meta:
-        model=Story
-        fields = ('title_name','member','des')
+        model = Story
+        fields = ('title_name', 'member', 'des')
         help_texts = {
-
-            'title_name': 'Give a title',
-            'memeber': 'how many member ?',
-            'des': 'How was your travel ?',
+            'title_name': 'Give an Awesome title of the Tour!',
+            'member': 'How many member traveled with you?',
+            'des': 'How was your travel?',
         }
+        widgets = {
+            'title_name': TextInput(attrs={'class': 'form-control'}),
+            'member': NumberInput(attrs={'class': 'form-control'}),
+            'des': Textarea(attrs={'class': 'form-control'}),
+        }
+
+
 class imageForm(forms.ModelForm):
     class Meta:
-        model=Picture
-        fields=('file',)
-        help_texts={'file':'Upload an image '}
+        model = Picture
+        fields = ('file',)
+        help_texts = {'file': 'Upload an image'}
+        widgets = {
+            'file': FileInput(attrs={'class': 'btn btn-default'}),
+        }

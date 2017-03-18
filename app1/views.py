@@ -1,29 +1,26 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from .models import Division,Page,Picture,like,Story
-
-from .forms import PageForm,storyForm,imageForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
+
+from .forms import PageForm, storyForm, imageForm
+from .models import Division, Page, Picture, Story
+
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
-from django.shortcuts import get_object_or_404
 
 
 # this acquires all the pages and sends it to index html with 'page_list' dictionary
 
 def index(request):
-     page_list = Page.objects.order_by('-views')[:5]
+    page_list = Page.objects.order_by('-views')[:5]
 
-     return render(request,'app1/index.html',{'page_list':page_list})
-
-
+    return render(request, 'app1/index.html', {'page_list': page_list})
 
 
-def division_detail(request,division_name_slug):
-     # Create a context dictionary which we can pass to the template rendering engine.
+def division_detail(request, division_name_slug):
+    # Create a context dictionary which we can pass to the template rendering engine.
     context_dict = {}
     try:
         # Can we find a category name slug with the given name?
@@ -50,48 +47,51 @@ def division_detail(request,division_name_slug):
     return render(request, 'app1/division_detail.html', context_dict)
 
 
-def track_url(request,page_name):
+def track_url(request, page_name):
     what = Page.objects.get(slug=page_name)
-    what.views=what.views+1
+    what.views = what.views + 1
     what.save()
     return
 
 
 @login_required
 def add_page(request, division_name_slug):
-
     try:
-        cat = Division.objects.get(slug= division_name_slug)
+        cat = Division.objects.get(slug=division_name_slug)
     except Division.DoesNotExist:
-                cat = None
+        cat = None
 
     if request.method == 'POST':
         form = PageForm(request.POST, request.FILES)
         if form.is_valid():
-            bet=form.save(commit=False)
-            bet.division=cat
+            bet = form.save(commit=False)
+            bet.division = cat
             bet.save()
             # probably better to use a redirect here.
-            return division_detail(request,division_name_slug)
+            return division_detail(request, division_name_slug)
         else:
-            print (form.errors)
+            print(form.errors)
     else:
         form = PageForm()
 
-    context_dict = {'form':form, 'division': cat, 'division_name_slug':division_name_slug}
-    return render(request,'app1/add_page.html', context_dict)
+    context_dict = {'form': form, 'division': cat, 'division_name_slug': division_name_slug}
+    return render(request, 'app1/add_page.html', context_dict)
+
 
 @login_required
-def story(request,division_name_slug,page_name_slug):
-   try:
+def story(request, division_name_slug, page_name_slug):
+    try:
         stories = Story.objects.filter(story_page__slug=page_name_slug)
-        track_url(request,page_name_slug)
+        track_url(request, page_name_slug)
 
-   except Story.DoesNotExist:
+    except Story.DoesNotExist:
         stories = None
-   return  render(request,'app1/story.html',{'stories':stories,'division':division_name_slug,'page':page_name_slug})
+    return render(request, 'app1/story.html',
+                  {'stories': stories, 'division': division_name_slug, 'page': page_name_slug})
+
+
 @login_required
-def story_share(request,division_name_slug,page_name_slug):
+def story_share(request, division_name_slug, page_name_slug):
     page_name = page_name_slug.title()
     page = Page.objects.get(name=page_name)
     if request.method == 'POST':
@@ -101,37 +101,37 @@ def story_share(request,division_name_slug,page_name_slug):
             bet.user = request.user
             bet.story_page = page
             bet.save()
-            context_dict = {'division': division_name_slug,'page': page_name_slug,'story_obj':bet}
-            #return  redirect('image_share',context_dict)
-            #return render(request, 'app1/image_upload.html', context_dict)
-            return  image_redirect(request,context_dict)
+            context_dict = {'division': division_name_slug, 'page': page_name_slug, 'story_obj': bet}
+            # return  redirect('image_share',context_dict)
+            # return render(request, 'app1/image_upload.html', context_dict)
+            return image_redirect(request, context_dict)
         else:
-            print (form.errors)
+            print(form.errors)
     else:
         form = storyForm()
-    context_dict = {'form':form}
-    return render(request,'app1/story_share.html', context_dict)
+    context_dict = {'form': form}
+    return render(request, 'app1/story_share.html', context_dict)
 
 
 @login_required
-def image_redirect(request,context_dict):
-    division=context_dict['division']
+def image_redirect(request, context_dict):
+    division = context_dict['division']
 
-    page=context_dict['page']
+    page = context_dict['page']
 
-    story_obj=context_dict['story_obj']
-    story_obj_id=story_obj.id
+    story_obj = context_dict['story_obj']
+    story_obj_id = story_obj.id
 
-    return  redirect('image_share',division,page,story_obj_id)
+    return redirect('image_share', division, page, story_obj_id)
+
 
 @login_required
-def image_share(request,division_name_slug,page_name_slug,story_id):
-
-   page_name=page_name_slug.title()
-   page=Page.objects.get(name=page_name)
-   story_save=Story.objects.get(id=story_id)
-   print(story_save)
-   if request.method == 'POST':
+def image_share(request, division_name_slug, page_name_slug, story_id):
+    page_name = page_name_slug.title()
+    page = Page.objects.get(name=page_name)
+    story_save = Story.objects.get(id=story_id)
+    print(story_save)
+    if request.method == 'POST':
         form = imageForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=False)
@@ -139,17 +139,16 @@ def image_share(request,division_name_slug,page_name_slug,story_id):
             bet.page = page
             bet.story = story_save
             bet.save()
-            context_dict = {'division': division_name_slug,'page': page_name_slug,'story_obj':bet}
-            #return  redirect('image_share',context_dict)
-            #return render(request, 'app1/image_upload.html', context_dict)
+            context_dict = {'division': division_name_slug, 'page': page_name_slug, 'story_obj': bet}
+            # return  redirect('image_share',context_dict)
+            # return render(request, 'app1/image_upload.html', context_dict)
             return redirect('image_share', division_name_slug, page_name_slug, story_id)
         else:
-            print (form.errors)
-   else:
+            print(form.errors)
+    else:
         form = imageForm()
-   context_dict = {'form':form,'story_obj':story_save,'division':division_name_slug,'page':page_name_slug}
-   return render(request,'app1/image_upload.html', context_dict)
-
+    context_dict = {'form': form, 'story_obj': story_save, 'division': division_name_slug, 'page': page_name_slug}
+    return render(request, 'app1/image_upload.html', context_dict)
 
 
 @login_required
@@ -170,13 +169,12 @@ def like_catagory(request):
     return HttpResponse(likes)
 
 
-
 @login_required
 def like(request):
     if request.method == 'POST':
         user = request.user
         cat_id = None
-        page=Page.objects.get(id=int(cat_id))
+        page = Page.objects.get(id=int(cat_id))
         if page.likes.filter(id=user.id).exists():
             # user has already liked this company
             # remove like/user
@@ -191,7 +189,8 @@ def like(request):
     # use mimetype instead of content_type if django < 5
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
-def image_delete(request,division_name_slug,page_name_slug,story_id,value_id):
+
+def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
     return redirect('image_share', division_name_slug, page_name_slug, story_id)

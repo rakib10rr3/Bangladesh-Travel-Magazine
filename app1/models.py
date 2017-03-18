@@ -1,55 +1,66 @@
+from django.contrib.auth.models import User  # for using the USer one to one model
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User  # for using the USer one to one model
+
 
 class Division(models.Model):
-    title=models.CharField(max_length=10,unique=True)
+    title = models.CharField(max_length=10, unique=True)
     views = models.IntegerField(default=0)
-    slug = models.SlugField( )
+    slug = models.SlugField()
+
     def save(self, *args, **kwargs):
-            # Uncomment if you don't want the slug to change every time the name changes
-            #if self.id is None:
-                    #self.slug = slugify(self.name)
-            self.slug = slugify(self.title)
-            super(Division, self).save(*args, **kwargs)
+        # Uncomment if you don't want the slug to change every time the name changes
+        # if self.id is None:
+        # self.slug = slugify(self.name)
+        self.slug = slugify(self.title)
+        super(Division, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
+
 class Page(models.Model):
-    name=models.CharField(max_length=10,unique=True)
+    name = models.CharField(max_length=50, unique=True)
     views = models.IntegerField(default=0)
-    slug = models.SlugField( )
-    #description field
-    des=models.TextField(max_length=500,blank=False)
-    division=models.ForeignKey(Division)
-    #changing default save method to save slug field
+    slug = models.SlugField()
+    # description field
+    des = models.TextField(max_length=500, blank=False)
+    division = models.ForeignKey(Division)
+
+    # changing default save method to save slug field
     def save(self, *args, **kwargs):
-            # Uncomment if you don't want the slug to change every time the name changes
-            #if self.id is None:
-                    #self.slug = slugify(self.name)
-            self.slug = slugify(self.name)
-            super(Page, self).save(*args, **kwargs)
+        # Uncomment if you don't want the slug to change every time the name changes
+        # if self.id is None:
+        # self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
+        super(Page, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
     def __int__(self):
         return self.views
 
-class like(models.Model):
-    user=models.ForeignKey(User)
-    page=models.ForeignKey(Page)
 
-#upload destination for images
-def desti (instance,filename):
-    return "%s/%s/%s"%(instance.page,instance.user,filename)
+class like(models.Model):
+    user = models.ForeignKey(User)
+    page = models.ForeignKey(Page)
+
+
+# upload destination for images
+def desti(instance, filename):
+    return "%s/%s/%s" % (instance.page, instance.user, filename)
+
 
 class Story(models.Model):
-    user=models.ForeignKey(User)
-    story_page=models.ForeignKey(Page)
-    title_name=models.CharField(max_length=100)
-    member=models.IntegerField(default=0,null=True)
-    des=models.TextField(max_length=500,default='')
+    user = models.ForeignKey(User)
+    story_page = models.ForeignKey(Page)
+    title_name = models.CharField(max_length=100)
+    member = models.IntegerField(default=0, null=True)
+    des = models.TextField(max_length=500, default='')
+
     def __str__(self):
-        return  self.user.username +"-->"+self.title_name
+        return self.user.username + "-->" + self.title_name
 
 
 class Picture(models.Model):
@@ -58,16 +69,18 @@ class Picture(models.Model):
     pillow (where Pillow is easily installable in a virtualenv. If you have
     problems installing pillow, use a more generic FileField instead.
     """
-    user=models.ForeignKey(User)
-    page=models.ForeignKey(Page,related_name='pages')
-    story=models.ForeignKey(Story,related_name='stories')
+    user = models.ForeignKey(User)
+    page = models.ForeignKey(Page, related_name='pages')
+    story = models.ForeignKey(Story, related_name='stories')
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
+
     def __str__(self):
-        return  self.user.username+"->"+self.page.name
+        return self.user.username + "->" + self.page.name
+
     @models.permalink
     def get_absolute_url(self):
-        return ('upload-new', )
+        return ('upload-new',)
 
     def save(self, *args, **kwargs):
         self.slug = self.file.name
@@ -79,16 +92,18 @@ class Picture(models.Model):
         super(Picture, self).delete(*args, **kwargs)
 
 
-
 class Type(models.Model):
-    type_name=models.CharField(max_length=10)
-#user class
+    type_name = models.CharField(max_length=10)
+
+
+# user class
 
 
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
-    #comes up with some basic attributes(username,passward,email)
+    # comes up with some basic attributes(username,passward,email)
     user = models.OneToOneField(User)
+
     # The additional attributes we wish to include.
     def __str__(self):
         return self.user.username

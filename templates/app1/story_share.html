@@ -2,17 +2,18 @@
 
 
 {% block body_block %}
-                <form  role="form"  id="story_form" method="post" action="" enctype="multipart/form-data" >
-                    {% csrf_token %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {% for field in form.visible_fields %}
-                        <p class="required">{{ field.help_text }}</p>
-                        {{ field.errors }}
-                        {{ field }}
-                    {% endfor %}
-             <hr>
-            <button class="btn btn-primary" type="submit" name="submit">Submit</button>
-                </form>
+    <form class="gp-form" role="form" id="story_form" method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                <p class="required">{{ field.help_text }}</p>
+                {{ field.errors }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit" name="submit">Submit</button>
+    </form>
 {% endblock %}

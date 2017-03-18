@@ -5,27 +5,30 @@
 
     {% if division %}
 
-                <form role="form"  id="page_form" method="post" action="/app1/{{division.slug}}/add_page/" enctype="multipart/form-data" >
+        <form class="gp-form" role="form" id="page_form" method="post" action="/app1/{{ division.slug }}/add_page/"
+              enctype="multipart/form-data">
 
-                 <h2 class="form-signin-heading">Add a Page to <a href="/app1/{{division.slug}}/"> {{ division.title }}</a></h2>
-                    {% csrf_token %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {% for field in form.visible_fields %}
+            <h1 class="gp-page-title">Add a Page to <a href="/app1/{{ division.slug }}/"> {{ division.title }}</a>
+                division
+            </h1>
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <p class="required">{{ field.help_text }}</p>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
 
-                        <p class="required">{{ field.help_text }}</p><br/>
-                        {{ field }}
-                         {{ field.errors }}
-                    {% endfor %}
-            <button class="btn btn-primary" type="submit" name="submit">Add Page</button>
+        </form>
 
-                </form>
+    {% else %}
 
-            {%  else %}
+        <h1 class="gp-page-title">This Division does not exist.</h1>
 
-
-            <p>This  division does not exist.</p>
-
-    {%  endif %}
+    {% endif %}
 {% endblock %}

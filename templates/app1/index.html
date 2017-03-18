@@ -1,63 +1,76 @@
 {% extends 'app1/base.html' %}
 
-
-
-
 {% block body_block %}
 
-    <h3>Welcome to BanglaDesh Travel Megazine </h3>
-    <h3>Most recently Active Locations are - </h3>
+    <h1 class="gp-page-title">Welcome to Bangladesh Travel Magazine </h1>
+    <h2 class="gp-text-normal-bigger gp-text-center">Most recently Active Locations</h2>
     {% if page_list %}
         <!-- trending list start-->
         {% for page in page_list %}
 
-                  <!-- image part for each page -->
-              {% if page.pages.all.exists %}
-                  <div class="container">
-                <br>
-                  <div id="myCarousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel" style="width: 950px;">
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
+            <div class="container gp-div-post-summery">
 
-                    <!-- showing every image in that page -->
-                      {% for image_obj in page.pages.all   %}
+                <div class="gp-slide-show">
 
-                          {% if forloop.first %}
-                              <div class="item active">
-                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-                              </div>
-                          {% else %}
-                               <div class="item">
-                                    <img class="card-img-top" src="{{ image_obj.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-                                </div>
-                          {% endif %}
+                    <!-- image part for each page -->
+                    {% if page.pages.all.exists %}
+                        {#                    <br>#}
+                        <div id="gp-Carousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                             data-ride="carousel">
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
 
-                      {% endfor %}
-                    </div>
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel{{ forloop.counter }}" role="button" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-            </div>
-              {% else %}
-                  <h3>No images Shared Yet </h3>
-              {% endif %}
+                                <!-- showing every image in that page -->
+                                {% for image_obj in page.pages.all %}
+
+                                    {% if forloop.first %}
+                                        <div class="item active">
+                                            <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                        </div>
+                                    {% else %}
+                                        <div class="item">
+                                            <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                        </div>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </div>
+                            <!-- Left and right controls -->
+                            <a class="left carousel-control" id="gp-carousel-control"
+                               href="#gp-Carousel{{ forloop.counter }}" role="button"
+                               data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" id="gp-carousel-control"
+                               href="#gp-Carousel{{ forloop.counter }}" role="button"
+                               data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    {% else %}
+                        <p class="gp-post-no-image-text">No images Shared Yet!</p>
+                    {% endif %}
+
+                </div>
+
+                <div class="gp-desc">
+
                     <h4 class="card-title">{{ page.name }}</h4>
                     <p class="card-text">{{ page.des }}</p>
-                    <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">View Tour Plan</a>
+                    <div class="gp-button-panel">
+                        <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary">View Tour Plan</a>
+                    </div>
+                </div>
 
-        <hr>
+            </div>
+            {#            <hr>#}
 
-    {% endfor %}
-     {% else %}
-            <br>
-             <h2><strong>Looks like people are not going Anywhere!</strong></h2>
+        {% endfor %}
+    {% else %}
+        {#        <br>#}
+        <h2><strong>Looks like people are not going Anywhere!</strong></h2>
     {% endif %}
 
 {% endblock %}

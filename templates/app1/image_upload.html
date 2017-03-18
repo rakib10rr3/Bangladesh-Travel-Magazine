@@ -3,34 +3,36 @@
 
 {% block body_block %}
 
-                <form role="form"  id="image_form" method="post" action="" enctype="multipart/form-data" >
+    <form class="gp-form" role="form" id="image_form" method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                <p class="required">{{ field.help_text }}</p><br/>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit" name="submit">Add Image</button>
+    </form>
+
+    {% if story_obj.stories %}
+
+        {% for value in story_obj.stories.all %}
+
+            <div class="gp-img-preview">
+                <img class="card-img-top" src="{{ value.file.url }}">
+
+                <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
                     {% csrf_token %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {% for field in form.visible_fields %}
-
-                        <p class="required">{{ field.help_text }}</p><br/>
-                        {{ field }}
-                         {{ field.errors }}
-                    {% endfor %}
-            <button class="btn btn-primary" type="submit" name="submit">Add Image</button>
+                    <button class="btn btn-primary btn-block" type="submit">Delete</button>
                 </form>
-
-        {% if story_obj.stories %}
-
-            {% for value in story_obj.stories.all %}
-                <img class="card-img-top" src="{{ value.file.url }}" alt="IMAGE GOES HERE",width="400" height="345">
-
-                 <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
-                        {% csrf_token %}
-                        <button class="btn btn-primary" type="submit">Delete</button>
-                </form>
-                <hr>
-            {% endfor %}
-        {% else %}
-             No images Shared yet.
-        {% endif %}
-
+            </div>
+        {% endfor %}
+    {% else %}
+        No images shared yet.
+    {% endif %}
 
 {% endblock %}
