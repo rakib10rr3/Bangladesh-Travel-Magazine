@@ -11,14 +11,19 @@ $('#likes').click(function(){
 
 
 $(document).ready(function() {
-     $('#likes').click(function(){
-        var catid;
-        catid = $(this).attr("data-catid");
-                $.get('/app1/like_catagory/', {page_id: catid}, function(data){
-            $('#like_count').html(data);
-            $('#likes').hide();
-        });
+$('button').on('click',function (event) {
+    event.preventDefault();
+    var element=$(this);
+    $.ajax({
+        url:'/app1/like',
+        type:'GET',
+        data:{obj_id:element.attr("data-id")},
+        dataType: "json",
+        success : function(response){
+            element.html(' ' + response);
+        }
     });
+});
 
 });
 
