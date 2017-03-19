@@ -27,7 +27,6 @@ def division_detail(request, division_name_slug):
         # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises an exception.
         division = Division.objects.get(slug=division_name_slug)
-
         context_dict['division_name'] = division.title
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
@@ -151,43 +150,19 @@ def image_share(request, division_name_slug, page_name_slug, story_id):
     return render(request, 'app1/image_upload.html', context_dict)
 
 
-@login_required
-def like_catagory(request):
-    cat_id = None
-    if request.method == 'GET':
-        user = request.user
-        cat_id = request.GET['page_id']
-    likes = 0
-    if cat_id:
-        cat = Page.objects.get(id=int(cat_id))
-        if cat:
-            likes = cat.likes + 1
-            cat.likes = likes
-            cat.save()
-        else:
-            return HttpResponse("No Pages found")
-    return HttpResponse(likes)
-
-
-@login_required
 def like(request):
-    if request.method == 'POST':
-        user = request.user
-        cat_id = None
-        page = Page.objects.get(id=int(cat_id))
-        if page.likes.filter(id=user.id).exists():
-            # user has already liked this company
-            # remove like/user
-            page.likes.remove(user)
-            message = 'You disliked this'
-        else:
-            # add a new like for a company
-            page.likes.add(user)
-            message = 'You liked this'
+    story_id = request.GET.get('obj_id', None)
+    story = Story.objects.get(id=story_id)
+    print(story)
+    user = request.user
+    print(user.username)
 
-    ctx = {'likes_count': page.total_likes, 'message': message}
-    # use mimetype instead of content_type if django < 5
-    return HttpResponse(json.dumps(ctx), content_type='application/json')
+    if story.likes.filter(id=user.id).exists():
+        story.likes.remove(user)
+    else:
+        story.likes.add(user)
+    likees = story.total_likes
+    return HttpResponse(likees)
 
 
 def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):

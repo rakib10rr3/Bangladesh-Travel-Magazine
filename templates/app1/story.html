@@ -10,7 +10,6 @@
         {% for obj in stories %}
 
             <div class="container gp-div-post-full">
-
                 <div class="gp-slide-show">
                     {% if obj.stories.all.exists %}
                         <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
@@ -46,13 +45,21 @@
                     {% else %}
                         <p class="gp-post-no-image-text">No images shared by <strong>{{ user.username }}</strong>.</p>
                     {% endif %}
-
                 </div>
 
                 <div class="gp-desc">
                     <h4 class="card-title">{{ obj.title_name }}</h4>
                     <p class="card-text-author">Shared by <strong>{{ obj.user }}</strong></p>
-                    <p class="card-text-member">It was {{ obj.member }} member tour.</p>
+                    <p class="card-text-member"><strong>Number of Member: </strong> {{ obj.member }}</p>
+
+                    <button type="button" id="likes" data-id="{{ obj.id }}"
+                            class="btn btn-mini btn-danger glyphicon glyphicon-heart" value="Like">
+                         {% if obj.total_likes > 0 %}{{ obj.total_likes }} {% endif %}
+
+                    </button>
+                    People Liked this.
+
+
                     <p class="card-text">{{ obj.des }}</p>
                 </div>
 
@@ -65,4 +72,28 @@
     {% else %}
         <h3>Sorry no stories Shared yet!</h3>
     {% endif %}
+
+<script>
+    $('button').on('click', function (event) {
+        event.preventDefault();
+        var element = $(this);
+        $.ajax({
+            url: '/app1/like',
+            type: 'GET',
+            data: {obj_id: element.attr("data-id")},
+            dataType: "json",
+            success: function (response) {
+               // element.removeClass('btn btn-mini btn-danger glyphicon glyphicon-heart-empty').addClass('btn btn-mini btn-danger glyphicon glyphicon-heart');
+
+                element.html(' '+ response);
+            }
+        });
+    });
+</script>
+
+
+
 {% endblock %}
+
+
+

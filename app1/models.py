@@ -42,10 +42,6 @@ class Page(models.Model):
         return self.views
 
 
-class like(models.Model):
-    user = models.ForeignKey(User)
-    page = models.ForeignKey(Page)
-
 
 # upload destination for images
 def desti(instance, filename):
@@ -57,10 +53,17 @@ class Story(models.Model):
     story_page = models.ForeignKey(Page)
     title_name = models.CharField(max_length=100)
     member = models.IntegerField(default=0, null=True)
-    des = models.TextField(max_length=500, default='')
-
+    des = models.TextField(max_length=5000, default='')
+    likes = models.ManyToManyField(User, related_name='likes')
     def __str__(self):
         return self.user.username + "-->" + self.title_name
+    @property
+    def total_likes(self):
+        """
+        Likes for the company
+        :return: Integer: Likes for the company
+        """
+        return self.likes.count()
 
 
 class Picture(models.Model):
