@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User  # for using the USer one to one model
+from django.contrib.auth.models import User  # for using the User one to one model
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -42,7 +42,6 @@ class Page(models.Model):
         return self.views
 
 
-
 # upload destination for images
 def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
@@ -55,8 +54,10 @@ class Story(models.Model):
     member = models.IntegerField(default=0, null=True)
     des = models.TextField(max_length=5000, default='')
     likes = models.ManyToManyField(User, related_name='likes')
+
     def __str__(self):
         return self.user.username + "-->" + self.title_name
+
     @property
     def total_likes(self):
         """
@@ -64,6 +65,15 @@ class Story(models.Model):
         :return: Integer: Likes for the company
         """
         return self.likes.count()
+
+    # Shohag: testing.. :)
+    @property
+    def is_user_like_this(self, user_id):
+
+        if self.likes.filter(id=user_id).exists():
+            return True
+        else:
+            return False
 
 
 class Picture(models.Model):
@@ -83,7 +93,7 @@ class Picture(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('upload-new',)
+        return 'upload-new',
 
     def save(self, *args, **kwargs):
         self.slug = self.file.name
@@ -105,7 +115,10 @@ class Type(models.Model):
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     # comes up with some basic attributes(username,passward,email)
-    user = models.OneToOneField(User)
+    # user = models.OneToOneField(User)
+    user = models.ManyToManyField(User)
+    meta_key = models.TextField(max_length=50, default='')
+    meta_value = models.TextField(max_length=200, default='')
 
     # The additional attributes we wish to include.
     def __str__(self):

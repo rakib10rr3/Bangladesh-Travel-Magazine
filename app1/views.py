@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -48,7 +49,7 @@ def division_detail(request, division_name_slug):
 
 def track_url(request, page_name):
     what = Page.objects.get(slug=page_name)
-    what.views = what.views + 1
+    what.views += 1
     what.save()
     return
 
@@ -85,8 +86,30 @@ def story(request, division_name_slug, page_name_slug):
 
     except Story.DoesNotExist:
         stories = None
+
+    user = request.user
+
+    # storyByThisUser = stories.likes.filter(id=user.id)
+    print(user.id)
+    # print(storyByThisUser)
+
+    like_list = []
+
+    for s in stories:
+        print(s.id)
+        story = Story.objects.get(id=s.id)
+        if story.likes.filter(id=user.id).exists():
+            like_list.append(s.id)
+
+    print(like_list)
+
     return render(request, 'app1/story.html',
-                  {'stories': stories, 'division': division_name_slug, 'page': page_name_slug})
+                  {
+                      'stories': stories,
+                      'division': division_name_slug,
+                      'page': page_name_slug,
+                      'like_list': like_list
+                  })
 
 
 @login_required
@@ -110,6 +133,19 @@ def story_share(request, division_name_slug, page_name_slug):
         form = storyForm()
     context_dict = {'form': form}
     return render(request, 'app1/story_share.html', context_dict)
+
+
+@login_required
+def view_profile(request, user_name):
+    # user = request.user
+
+    the_user = User.objects.filter(username=user_name)
+    print(the_user)
+
+    return render(request, 'app1/profile.html',
+                  {
+                      'the_user': the_user[0]
+                  })
 
 
 @login_required
@@ -150,6 +186,9 @@ def image_share(request, division_name_slug, page_name_slug, story_id):
     return render(request, 'app1/image_upload.html', context_dict)
 
 
+# todo: shohag: login required dite hobena? @imran
+
+
 def like(request):
     story_id = request.GET.get('obj_id', None)
     story = Story.objects.get(id=story_id)
@@ -157,12 +196,24 @@ def like(request):
     user = request.user
     print(user.username)
 
+    isLiked = True
     if story.likes.filter(id=user.id).exists():
         story.likes.remove(user)
+        isLiked = False
     else:
         story.likes.add(user)
-    likees = story.total_likes
-    return HttpResponse(likees)
+    totalLikes = story.total_likes
+    # return HttpResponse(likees)
+
+    jsonData = {
+        'isLiked': isLiked,
+        'totalLikes': totalLikes,
+    }
+
+    return HttpResponse(json.dumps(jsonData), content_type='application/json')
+
+
+# TODO: shohag: login required dite hobena? @imran
 
 
 def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):

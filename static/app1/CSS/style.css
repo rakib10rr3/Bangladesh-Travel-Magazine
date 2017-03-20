@@ -26,6 +26,11 @@ nav.gp-navbar {
     display: inline-block;
 }
 
+nav.gp-navbar .dropdown-menu li {
+    float: none;
+    display: list-item;
+}
+
 nav.gp-navbar .gp-navbar-nav > li > a {
     /*color: #fff;*/
     font-weight: bold;
