@@ -47,6 +47,7 @@ def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
 
 
+
 class Story(models.Model):
     user = models.ForeignKey(User)
     story_page = models.ForeignKey(Page)
@@ -54,10 +55,8 @@ class Story(models.Model):
     member = models.IntegerField(default=0, null=True)
     des = models.TextField(max_length=5000, default='')
     likes = models.ManyToManyField(User, related_name='likes')
-
     def __str__(self):
         return self.user.username + "-->" + self.title_name
-
     @property
     def total_likes(self):
         """
@@ -65,6 +64,7 @@ class Story(models.Model):
         :return: Integer: Likes for the company
         """
         return self.likes.count()
+
 
     # Shohag: testing.. :)
     @property

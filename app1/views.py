@@ -86,14 +86,12 @@ def story(request, division_name_slug, page_name_slug):
 
     except Story.DoesNotExist:
         stories = None
-
     user = request.user
-
     # storyByThisUser = stories.likes.filter(id=user.id)
     print(user.id)
     # print(storyByThisUser)
-
     like_list = []
+
 
     for s in stories:
         print(s.id)
@@ -110,6 +108,10 @@ def story(request, division_name_slug, page_name_slug):
                       'page': page_name_slug,
                       'like_list': like_list
                   })
+
+
+
+
 
 
 @login_required
@@ -197,23 +199,24 @@ def like(request):
     print(user.username)
 
     isLiked = True
+
     if story.likes.filter(id=user.id).exists():
         story.likes.remove(user)
         isLiked = False
     else:
         story.likes.add(user)
     totalLikes = story.total_likes
+
     # return HttpResponse(likees)
 
     jsonData = {
         'isLiked': isLiked,
         'totalLikes': totalLikes,
     }
-
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
 
-# TODO: shohag: login required dite hobena? @imran
+# TODO: shohag: login required dite hobena? @imran ---- Yes--done
 
 
 def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):

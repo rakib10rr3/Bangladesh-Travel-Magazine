@@ -53,7 +53,8 @@
                     <p class="card-text-member"><strong>Number of Member: </strong> {{ obj.member }}</p>
 
                     <button type="button" id="likes" data-id="{{ obj.id }}"
-                            class="btn btn-mini {% if obj.id in like_list %} btn-danger {% endif %} glyphicon glyphicon-heart" value="Like">
+                            class="btn btn-mini glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {%else%} glyphicon-heart-empty {% endif %}btn-danger" value="Like">
+
                         {% if obj.total_likes > 0 %}{{ obj.total_likes }} {% endif %}
 
                     </button>
@@ -84,13 +85,14 @@
                 dataType: "json",
                 success: function (response) {
                     // element.removeClass('btn btn-mini btn-danger glyphicon glyphicon-heart-empty').addClass('btn btn-mini btn-danger glyphicon glyphicon-heart');
-
                     if (response.isLiked == true) {
-                        element.addClass("btn-danger");
-                    } else {
-                        element.removeClass("btn-danger");
-                    }
+                        element.removeClass("glyphicon-heart-empty");
+                        element.addClass("glyphicon-heart");
 
+                    } else {
+                        element.removeClass("glyphicon-heart");
+                        element.addClass("glyphicon-heart-empty");
+                    }
                     element.html(' ' + response.totalLikes);
                 }
             });
