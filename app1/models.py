@@ -123,3 +123,19 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     def __str__(self):
         return self.user.username
+
+
+
+class Comment(models.Model):
+    story=models.ForeignKey(Story,related_name='comments')
+    author=models.ForeignKey(User)
+    text=models.TextField(max_length=1000)
+    created_date=models.DateTimeField(auto_now_add=True)
+    approved_comment=models.BooleanField(default=False)
+
+    @property
+    def approve(self):
+        self.approved_comment=True
+        self.save()
+    def __str__(self):
+        return self.text

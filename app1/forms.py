@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Textarea, TextInput, NumberInput, FileInput
 
-from .models import Page, Story, Picture
+from .models import Page, Story, Picture,Comment
 
 
 class PageForm(forms.ModelForm):
@@ -51,3 +51,7 @@ class imageForm(forms.ModelForm):
         widgets = {
             'file': FileInput(attrs={'class': 'btn btn-default'}),
         }
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model=Comment
+        fields=('text',)

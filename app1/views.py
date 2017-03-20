@@ -3,7 +3,7 @@ from django.contrib.auth.models import User  # for using the User one to one mod
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import PageForm, storyForm, imageForm
+from .forms import PageForm, CommentForm,storyForm, imageForm
 from .models import Division, Page, Picture, Story
 
 try:
@@ -100,13 +100,14 @@ def story(request, division_name_slug, page_name_slug):
             like_list.append(s.id)
 
     print(like_list)
-
+    form=CommentForm()
     return render(request, 'app1/story.html',
                   {
                       'stories': stories,
                       'division': division_name_slug,
                       'page': page_name_slug,
-                      'like_list': like_list
+                      'like_list': like_list,
+                      'form':form
                   })
 
 
@@ -118,6 +119,7 @@ def story(request, division_name_slug, page_name_slug):
 def story_share(request, division_name_slug, page_name_slug):
     page_name = page_name_slug.title()
     page = Page.objects.get(name=page_name)
+
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -188,9 +190,9 @@ def image_share(request, division_name_slug, page_name_slug, story_id):
     return render(request, 'app1/image_upload.html', context_dict)
 
 
-# todo: shohag: login required dite hobena? @imran
 
 
+@login_required()
 def like(request):
     story_id = request.GET.get('obj_id', None)
     story = Story.objects.get(id=story_id)
@@ -215,11 +217,23 @@ def like(request):
     }
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
-
-# TODO: shohag: login required dite hobena? @imran ---- Yes--done
-
-
 def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
     return redirect('image_share', division_name_slug, page_name_slug, story_id)
+@login_required()
+def add_comment_to_story(request, division_name_slug, page_name_slug,story_id):
+    story=Story.objects.get(id=story_id)
+    if request.method == 'POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.author=request.user
+            comment.story=story
+            comment.save()
+            print("all done")
+            return redirect('story',division_name_slug, page_name_slug)
+    else:
+        form=CommentForm()
+        print("took the form and called html")
+    return render(request,'app1/comment_add.html',{'form': form } )

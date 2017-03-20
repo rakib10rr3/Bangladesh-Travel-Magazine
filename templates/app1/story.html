@@ -49,23 +49,40 @@
 
                 <div class="gp-desc">
                     <h4 class="card-title">{{ obj.title_name }}</h4>
-                    <p class="card-text-author">Shared by <strong><a href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a></strong></p>
+                    <p class="card-text-author">Shared by <strong><a
+                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a></strong></p>
                     <p class="card-text-member"><strong>Number of Member: </strong> {{ obj.member }}</p>
 
                     <button type="button" id="likes" data-id="{{ obj.id }}"
-                            class="btn btn-mini glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {%else%} glyphicon-heart-empty {% endif %}btn-danger" value="Like">
+                            class="btn btn-mini glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}btn-danger"
+                            value="Like">
 
                         {% if obj.total_likes > 0 %}{{ obj.total_likes }} {% endif %}
 
                     </button>
-                    People Liked this.
-
-
+                    People Liked this.<br>
+                    <strong> Comments:</strong> {{ obj.comments.count }} comments Found.
                     <p class="card-text">{{ obj.des }}</p>
                 </div>
 
-            </div>
+                <hr>
+                <!-- Comment part start -->
 
+                <a class="btn btn-default" href="{% url 'add_comment_to_story' division page obj.id %}">Add comment</a>
+
+                {% for comment in obj.comments.all %}
+                    <div class="comment">
+                        <div class="date">{{ comment.created_date }}</div>
+                        <strong>{{ comment.author.username }}</strong>
+                        <p>{{ comment.text|linebreaks }}</p>
+                    </div>
+                {% empty %}
+                    <p>No comments here yet :( </p>
+                {% endfor %}
+
+               <!-- Comment part end -->
+
+            </div>
         {% endfor %}
 
         <a href="{% url 'story_share' division page %}" class="btn btn-primary btn-block">Share Your Tour Story</a>
