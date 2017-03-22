@@ -2,7 +2,76 @@
 
 {% block body_block %}
 
-    <h1 class="gp-page-title">{{ the_user.username }}</h1>
-    <p class="gp-text-email gp-text-center">{{ the_user.email }}</p>
+    {#    <h1 class="gp-page-title">{{ the_user.username }}</h1>#}
+    {#    <p class="gp-text-email gp-text-center">{{ the_user.email }}</p>#}
+
+    <form method="post" action=".">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ the_user.username }}" disabled>
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" type="text" class="form-control" name="email" placeholder="Email" value="{{ the_user.email }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="display_name">Display Name</label>
+            <input id="display_name" type="text" class="form-control gp-editable" name="display_name" placeholder="Display Name"
+                   value="{{ user_info.display_name }}"
+                   disabled>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select class="form-control gp-editable" id="gender" name="gender" disabled>
+                <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected</option>
+                <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
+                <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="birth_date">Birth Date</label>
+            <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date" value="{{ user_info.birth_date }}" disabled>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input id="country" type="text" class="form-control gp-editable" name="country" value="{{ user_info.country }}" placeholder="Your Country" disabled>
+        </div>
+
+        {% if the_user == request.user %}
+            <div class="gp-button-panel">
+                <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
+                <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
+                <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
+            </div>
+        {% endif %}
+
+    </form>
+
+    <script>
+        $(function () {
+            $("a#gp-btn-change").click(function (element) {
+                element.preventDefault();
+
+                if ($(".gp-editable").is(":disabled")) {
+
+                    $(".gp-editable").prop("disabled", false);
+                    $("input[type=submit]").slideDown();
+                    $(this).text("Cancel");
+
+                } else {
+
+                    $(".gp-editable").prop("disabled", true);
+                    $("input[type=submit]").slideUp();
+                    $(this).text("Change Profile");
+
+                }
+
+            });
+        });
+    </script>
 
 {% endblock %}

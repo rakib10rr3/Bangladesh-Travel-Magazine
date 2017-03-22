@@ -43,44 +43,50 @@
                             </a>
                         </div>
                     {% else %}
-                        <p class="gp-post-no-image-text">No images shared by <strong>{{ obj.user }}</strong></p>
+                        <p class="gp-post-no-image-text">No images shared by <strong>{{ obj.user }}</strong>.</p>
                     {% endif %}
                 </div>
 
                 <div class="gp-desc">
                     <h4 class="card-title">{{ obj.title_name }}</h4>
-                    <p class="card-text-author">Shared by <strong><a
-                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a></strong></p>
-                    <p class="card-text-member"><strong>Number of Member: </strong> {{ obj.member }}</p>
+                    <p class="card-text-author">Tour by <a
+                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with <strong>{{ obj.member }}</strong> members.</p>
 
-                    <button type="button" id="likes" data-id="{{ obj.id }}"
-                            class="btn btn-mini glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}btn-danger"
-                            value="Like">
-
-                        {% if obj.total_likes > 0 %}{{ obj.total_likes }} {% endif %}
-
-                    </button>
-                    People Liked this.<br>
-                    <strong> Comments:</strong> {{ obj.comments.count }} comments Found.
                     <p class="card-text">{{ obj.des }}</p>
                 </div>
-
-                <hr>
-                <!-- Comment part start -->
-
-                <a class="btn btn-default" href="{% url 'add_comment_to_story' division page obj.id %}">Add comment</a>
-
-                {% for comment in obj.comments.all %}
-                    <div class="comment">
-                        <div class="date">{{ comment.created_date }}</div>
-                        <strong>{{ comment.author.username }}</strong>
-                        <p>{{ comment.text|linebreaks }}</p>
+                <div class="gp-util-bar">
+                    <div class="gp-div-half">
+                        <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
+                            <span id="gp-like-logo-{{ obj.id }}"
+                                  class="glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}"></span>
+                            <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
+                        </a>
                     </div>
-                {% empty %}
-                    <p>No comments here yet :( </p>
-                {% endfor %}
+                    <div class="gp-div-half">
+                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                    </div>
 
-               <!-- Comment part end -->
+                </div>
+
+                <!-- Comment part start -->
+                <div class="gp-comment-group">
+                    <div class="gp-total-comments">
+                        Total {{ obj.comments.count }} comments.
+                    </div>
+                    {% for comment in obj.comments.all %}
+                        <div class="gp-comment">
+
+                            <p class="gp-username"><a
+                                    href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a></p>
+                            <p class="gp-date">{{ comment.created_date }}</p>
+                            <p class="gp-content">{{ comment.text }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Comment part end -->
+
+                <a class="btn btn-link btn-block" href="{% url 'add_comment_to_story' division page obj.id %}">Add comment</a>
 
             </div>
         {% endfor %}
@@ -92,25 +98,32 @@
     {% endif %}
 
     <script>
-        $('button').on('click', function (event) {
+        $('a.gp-like-button').on('click', function (event) {
             event.preventDefault();
+
             var element = $(this);
+
+            var _id = element.attr("data-id");
+
+            var likeBtn = '#gp-like-logo-' + _id;
+            var totalLikeTxt = '#gp-total-like-' + _id;
+
             $.ajax({
                 url: '/app1/like',
                 type: 'GET',
-                data: {obj_id: element.attr("data-id")},
+                data: {obj_id: _id},
                 dataType: "json",
                 success: function (response) {
                     // element.removeClass('btn btn-mini btn-danger glyphicon glyphicon-heart-empty').addClass('btn btn-mini btn-danger glyphicon glyphicon-heart');
                     if (response.isLiked == true) {
-                        element.removeClass("glyphicon-heart-empty");
-                        element.addClass("glyphicon-heart");
+                        $(likeBtn).removeClass("glyphicon-heart-empty");
+                        $(likeBtn).addClass("glyphicon-heart");
 
                     } else {
-                        element.removeClass("glyphicon-heart");
-                        element.addClass("glyphicon-heart-empty");
+                        $(likeBtn).removeClass("glyphicon-heart");
+                        $(likeBtn).addClass("glyphicon-heart-empty");
                     }
-                    element.html(' ' + response.totalLikes);
+                    $(totalLikeTxt).html(response.totalLikes);
                 }
             });
         });
