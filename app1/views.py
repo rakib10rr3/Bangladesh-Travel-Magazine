@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm
-from .models import Division, Page, Picture, Story, UserProfile
+from .models import Division, Page, Picture, Story, UserProfile,Comment
 
 try:
     from django.utils import simplejson as json
@@ -138,7 +138,6 @@ def view_profile(request, user_name):
         print(request.POST)
         if not UserProfile.objects.filter(user=request.user).exists():
             form = ProfileForm(request.POST)
-
             if form.is_valid():
                 bet = form.save(commit=False)
                 bet.user = request.user
@@ -253,6 +252,22 @@ def image_delete(request, division_name_slug, page_name_slug, story_id, value_id
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
     return redirect('image_share', division_name_slug, page_name_slug, story_id)
+
+
+def add_comment(request):
+    user=request.user
+    if request.method == 'POST':
+        text=request.POST['text']
+        story_id=request.POST['story_id']
+        story = Story.objects.get(id=story_id)
+        print(story)
+        Comment.objects.create(
+            text=text,
+            story=story,
+            author=user
+        )
+        return HttpResponse('')
+
 
 
 @login_required()

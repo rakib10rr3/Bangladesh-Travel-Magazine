@@ -2,10 +2,11 @@
 
 {% block body_block  %}
     <h1>New comment</h1>
+
     <form method="POST" class="gp-form">
         {% csrf_token %}
-        {{ form.as_table }}
+	    <label for="id_text">Text:</label>
+        <textarea cols="40" id="id_text" maxlength="1000" name="text" rows="10" required=""></textarea>
         <button type="submit" class="btn btn-default">Send</button>
     </form>
-
 {% endblock %}

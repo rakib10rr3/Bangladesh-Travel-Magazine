@@ -24,11 +24,10 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^like/$', views.like, name='like'),
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
-
+    url(r'^add_comment/$', views.add_comment, name='add_comment'),
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
-
     url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/story/(?P<story_id>\d+)/comment/$', views.add_comment_to_story,
         name='add_comment_to_story'),
 
