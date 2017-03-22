@@ -49,6 +49,7 @@
 
                 <div class="gp-desc">
                     <h4 class="card-title">{{ obj.title_name }}</h4>
+                    <p class="card-text-date">{{ obj.created_date }}</p>
                     <p class="card-text-author">Tour by <a
                             href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with <strong>{{ obj.member }}</strong> members.</p>
 

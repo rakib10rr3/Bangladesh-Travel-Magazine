@@ -172,14 +172,18 @@ def view_profile(request, user_name):
         user_info['display_name'] = user_pro_info[0]['display_name']
         # Just style two.. -_-
         user_info['gender'] = user_pro_info[0].get('gender')
-        # datetime.datetime.today().strftime('%Y-%m-%d')
         user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d')
         user_info['country'] = user_pro_info[0].get('country')
+
+    tour_list = Story.objects.filter(user=the_user)
+
+    print(tour_list)
 
     return render(request, 'app1/profile.html',
                   {
                       'the_user': the_user[0],
                       'user_info': user_info,
+                      'tour_list': tour_list,
                   })
 
 
@@ -237,8 +241,6 @@ def like(request):
     else:
         story.likes.add(user)
     totalLikes = story.total_likes
-
-    # return HttpResponse(likees)
 
     jsonData = {
         'isLiked': isLiked,

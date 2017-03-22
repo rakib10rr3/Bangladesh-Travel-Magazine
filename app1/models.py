@@ -53,10 +53,11 @@ class Story(models.Model):
     title_name = models.CharField(max_length=100)
     member = models.IntegerField(default=0, null=True)
     des = models.TextField(max_length=5000, default='')
+    created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
 
     def __str__(self):
-        return self.user.username + "-->" + self.title_name
+        return self.title_name
 
     @property
     def total_likes(self):

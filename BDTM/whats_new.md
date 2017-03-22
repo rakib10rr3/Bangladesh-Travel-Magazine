@@ -3,6 +3,9 @@
     - base.html: url links changed
     - story.html: redesign comments and story time line page
     - Redesign: registration page & password reset page
+ -----------------------------------------------------------------
+    - profile.html: tour list
+    - story publish date added
     
     
     
@@ -11,3 +14,4 @@
     - add readmore button on post
     - add comment in same page
     - Implement Share button in story.html
+    - Share Tour button in front page
