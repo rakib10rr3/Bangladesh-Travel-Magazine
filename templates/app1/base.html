@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
-    <title>BDTM - {% block title %}Home{% endblock %}</title>
+    <title>Bangladesh Travel Magazine</title>
 
     <!--
       <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,10 +24,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-
-
 
     <!--[if lt IE 9]>
 
@@ -70,13 +66,14 @@
                         </ul>
                     </li>
                     <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
-                    <li><a href="http://127.0.0.1:8000/admin/">{{ user.username }}</a></li>
-                    <li><a href="{% url 'auth_logout' %}?next=/app1/">Logout</a></li>
+                    {#                    <li><a href="/admin/">{{ user.username }}</a></li>#}
+                    {#                    Source: http://stackoverflow.com/questions/806835/django-redirect-to-previous-page-after-login#}
+                    <li><a href="{% url 'auth_logout' %}">Logout</a></li>
 
                 {% else %}
                     <li><a href="{% url 'index' %}">Home</a></li>
-                    <li><a href="{% url 'registration_register' %}">Register Here</a></li>
-                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}?next={{ request.path }}">Register Here</a></li>
+                    <li><a href="{% url 'auth_login' %}?next={{ request.path }}">Login</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -90,11 +87,6 @@
 <div class="footer">
     <p>Copyright &copy; Traitorz. All rights reserved.</p>
 </div>
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-
-<!--  -->
 
 </body>
 </html>

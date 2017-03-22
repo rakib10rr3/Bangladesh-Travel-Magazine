@@ -47,7 +47,6 @@ def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
 
 
-
 class Story(models.Model):
     user = models.ForeignKey(User)
     story_page = models.ForeignKey(Page)
@@ -55,8 +54,10 @@ class Story(models.Model):
     member = models.IntegerField(default=0, null=True)
     des = models.TextField(max_length=5000, default='')
     likes = models.ManyToManyField(User, related_name='likes')
+
     def __str__(self):
         return self.user.username + "-->" + self.title_name
+
     @property
     def total_likes(self):
         """
@@ -64,7 +65,6 @@ class Story(models.Model):
         :return: Integer: Likes for the company
         """
         return self.likes.count()
-
 
     # Shohag: testing.. :)
     @property
@@ -116,26 +116,37 @@ class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     # comes up with some basic attributes(username,passward,email)
     # user = models.OneToOneField(User)
-    user = models.ManyToManyField(User)
-    meta_key = models.TextField(max_length=50, default='')
-    meta_value = models.TextField(max_length=200, default='')
+    user = models.OneToOneField(User)
+    display_name = models.TextField(max_length=100, default='')
+    birth_date = models.DateTimeField(blank=True, null=True)
+    GENDER_TYPE = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('N', 'None'),
+    )
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER_TYPE,
+        blank=True, null=True,
+    )
+    country = models.TextField(max_length=50, blank=True, null=True)
 
     # The additional attributes we wish to include.
     def __str__(self):
-        return self.user.username
-
+        return self.display_name
 
 
 class Comment(models.Model):
-    story=models.ForeignKey(Story,related_name='comments')
-    author=models.ForeignKey(User)
-    text=models.TextField(max_length=1000)
-    created_date=models.DateTimeField(auto_now_add=True)
-    approved_comment=models.BooleanField(default=False)
+    story = models.ForeignKey(Story, related_name='comments')
+    author = models.ForeignKey(User)
+    text = models.TextField(max_length=1000)
+    created_date = models.DateTimeField(auto_now_add=True)
+    approved_comment = models.BooleanField(default=False)
 
     @property
     def approve(self):
-        self.approved_comment=True
+        self.approved_comment = True
         self.save()
+
     def __str__(self):
         return self.text

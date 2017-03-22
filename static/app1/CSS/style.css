@@ -8,6 +8,10 @@
 }
 
 /**
+Common Effects
+ */
+
+/**
  * All about nav bar
  */
 
@@ -69,12 +73,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /**
- * All about post
+ * All about post/story/trip
  */
-
-.comment {
-    margin: 20px 0px 20px 20px;
-}
 
 div.gp-div-post-summery, div.gp-div-post-full {
     padding: 0;
@@ -83,7 +83,7 @@ div.gp-div-post-summery, div.gp-div-post-full {
     border-top: 5px solid #1565C0;
     background: #f5f5f5;
     border-radius: 3px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
     max-width: 1000px;
 }
 
@@ -98,6 +98,7 @@ div.gp-div-post-summery, div.gp-div-post-full {
     padding: 5px 10px 10px;
     text-align: center;
     overflow: auto;
+    border-bottom: 2px solid #ddd;
 }
 
 .gp-div-post-full .gp-desc {
@@ -111,13 +112,19 @@ div.gp-div-post-summery, div.gp-div-post-full {
     margin: 5px 0;
 }
 
-.gp-desc .card-text, .gp-desc .card-text-member, .gp-desc .card-text-author {
+.gp-desc .card-text, .gp-desc .card-text-member {
     font-size: 18px;
     margin: 5px 0;
 }
 
+.gp-desc .card-text-author a {
+    font-weight: bold;
+    font-size: 15px;
+}
+
 .gp-desc .card-text-author {
-    font-size: 14px;
+    font-size: 15px;
+    margin: 5px 0;
     color: #777;
 }
 
@@ -143,6 +150,71 @@ div.gp-div-post-summery, div.gp-div-post-full {
     background-image: linear-gradient(to left, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, .5) 100%);
 }*/
 
+/*
+Utility bar
+ */
+.gp-util-bar {
+    overflow: auto;
+    border-bottom: 2px solid #ddd;
+}
+
+.gp-util-bar a {
+    cursor: pointer;
+    padding: 5px;
+    display: block;
+}
+
+.gp-util-bar a:hover {
+    text-decoration: none;
+}
+
+/**
+Like button
+ */
+.gp-like-button {
+    padding: 5px;
+}
+
+.gp-div-half {
+    width: 50%;
+    float: left;
+    text-align: center;
+
+}
+
+/**
+Comments
+ */
+.gp-comment-group .gp-username {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+}
+
+.gp-comment-group .gp-date {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.gp-comment-group .gp-content {
+    font-size: 16px;
+    margin: 0;
+}
+
+.gp-total-comments {
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+}
+
+.gp-comment {
+    padding: 10px;
+    margin: 0 0 5px;
+    background-color: #eee;
+}
+
 /**
  * Forms
  */
@@ -166,6 +238,14 @@ div.gp-div-post-summery, div.gp-div-post-full {
 .gp-img-preview img {
     max-width: 400px;
     margin-bottom: 5px;
+}
+
+/**
+Profile page
+ */
+.gp-button-panel {
+    margin: 10px 0;
+
 }
 
 /**

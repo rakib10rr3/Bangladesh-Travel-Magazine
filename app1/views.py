@@ -3,16 +3,14 @@ from django.contrib.auth.models import User  # for using the User one to one mod
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import PageForm, CommentForm,storyForm, imageForm
-from .models import Division, Page, Picture, Story
+from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm
+from .models import Division, Page, Picture, Story, UserProfile
 
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
 
-
-# this acquires all the pages and sends it to index html with 'page_list' dictionary
 
 def index(request):
     page_list = Page.objects.order_by('-views')[:5]
@@ -92,27 +90,22 @@ def story(request, division_name_slug, page_name_slug):
     # print(storyByThisUser)
     like_list = []
 
-
     for s in stories:
         print(s.id)
-        story = Story.objects.get(id=s.id)
-        if story.likes.filter(id=user.id).exists():
+        story_ = Story.objects.get(id=s.id)
+        if story_.likes.filter(id=user.id).exists():
             like_list.append(s.id)
 
     print(like_list)
-    form=CommentForm()
+    form = CommentForm()
     return render(request, 'app1/story.html',
                   {
                       'stories': stories,
                       'division': division_name_slug,
                       'page': page_name_slug,
                       'like_list': like_list,
-                      'form':form
+                      'form': form
                   })
-
-
-
-
 
 
 @login_required
@@ -141,14 +134,52 @@ def story_share(request, division_name_slug, page_name_slug):
 
 @login_required
 def view_profile(request, user_name):
+    if request.method == 'POST':
+        print(request.POST)
+        if not UserProfile.objects.filter(user=request.user).exists():
+            form = ProfileForm(request.POST)
+
+            if form.is_valid():
+                bet = form.save(commit=False)
+                bet.user = request.user
+                bet.save()
+            else:
+                print(form.errors)
+        else:
+            result_ = UserProfile.objects.filter(user=request.user).update(
+                display_name=request.POST['display_name'],
+                birth_date=request.POST['birth_date'],
+                gender=request.POST['gender'],
+                country=request.POST['country']
+            )
+            print('Result: ' + str(result_))
+
     # user = request.user
 
     the_user = User.objects.filter(username=user_name)
-    print(the_user)
+
+    user_info = {
+        'display_name': '',
+        'gender': '',
+        'birth_date': '',
+        'country': '',
+    }
+
+    if UserProfile.objects.filter(user=the_user).exists():
+        user_pro_info = UserProfile.objects.filter(user=the_user).values()
+        print(user_pro_info[0])
+        # Just style one.. -_-
+        user_info['display_name'] = user_pro_info[0]['display_name']
+        # Just style two.. -_-
+        user_info['gender'] = user_pro_info[0].get('gender')
+        # datetime.datetime.today().strftime('%Y-%m-%d')
+        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d')
+        user_info['country'] = user_pro_info[0].get('country')
 
     return render(request, 'app1/profile.html',
                   {
-                      'the_user': the_user[0]
+                      'the_user': the_user[0],
+                      'user_info': user_info,
                   })
 
 
@@ -190,8 +221,6 @@ def image_share(request, division_name_slug, page_name_slug, story_id):
     return render(request, 'app1/image_upload.html', context_dict)
 
 
-
-
 @login_required()
 def like(request):
     story_id = request.GET.get('obj_id', None)
@@ -217,23 +246,26 @@ def like(request):
     }
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
+
 def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
     return redirect('image_share', division_name_slug, page_name_slug, story_id)
+
+
 @login_required()
-def add_comment_to_story(request, division_name_slug, page_name_slug,story_id):
-    story=Story.objects.get(id=story_id)
+def add_comment_to_story(request, division_name_slug, page_name_slug, story_id):
+    story = Story.objects.get(id=story_id)
     if request.method == 'POST':
-        form=CommentForm(request.POST)
+        form = CommentForm(request.POST)
         if form.is_valid():
-            comment=form.save(commit=False)
-            comment.author=request.user
-            comment.story=story
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.story = story
             comment.save()
             print("all done")
-            return redirect('story',division_name_slug, page_name_slug)
+            return redirect('story', division_name_slug, page_name_slug)
     else:
-        form=CommentForm()
+        form = CommentForm()
         print("took the form and called html")
-    return render(request,'app1/comment_add.html',{'form': form } )
+    return render(request, 'app1/comment_add.html', {'form': form})
