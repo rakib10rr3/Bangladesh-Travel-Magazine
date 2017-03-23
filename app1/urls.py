@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^like/$', views.like, name='like'),
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
+    url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
+    url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
     url(r'^login/$', auth_views.login, name='login'),

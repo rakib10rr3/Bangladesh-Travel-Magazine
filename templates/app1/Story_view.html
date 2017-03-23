@@ -49,7 +49,8 @@
                 <p class="card-text-author">Tour by <a
                         href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
                     <strong>{{ obj.member }}</strong> members.</p>
-
+                <p><strong>Budget:</strong>{{ obj.budget }}</p>
+                <p><strong>Type:</strong>{{ obj.type_name }}</p>
                 <p class="card-text">{{ obj.des }}</p>
             </div>
             <div class="gp-util-bar">

@@ -63,6 +63,7 @@
                     <a href="#" class="list-group-item">
                         <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                         <span class="gp-text-date">{{ obj.created_date }}</span>
+                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
                     </a>
 
                 {% endfor %}

@@ -19,6 +19,10 @@ class Division(models.Model):
     def __str__(self):
         return self.title
 
+class Type(models.Model):
+    type_name = models.CharField(max_length=10,null=True)
+    def __str__(self):
+        return self.type_name
 
 class Page(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -51,7 +55,9 @@ def desti(instance, filename):
 class Story(models.Model):
     user = models.ForeignKey(User)
     story_page = models.ForeignKey(Page)
+    type_name = models.ForeignKey(Type)
     title_name = models.CharField(max_length=100)
+    budget = models.CharField(max_length=15)
     member = models.IntegerField(default=0, null=True)
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
@@ -74,7 +80,6 @@ class Story(models.Model):
     # Shohag: testing.. :)
     @property
     def is_user_like_this(self, user_id):
-
         if self.likes.filter(id=user_id).exists():
             return True
         else:
@@ -110,8 +115,6 @@ class Picture(models.Model):
         super(Picture, self).delete(*args, **kwargs)
 
 
-class Type(models.Model):
-    type_name = models.CharField(max_length=10)
 
 
 # user class
@@ -147,6 +150,13 @@ class Comment(models.Model):
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     approved_comment = models.BooleanField(default=False)
+
+    @property
+    def is_user_comment(self, user_id):
+        if self.filter(id=user_id).exists():
+            return True
+        else:
+            return False
 
     @property
     def approve(self):

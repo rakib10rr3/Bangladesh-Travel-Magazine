@@ -53,9 +53,16 @@
                 <p class="card-text-author">Tour by <a
                         href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
                     <strong>{{ obj.member }}</strong> members.</p>
+                <p><strong>Budget:</strong>{{ obj.budget }}</p>
+                <p><strong>Type:</strong>{{ obj.type_name }}</p>
+                <p class="card-text">
+                    {% if obj.des|length > 50 %}
+                        {{ obj.des|linebreaks|safe|truncatewords:"50" }}
+                        <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
+                    {% else %}
+                        {{ obj.des|linebreaks|safe }}
+                    {% endif %}
 
-                <p class="card-text">{{ obj.des|linebreaks|safe|truncatewords:"50" }}
-                    <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
                 </p>
             </div>
             <div class="gp-util-bar">
@@ -69,10 +76,9 @@
                 <div class="gp-div-half">
                     <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
                 </div>
-
             </div>
 
-            <!-- Comment part start -->
+            <!-- Comment show start -->
             <div class="gp-comment-group">
                 <div class="gp-total-comments">
 
@@ -81,31 +87,37 @@
                     </button>
                 </div>
 
-
                 <div id={{ forloop.counter }}>
                     {% for comment in obj.comments.all %}
                         <div class="gp-comment">
-
                             <p class="gp-username"><a
                                     href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
                             </p>
                             <p class="gp-date">{{ comment.created_date }}</p>
                             <p class="gp-content">{{ comment.text }}</p>
+
+                            {% if comment.id in comment_list %}
+                                <button class="btn btn-danger"
+                                >Delete
+                                </button>
+                            {% endif %}
+
                         </div>
                     {% endfor %}
                 </div>
-                <!-- Comment part end -->
+                <!-- Comment show end -->
 
 
                 <!-- Adding a comment part start -->
 
                 <form id="add_comment{{ forloop.counter }}" data-id={{ obj.id }} method="POST" class="gp-form">
                     {% csrf_token %}
-                    <textarea cols="40" rows="1" id="text{{ forloop.counter }}" maxlength="1000" name="text"  required=""></textarea>
-                    <input type="hidden" id="hidden" value="{{ obj.id }}" name="story_id">
-                    <button type="submit" class="btn btn-default" onclick="commentDiv({{ forloop.counter }})">Asq Question</button>
+                    <textarea cols="40" rows="1" id="text{{ forloop.counter }}" maxlength="1000" name="text"
+                              required=""></textarea>
+                    <button type="submit" class="btn btn-default" onclick="commentDiv({{ forloop.counter }})">Asq
+                        Question
+                    </button>
                 </form>
-
 
 
                 <!-- Adding-Comment part end -->
@@ -117,7 +129,6 @@
     {% else %}
         <h3>Sorry no stories Shared yet!</h3>
     {% endif %}
-
     <script>
 
         function toggleDiv(divId) {
@@ -127,40 +138,35 @@
 
         function commentDiv(formId) {
 
-            $("#add_comment" +formId).on('submit', function (event) {
+            $("#add_comment" + formId).on('submit', function (event) {
 
                 event.preventDefault();
                 var element = $(this);
+                element.off('submit');
                 var _id = element.attr("data-id");
                 $.ajax({
                     url: '/app1/add_comment/',
                     type: 'POST',
                     data: {
-                        text: $('#text'+formId).val(),
+                        text: $('#text' + formId).val(),
                         story_id: _id,
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
-                       // alert("Created a New Comment");
-                        $("#"+formId).load(" #"+formId);
+                        // alert("Created a New Comment");
+                        $("#" + formId).load(" #" + formId);
+
                     }
                 });
-
-
             });
         }
 
-
         $('a.gp-like-button').on('click', function (event) {
             event.preventDefault();
-
             var element = $(this);
-
             var _id = element.attr("data-id");
-
             var likeBtn = '#gp-like-logo-' + _id;
             var totalLikeTxt = '#gp-total-like-' + _id;
-
             $.ajax({
                 url: '/app1/like',
                 type: 'GET',

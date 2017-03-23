@@ -89,14 +89,19 @@ def story(request, division_name_slug, page_name_slug):
     print(user.id)
     # print(storyByThisUser)
     like_list = []
+    comment_list = []
 
     for s in stories:
         print(s.id)
         story_ = Story.objects.get(id=s.id)
+        for s2 in story_.comments.all():
+               if s2.author_id == user.id:
+                    comment_list.append(s2.id)
         if story_.likes.filter(id=user.id).exists():
             like_list.append(s.id)
 
     print(like_list)
+    print(comment_list)
     form = CommentForm()
     return render(request, 'app1/story.html',
                   {
@@ -104,6 +109,7 @@ def story(request, division_name_slug, page_name_slug):
                       'division': division_name_slug,
                       'page': page_name_slug,
                       'like_list': like_list,
+                      'comment_list': comment_list,
                       'form': form
                   })
 
@@ -185,7 +191,10 @@ def view_profile(request, user_name):
                       'tour_list': tour_list,
                   })
 
-
+def story_delete(request,story_id):
+    story=Story.objects.get(id=story_id)
+    story.delete()
+    return  redirect('user_profile',request.user.username)
 @login_required
 def image_redirect(request, context_dict):
     division = context_dict['division']
@@ -269,24 +278,6 @@ def add_comment(request):
         return HttpResponse('')
 
 
-@login_required()
-def add_comment_to_story(request, division_name_slug, page_name_slug, story_id):
-    story = Story.objects.get(id=story_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.story = story
-            comment.save()
-            print("all done")
-            return redirect('story', division_name_slug, page_name_slug)
-    else:
-        form = CommentForm()
-        print("took the form and called html")
-    return render(request, 'app1/comment_add.html', {'form': form})
-
-
 def story_detail(request, story_id):
     story = Story.objects.get(pk=story_id)
     user=request.user
@@ -294,3 +285,11 @@ def story_detail(request, story_id):
     if story.likes.filter(id=user.id).exists():
         like_list.append(story.id)
     return render(request, 'app1/Story_view.html', {'obj': story,'like_list': like_list,})
+
+def comment_delete(request):
+    if request.method == 'POST':
+        comment_id = request.POST['comment_id']
+        print(comment_id)
+        comment = Comment.objects.get(id=comment_id)
+        comment.delete()
+        return HttpResponse('')

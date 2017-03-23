@@ -30,18 +30,20 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('title_name', 'member', 'des')
+        fields = ('title_name', 'member','budget','type_name', 'des')
         help_texts = {
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
+            'budget': 'What was Your budget ?',
+            'type_name': 'Please Select a Type',
             'des': 'How was your travel?',
         }
         widgets = {
             'title_name': TextInput(attrs={'class': 'form-control'}),
             'member': NumberInput(attrs={'class': 'form-control'}),
+            'budget': TextInput(attrs={'class': 'form-control'}),
             'des': Textarea(attrs={'class': 'form-control'}),
         }
-
 
 class ProfileForm(forms.ModelForm):
     class Meta:
