@@ -1,13 +1,13 @@
 from django import forms
 from django.forms import Textarea, TextInput, NumberInput, FileInput
 
-from .models import Page, Story, Picture, Comment, UserProfile
+from .models import Place, Story, Picture, Comment, UserProfile
 
 
 class PageForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
-        model = Page
+        model = Place
         # What fields do we want to include in our form?
         # This way we don't need every field in the model present.
         # Some fields may allow NULL values, so we may not want to include them...

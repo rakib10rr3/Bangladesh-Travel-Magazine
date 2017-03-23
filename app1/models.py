@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User  # for using the User one to one model
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
 
 
 class Division(models.Model):
@@ -24,7 +24,8 @@ class Type(models.Model):
     def __str__(self):
         return self.type_name
 
-class Page(models.Model):
+
+class Place(models.Model):
     name = models.CharField(max_length=50, unique=True)
     views = models.IntegerField(default=0)
     slug = models.SlugField()
@@ -38,7 +39,7 @@ class Page(models.Model):
         # if self.id is None:
         # self.slug = slugify(self.name)
         self.slug = slugify(self.name)
-        super(Page, self).save(*args, **kwargs)
+        super(Place, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -54,7 +55,7 @@ def desti(instance, filename):
 
 class Story(models.Model):
     user = models.ForeignKey(User)
-    story_page = models.ForeignKey(Page)
+    story_page = models.ForeignKey(Place)
     type_name = models.ForeignKey(Type)
     title_name = models.CharField(max_length=100)
     budget = models.CharField(max_length=15)
@@ -93,7 +94,7 @@ class Picture(models.Model):
     problems installing pillow, use a more generic FileField instead.
     """
     user = models.ForeignKey(User)
-    page = models.ForeignKey(Page, related_name='pages')
+    page = models.ForeignKey(Place, related_name='pages')
     story = models.ForeignKey(Story, related_name='stories')
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)

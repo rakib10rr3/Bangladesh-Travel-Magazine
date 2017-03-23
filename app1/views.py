@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm
-from .models import Division, Page, Picture, Story, UserProfile, Comment
+from .models import Division, Place, Picture, Story, UserProfile, Comment
 
 try:
     from django.utils import simplejson as json
@@ -13,7 +13,7 @@ except ImportError:
 
 
 def index(request):
-    page_list = Page.objects.order_by('-views')[:5]
+    page_list = Place.objects.order_by('-views')[:5]
 
     return render(request, 'app1/index.html', {'page_list': page_list})
 
@@ -29,7 +29,7 @@ def division_detail(request, division_name_slug):
         context_dict['division_name'] = division.title
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
-        pages = Page.objects.filter(division=division).order_by('-views')
+        pages = Place.objects.filter(division=division).order_by('-views')
         # Adds our results list to the template context under name pages.
         context_dict['page_list'] = pages
         # We also add the category object from the database to the context dictionary.
@@ -46,7 +46,7 @@ def division_detail(request, division_name_slug):
 
 
 def track_url(request, page_name):
-    what = Page.objects.get(slug=page_name)
+    what = Place.objects.get(slug=page_name)
     what.views += 1
     what.save()
     return
@@ -117,7 +117,7 @@ def story(request, division_name_slug, page_name_slug):
 @login_required
 def story_share(request, division_name_slug, page_name_slug):
     page_name = page_name_slug.title()
-    page = Page.objects.get(name=page_name)
+    page = Place.objects.get(name=page_name)
 
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
@@ -210,7 +210,7 @@ def image_redirect(request, context_dict):
 @login_required
 def image_share(request, division_name_slug, page_name_slug, story_id):
     page_name = page_name_slug.title()
-    page = Page.objects.get(name=page_name)
+    page = Place.objects.get(name=page_name)
     story_save = Story.objects.get(id=story_id)
     print(story_save)
     if request.method == 'POST':
