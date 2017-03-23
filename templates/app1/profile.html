@@ -61,7 +61,7 @@
                 {% for obj in tour_list %}
 
                     <a href="#" class="list-group-item">
-                        <span class="gp-text-title">{{ obj.title_name }}</span>
+                        <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                         <span class="gp-text-date">{{ obj.created_date }}</span>
                     </a>
 

@@ -28,8 +28,7 @@ urlpatterns = [
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
-    url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/story/(?P<story_id>\d+)/comment/$', views.add_comment_to_story,
-        name='add_comment_to_story'),
+    url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
 
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/add_page/$', views.add_page, name='add_page'),

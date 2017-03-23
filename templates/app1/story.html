@@ -54,7 +54,9 @@
                         href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
                     <strong>{{ obj.member }}</strong> members.</p>
 
-                <p class="card-text">{{ obj.des }}</p>
+                <p class="card-text">{{ obj.des|linebreaks|safe|truncatewords:"50" }}
+                    <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
+                </p>
             </div>
             <div class="gp-util-bar">
                 <div class="gp-div-half">

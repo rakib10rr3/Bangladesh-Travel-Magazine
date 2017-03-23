@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm
-from .models import Division, Page, Picture, Story, UserProfile,Comment
+from .models import Division, Page, Picture, Story, UserProfile, Comment
 
 try:
     from django.utils import simplejson as json
@@ -255,10 +255,10 @@ def image_delete(request, division_name_slug, page_name_slug, story_id, value_id
 
 
 def add_comment(request):
-    user=request.user
+    user = request.user
     if request.method == 'POST':
-        text=request.POST['text']
-        story_id=request.POST['story_id']
+        text = request.POST['text']
+        story_id = request.POST['story_id']
         story = Story.objects.get(id=story_id)
         print(story)
         Comment.objects.create(
@@ -267,7 +267,6 @@ def add_comment(request):
             author=user
         )
         return HttpResponse('')
-
 
 
 @login_required()
@@ -286,3 +285,12 @@ def add_comment_to_story(request, division_name_slug, page_name_slug, story_id):
         form = CommentForm()
         print("took the form and called html")
     return render(request, 'app1/comment_add.html', {'form': form})
+
+
+def story_detail(request, story_id):
+    story = Story.objects.get(pk=story_id)
+    user=request.user
+    like_list = []
+    if story.likes.filter(id=user.id).exists():
+        like_list.append(story.id)
+    return render(request, 'app1/Story_view.html', {'obj': story,'like_list': like_list,})

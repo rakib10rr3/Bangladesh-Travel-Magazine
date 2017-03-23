@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
 
 
 class Division(models.Model):
@@ -56,8 +57,11 @@ class Story(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
 
+    def get_absolute_url(self):
+        return reverse('story_detail', args=[str(self.id)])
+
     def __str__(self):
-        return self.title_name
+            return self.title_name
 
     @property
     def total_likes(self):
@@ -148,5 +152,6 @@ class Comment(models.Model):
     def approve(self):
         self.approved_comment = True
         self.save()
+
     def __str__(self):
         return self.text
