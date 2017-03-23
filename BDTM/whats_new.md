@@ -10,8 +10,8 @@
     
     
 # TODO
-    - infinite time line: Auto load next post after going to bottom
-    - add readmore button on post
-    - add comment in same page
-    - Implement Share button in story.html
-    - Share Tour button in front page
+    - infinite time line: Auto load next post after going to bottom-- i dont knw what it is
+    - add readmore button on post-- done
+    - add comment in same page-- done
+    - Implement Share button in story.html--Shohag
+    - Share Tour button in front page --ami korbo
