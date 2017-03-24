@@ -56,6 +56,7 @@
 
             </form>
         </div>
+
         <div id="tour" class="tab-pane fade gp-tab-pane">
             <div class="list-group gp-list-group-tour">
                 {% for obj in tour_list %}
@@ -70,6 +71,39 @@
             </div>
 
         </div>
+
+
+        <div id="tour" class="tab-pane fade gp-tab-pane">
+            <div class="list-group gp-list-group-tour">
+                {% for obj in tour_list %}
+
+                    <a href="#" class="list-group-item">
+                        <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                        <span class="gp-text-date">{{ obj.created_date }}</span>
+                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                    </a>
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="questions" class="tab-pane fade gp-tab-pane">
+            <div class="list-group gp-list-group-tour">
+                {% for obj in q_list %}
+
+                    <a href="#" class="list-group-item">
+                        <span class="gp-text-title"><a href="{% url 'que_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                        <span class="gp-text-date">{{ obj.created }}</span>
+                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                    </a>
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+
     </div>
 
 
@@ -90,7 +124,6 @@
                     $(".gp-editable").prop("disabled", true);
                     $("input[type=submit]").slideUp();
                     $(this).text("Change Profile");
-
                 }
 
             });

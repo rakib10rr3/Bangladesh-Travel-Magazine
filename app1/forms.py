@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Textarea, TextInput, NumberInput, FileInput
 
-from .models import Place, Story, Picture, Comment, UserProfile
+from .models import Place, Story, Picture, Comment, UserProfile,Question,Answer
 
 
 class PageForm(forms.ModelForm):
@@ -64,4 +64,14 @@ class imageForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
+        fields = ('text',)
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ('question',)
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
         fields = ('text',)

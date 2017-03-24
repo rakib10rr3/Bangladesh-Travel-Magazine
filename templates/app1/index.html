@@ -3,6 +3,59 @@
 {% block body_block %}
 
     <h1 class="gp-page-title">Welcome to Bangladesh Travel Magazine </h1>
+
+    <h2>Have A Travel Query ? Ask Here </h2>
+
+    <form class="gp-form" role="form" id="question_form" method="post" action="{% url 'save_question' %}">
+        {% csrf_token %}
+        {% for hidden in q_form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in q_form.visible_fields %}
+            <div class="form-group">
+                <p class="required">{{ field.help_text }}</p>
+                {{ field.errors }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit" name="submit">Post</button>
+    </form>
+
+    <h2>Recently Asked Questions are: </h2>
+
+    <div class="Question_show">
+        {% if question_list %}
+            {% for obj in question_list %}
+                <div id="q{{ forloop.counter0 }}">
+                    <h4>{{ obj.created }}</h4>
+                    <h3>{{ obj.question }}</h3>
+                    {% if obj.answers.all.exists %}
+
+                        <h2>Total {{ obj.answers.all.count }} answer Found </h2>
+                        {% for obj2 in obj.answers.all %}
+
+                            <h4>{{ obj2.text }}</h4>
+                            <h4>{{ obj2.created }}</h4>
+                        {% endfor %}
+                    {% else %}
+                        <h2>No answer found yet</h2>
+                    {% endif %}
+                    <form method="POST" role="form" id="answer_form" class="gp-form"
+                          action="{% url 'save_answer' obj.id %}">
+                        {% csrf_token %}
+                        {% for hidden in a_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <textarea cols="40" id="id_text" maxlength="500" name="text" rows="1" required=""></textarea>
+                        <button class="btn btn-primary" type="submit" name="submit">Post</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2>No Questions asked Yet</h2>
+        {% endif %}
+    </div>
+
     <h2 class="gp-text-normal-bigger gp-text-center">Most recently Active Locations</h2>
     {% if page_list %}
         <!-- trending list start-->

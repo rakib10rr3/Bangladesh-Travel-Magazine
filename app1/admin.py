@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Division, Place, Story, Comment, Type
-
+from .models import Division, Place, Story, Comment, Type,Question,Answer
 
 class DivisionAdmin(admin.ModelAdmin):          # this is for to simplify urls
     prepopulated_fields = {'slug':('title',)}
@@ -16,3 +15,5 @@ admin.site.register(Place, PageAdmin)
 admin.site.register(Story)
 admin.site.register(Comment)
 admin.site.register(Type)
+admin.site.register(Question)
+admin.site.register(Answer)

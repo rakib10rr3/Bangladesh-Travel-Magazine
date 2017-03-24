@@ -151,7 +151,6 @@ class Comment(models.Model):
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     approved_comment = models.BooleanField(default=False)
-
     @property
     def is_user_comment(self, user_id):
         if self.filter(id=user_id).exists():
@@ -164,5 +163,22 @@ class Comment(models.Model):
         self.approved_comment = True
         self.save()
 
+    def __str__(self):
+        return self.text
+
+
+
+class Question(models.Model):
+    author=models.ForeignKey(User)
+    question=models.TextField(max_length=500)
+    created=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return  self.question
+
+class Answer(models.Model):
+    answered_by=models.ForeignKey(User)
+    answer_of=models.ForeignKey(Question,related_name='answers')
+    text=models.TextField(max_length=500)
+    created=models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.text
