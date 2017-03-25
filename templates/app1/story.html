@@ -11,7 +11,7 @@
         </div>
 
         <div class="gp-center">
-            <a href="{% url 'story_share' division page %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+            <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
         </div>
 
         <div class="container-fluid gp-container-normal">
@@ -122,10 +122,12 @@
 
                     <!-- Adding a comment part start -->
 
-                    <form id="add_comment{{ forloop.counter }}" data-id={{ obj.id }} method="POST" class="gp-form-story-comment">
+                    <form id="add_comment{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
+                          class="gp-form-story-comment">
                         {% csrf_token %}
                         <div class="form-group">
-                            <textarea class="form-control" rows="1" id="text{{ forloop.counter }}" maxlength="1000" name="text" required=""></textarea>
+                            <textarea class="form-control" rows="1" id="text{{ forloop.counter }}" maxlength="1000"
+                                      name="text" required=""></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-default" onclick="commentDiv({{ forloop.counter }})">
@@ -138,22 +140,19 @@
             </div>
         {% endfor %}
 
-        <div class="gp-center">
-            <a href="{% url 'story_share' division page %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
-        </div>
 
     {% else %}
 
         <div class="jumbotron gp-jumbotron">
             <h1>Sorry no stories Shared yet!</h1>
         </div>
-        <div class="container-fluid gp-container-normal">
-            <div class="gp-center">
-                <a href="{% url 'story_share' division page %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
-            </div>
-        </div>
+
 
     {% endif %}
+
+    <div class="gp-center">
+        <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+    </div>
     <script>
 
         function toggleDiv(element, divId) {
@@ -171,7 +170,7 @@
                 element.off('submit');
                 var _id = element.attr("data-id");
                 $.ajax({
-                    url: '/app1/add_comment/',
+                    url: '/Home/add_comment/',
                     type: 'POST',
                     data: {
                         text: $('#text' + formId).val(),
@@ -193,7 +192,7 @@
             var likeBtn = '#gp-like-logo-' + _id;
             var totalLikeTxt = '#gp-total-like-' + _id;
             $.ajax({
-                url: '/app1/like',
+                url: '/Home/like',
                 type: 'GET',
                 data: {obj_id: _id},
                 dataType: "json",

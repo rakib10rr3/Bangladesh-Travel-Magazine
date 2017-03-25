@@ -20,7 +20,6 @@ def index(request):
         q_form = QuestionForm()
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
-
         return render(request, 'app1/index.html',
                       {
                           'page_list': page_list,
@@ -36,13 +35,15 @@ def index(request):
 
 def division_detail(request, division_name_slug):
     # Create a context dictionary which we can pass to the template rendering engine.
+
     context_dict = {}
     try:
         # Can we find a category name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises an exception.
+
         division = Division.objects.get(slug=division_name_slug)
-        context_dict['division_name'] = division.title
+
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
         pages = Place.objects.filter(division=division).order_by('-views')
@@ -51,8 +52,6 @@ def division_detail(request, division_name_slug):
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['division'] = division
-        context_dict['division_name_slug'] = division_name_slug
-
     except Division.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
@@ -61,45 +60,38 @@ def division_detail(request, division_name_slug):
     return render(request, 'app1/division_detail.html', context_dict)
 
 
-def track_url(request, page_name):
-    what = Place.objects.get(slug=page_name)
+def track_url(request, page_id):
+    what = Place.objects.get(id=page_id)
     what.views += 1
     what.save()
     return
 
 
-@login_required
-def add_page(request, division_name_slug):
-    try:
-        cat = Division.objects.get(slug=division_name_slug)
-    except Division.DoesNotExist:
-        cat = None
-
+def add_page(request):
     if request.method == 'POST':
         form = PageForm(request.POST, request.FILES)
         if form.is_valid():
-            bet = form.save(commit=False)
-            bet.division = cat
-            bet.save()
+            bet = form.save(commit=True)
+            div=bet.division.slug
+            print(div)
             # probably better to use a redirect here.
-            return division_detail(request, division_name_slug)
+            return division_detail(request, div)
         else:
             print(form.errors)
     else:
         form = PageForm()
 
-    context_dict = {'form': form, 'division': cat, 'division_name_slug': division_name_slug}
+    context_dict = {'form': form, }
     return render(request, 'app1/add_page.html', context_dict)
 
 
-@login_required
-def story(request, division_name_slug, page_name_slug):
+def story(request, division_name_slug, page_id):
     try:
-        stories = Story.objects.filter(story_page__slug=page_name_slug)
-        track_url(request, page_name_slug)
-
+        stories = Story.objects.filter(story_page__id=page_id)
+        track_url(request, page_id)
     except Story.DoesNotExist:
         stories = None
+
     user = request.user
     # storyByThisUser = stories.likes.filter(id=user.id)
     print(user.id)
@@ -123,29 +115,28 @@ def story(request, division_name_slug, page_name_slug):
                   {
                       'stories': stories,
                       'division': division_name_slug,
-                      'page': page_name_slug,
+                      'page': Place.objects.get(id=page_id),
                       'like_list': like_list,
                       'comment_list': comment_list,
                       'form': form
                   })
 
 
-@login_required
-def story_share(request, division_name_slug, page_name_slug):
-    page_name = page_name_slug.title()
-    page = Place.objects.get(slug=page_name.lower())
-
+def story_share(request):
+    print('Running Story_share ')
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.user = request.user
-            bet.story_page = page
             bet.save()
-            context_dict = {'division': division_name_slug, 'page': page_name_slug, 'story_obj': bet}
+            print(bet)
+            print(bet.story_page)
+
+            context_dict = {'story_id': bet.id, 'page': bet.story_page}
             # return  redirect('image_share',context_dict)
             # return render(request, 'app1/image_upload.html', context_dict)
-            return image_redirect(request, context_dict)
+            return redirect('image_share', bet.id)
         else:
             print(form.errors)
     else:
@@ -154,7 +145,6 @@ def story_share(request, division_name_slug, page_name_slug):
     return render(request, 'app1/story_share.html', context_dict)
 
 
-@login_required
 def view_profile(request, user_name):
     if request.method == 'POST':
         print(request.POST)
@@ -193,7 +183,8 @@ def view_profile(request, user_name):
         user_info['display_name'] = user_pro_info[0]['display_name']
         # Just style two.. -_-
         user_info['gender'] = user_pro_info[0].get('gender')
-        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get('birth_date') is None else user_pro_info[
+        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get(
+            'birth_date') is None else user_pro_info[
             0].get('birth_date')
         user_info['country'] = user_pro_info[0].get('country')
 
@@ -215,7 +206,6 @@ def story_delete(request, story_id):
     return redirect('user_profile', request.user.username)
 
 
-@login_required
 def image_redirect(request, context_dict):
     division = context_dict['division']
 
@@ -227,33 +217,38 @@ def image_redirect(request, context_dict):
     return redirect('image_share', division, page, story_obj_id)
 
 
-@login_required
-def image_share(request, division_name_slug, page_name_slug, story_id):
-    page_name = page_name_slug.title()
-    page = Place.objects.get(name=page_name)
-    story_save = Story.objects.get(id=story_id)
-    print(story_save)
+def image_share(request, story_id):
+    print('Image Share Running')
+    # page_ob = context_dict['story_page']
+    # page_id = page_ob.id
+    # page = Place.objects.get(id=page_id)
+
+
+    story = Story.objects.get(id=story_id)
+
+    page = story.give_me_page()
+    print(page)
+    print(story)
     if request.method == 'POST':
         form = imageForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.user = request.user
             bet.page = page
-            bet.story = story_save
+            bet.story = story
             bet.save()
-            context_dict = {'division': division_name_slug, 'page': page_name_slug, 'story_obj': bet}
+            context_dict2 = {'story_id': story_id}
             # return  redirect('image_share',context_dict)
             # return render(request, 'app1/image_upload.html', context_dict)
-            return redirect('image_share', division_name_slug, page_name_slug, story_id)
+            return redirect('image_share', story_id)
         else:
             print(form.errors)
     else:
         form = imageForm()
-    context_dict = {'form': form, 'story_obj': story_save, 'division': division_name_slug, 'page': page_name_slug}
-    return render(request, 'app1/image_upload.html', context_dict)
+    context_dict2 = {'form': form, 'story_obj': story, 'page': page}
+    return render(request, 'app1/image_upload.html', context_dict2)
 
 
-@login_required()
 def like(request):
     story_id = request.GET.get('obj_id', None)
     story = Story.objects.get(id=story_id)
@@ -277,10 +272,13 @@ def like(request):
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
 
-def image_delete(request, division_name_slug, page_name_slug, story_id, value_id):
+def image_delete(request, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
-    return redirect('image_share', division_name_slug, page_name_slug, story_id)
+    story = Story.objects.get(id=story_id)
+    page = story.give_me_page()
+    context_dict = {'story_id': story_id, 'page': page}
+    return redirect('image_share', story_id)
 
 
 def add_comment(request):

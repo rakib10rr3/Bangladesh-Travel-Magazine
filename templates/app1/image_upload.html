@@ -20,7 +20,7 @@
                 </div>
             {% endfor %}
             <button class="btn btn-lg btn-primary" type="submit" name="submit">Add Image</button>
-            <a href="{% url 'index' %}" class="btn btn-lg btn-primary">Done</a>
+            <a href="{% url 'story_detail'  story_obj.id %}" class="btn btn-lg btn-primary">Done</a>
         </form>
 
         {% if story_obj.stories %}
@@ -30,7 +30,7 @@
                 <div class="gp-img-preview">
                     <img class="card-img-top" src="{{ value.file.url }}">
 
-                    <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
+                    <form action="{% url 'delete_pic' story_obj.id value.id %}" method="POST">
                         {% csrf_token %}
                         <button class="btn btn-primary btn-block" type="submit">Delete</button>
                     </form>

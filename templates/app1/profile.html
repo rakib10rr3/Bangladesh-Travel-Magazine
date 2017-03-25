@@ -18,34 +18,40 @@
 
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ the_user.username }}" disabled>
+                        <input id="username" type="text" class="form-control" name="username" placeholder="Username"
+                               value="{{ the_user.username }}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input id="email" type="text" class="form-control" name="email" placeholder="Email" value="{{ the_user.email }}" disabled>
+                        <input id="email" type="text" class="form-control" name="email" placeholder="Email"
+                               value="{{ the_user.email }}" disabled>
                     </div>
 
                     <div class="form-group">
                         <label for="display_name">Display Name</label>
-                        <input id="display_name" type="text" class="form-control gp-editable" name="display_name" placeholder="Display Name"
+                        <input id="display_name" type="text" class="form-control gp-editable" name="display_name"
+                               placeholder="Display Name"
                                value="{{ user_info.display_name }}"
                                disabled>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
                         <select class="form-control gp-editable" id="gender" name="gender" disabled>
-                            <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected</option>
+                            <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected
+                            </option>
                             <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
                             <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="birth_date">Birth Date</label>
-                        <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date" value="{{ user_info.birth_date }}" disabled>
+                        <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date"
+                               value="{{ user_info.birth_date }}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="country">Country</label>
-                        <input id="country" type="text" class="form-control gp-editable" name="country" value="{{ user_info.country }}"
+                        <input id="country" type="text" class="form-control gp-editable" name="country"
+                               value="{{ user_info.country }}"
                                placeholder="Your Country"
                                disabled>
                     </div>
@@ -66,10 +72,12 @@
                     {% for obj in tour_list %}
 
                         <div class="gp-profile-story-list-item">
-                            <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <span class="gp-text-title"><a
+                                    href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                             <span class="gp-text-date">{{ obj.created_date }}</span>
                             <div class="gp-margin-top-10">
                                 <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                                <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
                             </div>
                         </div>
 
@@ -84,9 +92,11 @@
                     {% for obj in tour_list %}
 
                         <a href="#" class="list-group-item">
-                            <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <span class="gp-text-title"><a
+                                    href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                             <span class="gp-text-date">{{ obj.created_date }}</span>
                             <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
                         </a>
 
                     {% endfor %}
@@ -102,6 +112,7 @@
                             <span class="gp-text-title"><a href="{% url 'que_detail' obj.id %}">{{ obj.title_name }}</a></span>
                             <span class="gp-text-date">{{ obj.created }}</span>
                             <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
                         </a>
 
                     {% endfor %}

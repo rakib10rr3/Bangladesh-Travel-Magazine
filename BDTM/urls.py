@@ -25,7 +25,7 @@ urlpatterns = [
     #url(r'^upload/', include('fileupload.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', include('app1.urls')),
-    url(r'^app1/', include('app1.urls')),
+    url(r'^Home/', include('app1.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 ]
 

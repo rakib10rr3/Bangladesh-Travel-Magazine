@@ -8,7 +8,7 @@
 
     {% if user.is_authenticated %}
         <div class="gp-center">
-            <a href="/app1/{{ division_name_slug }}/add_page/" class="btn btn-lg btn-primary">Add a new Place to this
+            <a href="/Home/Division/add_page/" class="btn btn-lg btn-primary">Add a new Place to this
             Division</a>
         </div>
     {% endif %}
@@ -16,7 +16,7 @@
     <div class="container-fluid gp-container-normal">
 
         {% if division %}
-            <h1>{{ division_name_name }}</h1>
+            <h1>{{ division.title }}</h1>
 
             {% if page_list %}
                 {% for page in page_list %}
@@ -66,7 +66,7 @@
                         <div class="gp-desc">
                             <h4 class="card-title">{{ page.name }}</h4>
                             <p class="card-text">{{ page.des }}</p>
-                            <a href="{% url 'story' page.division page.slug %}" class="btn btn-primary btn-block">View Tour
+                            <a href="{% url 'story' page.division page.id %}" class="btn btn-primary btn-block">View Tour
                                 Plans</a>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 <h1 class="gp-page-title">No place currently in this Division.</h1>
             {% endif %}
         {% else %}
-            <h1 class="gp-page-title">The specified division -> {{ division_name }} does not exist!</h1>
+            <h1 class="gp-page-title error ">The division  does not exist!</h1>
         {% endif %}
 
     </div>

@@ -15,10 +15,11 @@ class PageForm(forms.ModelForm):
         # we can either exclude the category field from the form,
         # exclude = ('category',)
         # or specify the fields to include (i.e. not include the category field)
-        fields = ('name', 'des')
+        fields = ('name','division','des')
         help_texts = {
             'name': 'Place Name',
-            'des': 'One line description for the place',
+            'division': 'Select A Division',
+            'des': 'Whats the place About',
         }
         # Widgets Name: https://docs.djangoproject.com/en/dev/ref/forms/widgets/
         widgets = {
@@ -30,8 +31,9 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('title_name', 'member', 'budget', 'type_name', 'des')
+        fields = ('story_page','title_name', 'member', 'budget', 'type_name', 'des')
         help_texts = {
+            'story_page': 'Select a page',
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
             'budget': 'What was Your budget ?',

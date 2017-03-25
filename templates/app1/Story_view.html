@@ -147,7 +147,7 @@
                 element.off('submit');
                 var _id = element.attr("data-id");
                 $.ajax({
-                    url: '/app1/add_comment/',
+                    url: '/Home/add_comment/',
                     type: 'POST',
                     data: {
                         text: $('.text').val(),
@@ -178,7 +178,7 @@
             var totalLikeTxt = '#gp-total-like-' + _id;
 
             $.ajax({
-                url: '/app1/like',
+                url: '/Home/like',
                 type: 'GET',
                 data: {obj_id: _id},
                 dataType: "json",

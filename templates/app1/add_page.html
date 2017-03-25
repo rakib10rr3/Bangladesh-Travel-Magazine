@@ -9,30 +9,24 @@
     </div>
 
     <div class="container-fluid gp-container-normal">
-        {% if division %}
 
-            <form class="gp-form" role="form" id="page_form" method="post" action="/app1/{{ division.slug }}/add_page/"
-                  enctype="multipart/form-data">
+        <form class="gp-form" role="form" id="page_form" method="post" action="/Home/Division/add_page/"
+              enctype="multipart/form-data">
 
-                {% csrf_token %}
-                {% for hidden in form.hidden_fields %}
-                    {{ hidden }}
-                {% endfor %}
-                {% for field in form.visible_fields %}
-                    <div class="form-group">
-                        <p class="required">{{ field.help_text }}</p>
-                        {{ field }}
-                        {{ field.errors }}
-                    </div>
-                {% endfor %}
-                <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <p class="required">{{ field.help_text }}</p>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
 
-            </form>
+        </form>
 
-        {% else %}
-
-            <h1 class="gp-page-title">This Division does not exist.</h1>
-
-        {% endif %}
     </div>
 {% endblock %}

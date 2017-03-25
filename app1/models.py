@@ -31,8 +31,7 @@ class Place(models.Model):
     slug = models.SlugField()
     # description field
     des = models.TextField(max_length=500, blank=False)
-    division = models.ForeignKey(Division)
-
+    division = models.ForeignKey(Division,related_name='places')
     # changing default save method to save slug field
     def save(self, *args, **kwargs):
         # Uncomment if you don't want the slug to change every time the name changes
@@ -63,6 +62,8 @@ class Story(models.Model):
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
+    def give_me_page(self):
+        return self.story_page
 
     def get_absolute_url(self):
         return reverse('story_detail', args=[str(self.id)])
