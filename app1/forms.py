@@ -1,7 +1,7 @@
 from django import forms
-from django.forms import Textarea, TextInput, NumberInput, FileInput
+from django.forms import Textarea, TextInput, NumberInput, FileInput, Select
 
-from .models import Place, Story, Picture, Comment, UserProfile,Question,Answer
+from .models import Place, Story, Picture, Comment, UserProfile, Question, Answer
 
 
 class PageForm(forms.ModelForm):
@@ -30,7 +30,7 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('title_name', 'member','budget','type_name', 'des')
+        fields = ('title_name', 'member', 'budget', 'type_name', 'des')
         help_texts = {
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
@@ -39,11 +39,14 @@ class storyForm(forms.ModelForm):
             'des': 'How was your travel?',
         }
         widgets = {
-            'title_name': TextInput(attrs={'class': 'form-control'}),
+            'title_name': TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'Awesome title!'}),
             'member': NumberInput(attrs={'class': 'form-control'}),
             'budget': TextInput(attrs={'class': 'form-control'}),
+            'type_name': Select(attrs={'class': 'form-control'}),
             'des': Textarea(attrs={'class': 'form-control'}),
         }
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -66,12 +69,21 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('text',)
 
+
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ('question',)
+        widgets = {
+            'question': TextInput(attrs={'class': 'form-control',
+                                         'placeholder': 'Ask here'}),
+        }
+
 
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ('text',)
+        widgets = {
+            'text': TextInput(attrs={'class': 'form-control'}),
+        }

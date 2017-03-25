@@ -2,18 +2,24 @@
 
 
 {% block body_block %}
-    <form class="gp-form" role="form" id="story_form" method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                <p class="required">{{ field.help_text }}</p>
-                {{ field.errors }}
-                {{ field }}
-            </div>
-        {% endfor %}
-        <button class="btn btn-primary" type="submit" name="submit">Submit</button>
-    </form>
+    <div class="jumbotron gp-jumbotron">
+        <h1>Share your experience with others!</h1>
+    </div>
+    <div class="container-fluid gp-container-normal">
+        <form class="gp-form" role="form" id="story_form" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <p class="required">{{ field.help_text }}</p>
+                    {{ field.errors }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Share</button>
+        </form>
+    </div>
+
 {% endblock %}

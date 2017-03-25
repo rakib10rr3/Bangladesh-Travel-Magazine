@@ -3,32 +3,36 @@
 
 {% block body_block %}
 
-    {% if division %}
+    <div class="jumbotron gp-jumbotron">
+        <h1>Add a Place to <a href="/app1/{{ division.slug }}/"> {{ division.title }}</a>
+            division</h1>
+    </div>
 
-        <form class="gp-form" role="form" id="page_form" method="post" action="/app1/{{ division.slug }}/add_page/"
-              enctype="multipart/form-data">
+    <div class="container-fluid gp-container-normal">
+        {% if division %}
 
-            <h1 class="gp-page-title">Add a Page to <a href="/app1/{{ division.slug }}/"> {{ division.title }}</a>
-                division
-            </h1>
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    <p class="required">{{ field.help_text }}</p>
-                    {{ field }}
-                    {{ field.errors }}
-                </div>
-            {% endfor %}
-            <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
+            <form class="gp-form" role="form" id="page_form" method="post" action="/app1/{{ division.slug }}/add_page/"
+                  enctype="multipart/form-data">
 
-        </form>
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <p class="required">{{ field.help_text }}</p>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
 
-    {% else %}
+            </form>
 
-        <h1 class="gp-page-title">This Division does not exist.</h1>
+        {% else %}
 
-    {% endif %}
+            <h1 class="gp-page-title">This Division does not exist.</h1>
+
+        {% endif %}
+    </div>
 {% endblock %}

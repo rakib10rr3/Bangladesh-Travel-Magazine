@@ -1,0 +1,175 @@
+{% extends 'app1/base.html' %}
+{% load staticfiles %}
+
+{% block style_block %}
+    <style>
+        .xyz-fill {
+            width: 100%;
+            text-align: center;
+            background-image: url("{%  static "app1/css/img/background_01.jpg" %}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: #fff;
+            overflow: auto;
+            min-height: 600px;
+            box-shadow: inset 0 0 100px 0px rgba(0, 0, 0, .5);
+        }
+
+        .xyz-welcome {
+            margin-top: 50px;
+            font-size: 24px;
+            text-shadow: 0 0 30px rgba(0, 0, 0, .8);
+        }
+
+        .xyz-title {
+            font-size: 42px;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(0, 0, 0, .8);
+            margin: 10px 0 20px;
+        }
+
+        .xyz-subtitle {
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+
+        .p {
+            text-shadow: 0 0 30px #000;
+        }
+
+        .xyz-nav-pills {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .xyz-nav-pills li {
+            display: inline-block;
+            float: none;
+        }
+
+        .xyz-nav-pills li a {
+            color: #fff;
+            transition: all .2s ease-in-out;
+        }
+
+        .xyz-nav-pills li a:hover {
+            background-color: #004D40;
+        }
+
+        .xyz-form {
+            background: rgba(0, 0, 0, .6);
+            border-radius: 7px;
+            /* border: 1px solid #f5f5f5; */
+            box-shadow: 0 0px 20px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 10px 15px;
+        }
+
+        .help-block {
+            color: #eee;
+        }
+    </style>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="xyz-fill">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="xyz-welcome">Welcome to</p>
+                    <h1 class="xyz-title">Bangladesh Travel Magazine</h1>
+
+                    <p class="p xyz-subtitle">The first Social Network for Travelers</p></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+
+                    <ul class="nav nav-pills xyz-nav-pills">
+                        <li class="active"><a class="p" data-toggle="pill" href="#login">Login</a></li>
+                        <li><p class="p">— OR —</p></li>
+                        <li><a class="p" data-toggle="pill" href="#register">Join</a></li>
+                    </ul>
+
+
+                    <div class="tab-content">
+                        <div id="login" class="tab-pane fade in active">
+                            <form class="xyz-form" role="form" method="post" action="{% url "login" %}">
+                                {% csrf_token %}
+
+                                {#                                <h1 class="gp-page-title">Please Log in</h1>#}
+
+                                <div class="form-group">
+                                    <label for="id_username">Your Username</label>
+                                    <input class="form-control" placeholder="Your Username" id="id_username" name="username" type="text" required
+                                           autofocus=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_username">Your Password</label>
+                                    <input type="password" class="form-control" placeholder="Your Password" id="id_username" name="password"
+                                           required/>
+                                </div>
+                                <button class="btn btn-primary" type="submit" value="Submit">Log In</button>
+                            </form>
+                        </div>
+
+                        <div id="register" class="tab-pane fade">
+                            <form class="xyz-form" role="form" method="post" action="{% url "registration_register" %}">
+                                {% csrf_token %}
+
+                                {#                                <h1 class="gp-page-title">Sign Up Here</h1>#}
+
+                                <div class="form-group">
+                                    <label class="required" for="id_username">Username</label>
+                                    <input aria-describedby="helpUsername" class="form-control" placeholder="Username" id="id_username" maxlength="30"
+                                           name="username" type="text" required/>
+                                    <span id="helpUsername" class="help-block">Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="id_email">Your E-mail</label>
+                                    <input class="form-control" placeholder="Your e-mail" id="id_email" name="email" type="email" required/>
+
+                                </div>
+                                <div class="form-group"><label class="required" for="id_password1">Password</label>
+                                    <input class="form-control" placeholder="Password" id="id_password1" name="password1" type="password" required/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="id_password2">Password (Again)</label>
+                                    <input aria-describedby="helpRePassword" class="form-control" placeholder="Enter the password again" id="id_password2"
+                                           name="password2" type="password"
+                                           required/>
+                                    <span id="helpRePassword" class="help-block">Enter the same password as before, for verification.</span>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary">Join</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script>
+        $(function () {
+            $(".xyz-fill").height($(window).height() - 50);
+
+            $(window).resize(function () {
+                $(".xyz-fill").height($(window).height());
+            });
+        });
+    </script>
+
+{% endblock %}

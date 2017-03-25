@@ -27,7 +27,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
+# Live Reload for developing:
+# https://github.com/Fantomas42/django-livereload
 INSTALLED_APPS = [
     'fileupload.apps.FileuploadConfig',
     'app1',

@@ -2,38 +2,44 @@
 
 
 {% block body_block %}
+    <div class="jumbotron gp-jumbotron">
+        <h1>Share awesome captures with others!</h1>
+    </div>
 
-    <form class="gp-form" role="form" id="image_form" method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                <p class="required">{{ field.help_text }}</p><br/>
-                {{ field }}
-                {{ field.errors }}
-            </div>
-        {% endfor %}
-        <button class="btn btn-primary" type="submit" name="submit">Add Image</button>
-         <a href="{% url 'index'%}" class="btn btn-primary">Done</a>
-    </form>
+    <div class="container-fluid gp-container-normal">
+        <form class="gp-form" role="form" id="image_form" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <p class="required">{{ field.help_text }}</p>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-lg btn-primary" type="submit" name="submit">Add Image</button>
+            <a href="{% url 'index' %}" class="btn btn-lg btn-primary">Done</a>
+        </form>
 
-    {% if story_obj.stories %}
+        {% if story_obj.stories %}
 
-        {% for value in story_obj.stories.all %}
+            {% for value in story_obj.stories.all %}
 
-            <div class="gp-img-preview">
-                <img class="card-img-top" src="{{ value.file.url }}">
+                <div class="gp-img-preview">
+                    <img class="card-img-top" src="{{ value.file.url }}">
 
-                <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
-                    {% csrf_token %}
-                    <button class="btn btn-primary btn-block" type="submit">Delete</button>
-                </form>
-            </div>
-        {% endfor %}
-    {% else %}
-        No images shared yet.
-    {% endif %}
+                    <form action="{% url 'delete_pic' division page story_obj.id value.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary btn-block" type="submit">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            No images shared yet.
+        {% endif %}
+
+    </div>
 
 {% endblock %}

@@ -4,117 +4,138 @@
 
     {% if obj %}
 
+        <div class="container-fluid gp-container-normal">
 
             <div class="container gp-div-post-full">
-            <div class="gp-slide-show">
+
+
                 {% if obj.stories.all.exists %}
-                    <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
-                         data-ride="carousel">
-                        <!-- Wrapper for slides -->
 
-                        <div class="carousel-inner" role="listbox">
+                    <div class="gp-slide-show">
+                        <div class="gp-slide-shadow"></div>
 
-                            {% for obj2 in  obj.stories.all %}
-                                <div class="item {% if forloop.first %}active{% endif %}">
-                                    <img class="card-img-top gp-card-img" src="{{ obj2.file.url }}"
-                                         alt="IMAGE GOES HERE">
-                                </div>
-                            {% endfor %}
+                        <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                             data-ride="carousel">
+                            <!-- Wrapper for slides -->
 
+                            <div class="carousel-inner" role="listbox">
+
+                                {% for obj2 in  obj.stories.all %}
+                                    <div class="item {% if forloop.first %}active{% endif %}">
+                                        <img class="card-img-top gp-card-img" src="{{ obj2.file.url }}"
+                                             alt="IMAGE GOES HERE">
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <!-- Left and right controls -->
+                            <a class="left carousel-control" id="gp-carousel-control"
+                               href="#myCarousel{{ forloop.counter }}"
+                               role="button"
+                               data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" id="gp-carousel-control"
+                               href="#myCarousel{{ forloop.counter }}"
+                               role="button"
+                               data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                         </div>
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control" id="gp-carousel-control"
-                           href="#myCarousel{{ forloop.counter }}"
-                           role="button"
-                           data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" id="gp-carousel-control"
-                           href="#myCarousel{{ forloop.counter }}"
-                           role="button"
-                           data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
                     </div>
-                {% else %}
-                    <p class="gp-post-no-image-text">No images shared by <strong>{{ obj.user }}</strong>.</p>
                 {% endif %}
-            </div>
 
-            <div class="gp-desc">
-                <h4 class="card-title">{{ obj.title_name }}</h4>
-                <p class="card-text-date">{{ obj.created_date }}</p>
-                <p class="card-text-author">Tour by <a
-                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
-                    <strong>{{ obj.member }}</strong> members.</p>
-                <p><strong>Budget:</strong>{{ obj.budget }}</p>
-                <p><strong>Type:</strong>{{ obj.type_name }}</p>
-                <p class="card-text">{{ obj.des }}</p>
-            </div>
-            <div class="gp-util-bar">
-                <div class="gp-div-half">
-                    <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
+                <div class="gp-desc">
+                    <h4 class="card-title">{{ obj.title_name }}</h4>
+                    <p class="card-text-date">{{ obj.created_date }}</p>
+                    <p class="card-text-author">Tour by <a
+                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
+                        <strong>{{ obj.member }}</strong> members.</p>
+                    <p><strong>Budget:</strong>{{ obj.budget }}</p>
+                    <p><strong>Type:</strong>{{ obj.type_name }}</p>
+                    <p class="card-text">{{ obj.des }}</p>
+                </div>
+                <div class="gp-util-bar">
+                    <div class="gp-div-half">
+                        <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
                             <span id="gp-like-logo-{{ obj.id }}"
                                   class="glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}"></span>
-                        <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
-                    </a>
-                </div>
-                <div class="gp-div-half">
-                    <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
-                </div>
+                            <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
+                        </a>
+                    </div>
+                    <div class="gp-div-half">
+                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                    </div>
 
-            </div>
-
-            <!-- Comment part start -->
-            <div class="gp-comment-group">
-                <div class="gp-total-comments">
-
-                    <button onclick="toggleDiv(1)" class="btn btn-primary">
-                        Total {{ obj.comments.count }} comments.
-                    </button>
                 </div>
 
+                <!-- Comment part start -->
 
-                <div id={{ 1 }}>
-                    {% for comment in obj.comments.all %}
-                        <div class="gp-comment">
+                <div class="gp-comment-group">
+                    <div class="gp-total-comments">
+                        <a onclick="toggleDiv(1)" class="gp-flat-link">
+                            Total {{ obj.comments.count }} comments.
+                        </a>
+                    </div>
 
-                            <p class="gp-username"><a
-                                    href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
-                            </p>
-                            <p class="gp-date">{{ comment.created_date }}</p>
-                            <p class="gp-content">{{ comment.text }}</p>
+
+                    <div id={{ 1 }}>
+                        {% for comment in obj.comments.all %}
+                            <div class="gp-comment">
+
+                                <p class="gp-username"><a
+                                        href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
+                                </p>
+                                <p class="gp-date">{{ comment.created_date }}</p>
+                                <p class="gp-content">{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Comment part end -->
+
+
+                    <!-- Adding a comment part start -->
+
+                    <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form-story-comment">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <textarea class="form-control text" rows="1" maxlength="1000" name="text" required=""></textarea>
                         </div>
-                    {% endfor %}
+
+                        <button type="submit" class="btn btn-default" onclick="commentDiv()">
+                            Give Comment
+                        </button>
+                    </form>
+
+                    {#                    <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form">#}
+                    {#                        {% csrf_token %}#}
+                    {#                        <textarea cols="40" rows="1" class="text" maxlength="1000" name="text" required=""></textarea>#}
+                    {##}
+                    {#                        <button type="submit" class="btn btn-default" onclick="commentDiv()">Asq Question</button>#}
+                    {#                    </form>#}
+
+                    <!-- Adding-Comment part end -->
+
                 </div>
-                <!-- Comment part end -->
-
-
-                <!-- Adding a comment part start -->
-
-                <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form">
-                    {% csrf_token %}
-                    <textarea cols="40" rows="1" class="text" maxlength="1000" name="text"  required=""></textarea>
-
-                    <button type="submit" class="btn btn-default" onclick="commentDiv()">Asq Question</button>
-                </form>
-
-                <!-- Adding-Comment part end -->
 
             </div>
+
+        </div>
 
 
     {% else %}
-
-        <h3>Sorry no story found!</h3>
+        <div class="jumbotron gp-jumbotron">
+            <h1>Sorry no story found!</h1>
+        </div>
     {% endif %}
 
     <script>
 
         function toggleDiv(divId) {
-            $("#" + divId).toggle();
+            $("#" + divId).slideToggle();
         }
 
 
@@ -134,7 +155,7 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                     },
                     success: function () {
-                       // alert("Created a New Comment");
+                        // alert("Created a New Comment");
                         $("#1").load(" #1");
                         $('.text').val("");
 

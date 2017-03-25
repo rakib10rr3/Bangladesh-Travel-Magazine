@@ -15,3 +15,17 @@
     - add comment in same page-- done
     - Implement Share button in story.html--Shohag
     - Share Tour button in front page --ami korbo
+    
+    
+# Design completed
+    - Share Story
+    - Upload Image
+    - index (without login)
+    - index
+    - Add Place
+    - Division Details
+    - Story list
+    - single story
+    - login
+    - logout
+    - profile

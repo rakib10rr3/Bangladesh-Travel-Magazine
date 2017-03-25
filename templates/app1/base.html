@@ -18,12 +18,16 @@
       <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
         -->
 
-    <link rel="stylesheet" href="{% static "app1/CSS/style.css" %}">
+    <link rel="stylesheet" href="{% static "app1/css/style.css" %}">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static "app1/js/jquery-3.2.0.min.js" %}"></script>
+
+    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="{% static "app1/css/bootstrap.min.css" %}">
+    {#    <link rel="stylesheet" href="{% static "app1/CSS/bootstrap_lumen.css" %}">#}
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>#}
+    {#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+    <script src="{% static "app1/js/bootstrap.min.js" %}"></script>
 
     <!--[if lt IE 9]>
 
@@ -32,10 +36,34 @@
 
     <![endif]-->
 
+    <style>
+        @font-face {
+            font-family: 'Roboto Slab';
+            font-style: normal;
+            font-weight: 400;
+            src: url({%  static "app1/fonts/RobotoSlab-Regular.ttf" %});
+        }
+
+        @font-face {
+            font-family: 'Roboto Slab';
+            font-style: normal;
+            font-weight: bold;
+            src: url({%  static "app1/fonts/RobotoSlab-Bold.ttf" %});
+        }
+    </style>
+
+    {% block style_block %}
+
+    {% endblock %}
+
 
 </head>
 
-<body>
+<body class="gp-body">
+
+{#{% if is_index == True and not user.is_authenticated %}#}
+{#gp-fill#}
+{#{% endif %}#}
 
 <nav class="navbar navbar-default navbar-fixed-top gp-navbar" role="navigation">
     <div class="container-fluid">
@@ -85,13 +113,14 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid gp-container-main">
+<div class="gp-container-main">
     {% block body_block %}
 
     {% endblock %}
 </div>
 <div class="footer">
-    <p>Copyright &copy; Traitorz. All rights reserved.</p>
+    <p class="gp-copyright">Copyright &copy; Traitorz. All rights reserved.</p>
+    <p>Created with <span class="glyphicon glyphicon-heart"></span> & Django.</p>
 </div>
 
 </body>

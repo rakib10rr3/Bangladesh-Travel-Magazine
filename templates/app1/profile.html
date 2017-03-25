@@ -1,108 +1,116 @@
 {% extends 'app1/base.html' %}
 
 {% block body_block %}
+    <div class="jumbotron gp-jumbotron">
+        <h1>{{ user.username }}</h1>
+    </div>
+    <div class="container-fluid gp-container-normal">
+        <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#user">User Information</a></li>
+            <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
+        </ul>
 
-    <ul class="nav nav-tabs gp-narrow-width">
-        <li class="active"><a data-toggle="tab" href="#user">User Information</a></li>
-        <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
-    </ul>
+        <div class="tab-content gp-narrow-width gp-tab-content">
+            <div id="user" class="tab-pane fade in active gp-tab-pane">
+                <form method="post" action=".">
 
-    <div class="tab-content gp-narrow-width">
-        <div id="user" class="tab-pane fade in active gp-tab-pane">
-            <form method="post" action=".">
+                    {% csrf_token %}
 
-                {% csrf_token %}
-
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ the_user.username }}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input id="email" type="text" class="form-control" name="email" placeholder="Email" value="{{ the_user.email }}" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="display_name">Display Name</label>
-                    <input id="display_name" type="text" class="form-control gp-editable" name="display_name" placeholder="Display Name"
-                           value="{{ user_info.display_name }}"
-                           disabled>
-                </div>
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select class="form-control gp-editable" id="gender" name="gender" disabled>
-                        <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected</option>
-                        <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
-                        <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="birth_date">Birth Date</label>
-                    <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date" value="{{ user_info.birth_date }}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input id="country" type="text" class="form-control gp-editable" name="country" value="{{ user_info.country }}" placeholder="Your Country"
-                           disabled>
-                </div>
-
-                {% if the_user == request.user %}
-                    <div class="gp-button-panel">
-                        <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
-                        <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
-                        <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ the_user.username }}" disabled>
                     </div>
-                {% endif %}
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input id="email" type="text" class="form-control" name="email" placeholder="Email" value="{{ the_user.email }}" disabled>
+                    </div>
 
-            </form>
-        </div>
+                    <div class="form-group">
+                        <label for="display_name">Display Name</label>
+                        <input id="display_name" type="text" class="form-control gp-editable" name="display_name" placeholder="Display Name"
+                               value="{{ user_info.display_name }}"
+                               disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control gp-editable" id="gender" name="gender" disabled>
+                            <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected</option>
+                            <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
+                            <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_date">Birth Date</label>
+                        <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date" value="{{ user_info.birth_date }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input id="country" type="text" class="form-control gp-editable" name="country" value="{{ user_info.country }}"
+                               placeholder="Your Country"
+                               disabled>
+                    </div>
 
-        <div id="tour" class="tab-pane fade gp-tab-pane">
-            <div class="list-group gp-list-group-tour">
-                {% for obj in tour_list %}
+                    {% if the_user == request.user %}
+                        <div class="gp-button-panel">
+                            <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
+                            <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
+                            <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
+                        </div>
+                    {% endif %}
 
-                    <a href="#" class="list-group-item">
-                        <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                        <span class="gp-text-date">{{ obj.created_date }}</span>
-                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                    </a>
-
-                {% endfor %}
+                </form>
             </div>
 
-        </div>
+            <div id="tour" class="tab-pane fade gp-tab-pane">
+                <div class="list-group gp-list-group-tour">
+                    {% for obj in tour_list %}
 
+                        <div class="gp-profile-story-list-item">
+                            <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <span class="gp-text-date">{{ obj.created_date }}</span>
+                            <div class="gp-margin-top-10">
+                                <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
 
-        <div id="tour" class="tab-pane fade gp-tab-pane">
-            <div class="list-group gp-list-group-tour">
-                {% for obj in tour_list %}
+                    {% endfor %}
+                </div>
 
-                    <a href="#" class="list-group-item">
-                        <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                        <span class="gp-text-date">{{ obj.created_date }}</span>
-                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                    </a>
-
-                {% endfor %}
             </div>
 
-        </div>
 
-        <div id="questions" class="tab-pane fade gp-tab-pane">
-            <div class="list-group gp-list-group-tour">
-                {% for obj in q_list %}
+            <div id="tour" class="tab-pane fade gp-tab-pane">
+                <div class="list-group gp-list-group-tour">
+                    {% for obj in tour_list %}
 
-                    <a href="#" class="list-group-item">
-                        <span class="gp-text-title"><a href="{% url 'que_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                        <span class="gp-text-date">{{ obj.created }}</span>
-                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                    </a>
+                        <a href="#" class="list-group-item">
+                            <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <span class="gp-text-date">{{ obj.created_date }}</span>
+                            <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                        </a>
 
-                {% endfor %}
+                    {% endfor %}
+                </div>
+
             </div>
 
-        </div>
+            <div id="questions" class="tab-pane fade gp-tab-pane">
+                <div class="list-group gp-list-group-tour">
+                    {% for obj in q_list %}
 
+                        <a href="#" class="list-group-item">
+                            <span class="gp-text-title"><a href="{% url 'que_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <span class="gp-text-date">{{ obj.created }}</span>
+                            <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
+                        </a>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+
+
+        </div>
 
     </div>
 

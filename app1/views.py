@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question
 
 try:
     from django.utils import simplejson as json
@@ -13,12 +13,25 @@ except ImportError:
 
 
 def index(request):
-    page_list = Place.objects.order_by('-views')[:5]
-    question_list = Question.objects.order_by('-created')
-    q_form = QuestionForm()
-    a_form = AnswerForm()
-    return render(request, 'app1/index.html',
-                  {'page_list': page_list, 'question_list': question_list, 'q_form': q_form, 'a_form': a_form})
+    if request.user.is_authenticated:
+
+        page_list = Place.objects.order_by('-views')[:5]
+        question_list = Question.objects.order_by('-created')
+        q_form = QuestionForm()
+        a_form = AnswerForm()
+        user_profile = UserProfile.objects.filter(user=request.user)
+
+        return render(request, 'app1/index.html',
+                      {
+                          'page_list': page_list,
+                          'question_list': question_list,
+                          'q_form': q_form,
+                          'a_form': a_form,
+                          'user_profile': user_profile,
+                      })
+    else:
+        return render(request, 'app1/index_default.html',
+                      {})
 
 
 def division_detail(request, division_name_slug):
@@ -120,7 +133,7 @@ def story(request, division_name_slug, page_name_slug):
 @login_required
 def story_share(request, division_name_slug, page_name_slug):
     page_name = page_name_slug.title()
-    page = Place.objects.get(name=page_name)
+    page = Place.objects.get(slug=page_name.lower())
 
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
@@ -180,7 +193,8 @@ def view_profile(request, user_name):
         user_info['display_name'] = user_pro_info[0]['display_name']
         # Just style two.. -_-
         user_info['gender'] = user_pro_info[0].get('gender')
-        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d')
+        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get('birth_date') is None else user_pro_info[
+            0].get('birth_date')
         user_info['country'] = user_pro_info[0].get('country')
 
     tour_list = Story.objects.filter(user=the_user)
