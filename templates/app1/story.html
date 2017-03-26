@@ -108,7 +108,7 @@
 
                                 {% if comment.id in comment_list %}
                                     <div class="bg-margin-top-10">
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger" onclick="del_comment( {{ forloop.parentloop.counter}}, {{comment.id }})">
                                             Delete
                                         </button>
                                     </div>
@@ -158,6 +158,22 @@
         function toggleDiv(element, divId) {
             $("#" + divId).slideToggle();
             {#            $(element).slideUp();#}
+        }
+
+        function del_comment(divId,CommentId){
+             $.ajax({
+                    url: '/Home/del_comment/',
+                    type: 'POST',
+                    data: {
+                        comment_id: CommentId,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        // alert("Created a New Comment");
+                        $("#" + divId).load(" #" + divId);
+                    }
+                });
+
         }
 
 

@@ -22,13 +22,13 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^Forum/$', views.forum, name='forum'),
     url(r'^save_question/$', views.save_question, name='save_question'),
     url(r'^save_answer/(?P<q_id>\d+)$', views.save_answer, name='save_answer'),
     url(r'^like/$', views.like, name='like'),
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
-
+    url(r'^story_edit/(?P<story_id>\d+)/$', views.story_edit, name='story_edit'),
     url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
-
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
@@ -40,7 +40,6 @@ urlpatterns = [
     url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
    # url(r'^(?P<division_id>\d+)/$', views.division_detail, name='division_detail'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
-
 
     url(r'^Division/add_page/$', views.add_page, name='add_page'),
 

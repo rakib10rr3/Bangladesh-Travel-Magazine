@@ -5,6 +5,10 @@
         <h1>Welcome {{ user.username }}!</h1>
     </div>
 
+
+    <h3> <a href="{% url 'story_share' %}">Share Your Story</a></h3>
+
+    <h2>Most Recently Active Places are </h2>
     <div class="container-fluid gp-container-normal">
 
         <div class="row">
@@ -86,34 +90,19 @@
             {# ------------------------------------------------------------ #}
 
 
+
+
             <div class="col-sm-4 gp-side-panel-container">
 
-                <div class="gp-side-panel">
-                    <div class="gp-side-panel-title">
-                        Have A Travel Query?
-                    </div>
 
-                    <form class="gp-side-panel-form" role="form" id="question_form" method="post" action="{% url 'save_question' %}">
-                        {% csrf_token %}
-                        {% for hidden in q_form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                        {% for field in q_form.visible_fields %}
-                            <div class="form-group">
-                                <p class="required">{{ field.help_text }}</p>
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
-                        {% endfor %}
-                        <button class="btn btn-primary btn-block" type="submit">Ask</button>
-                    </form>
-                </div>
 
                 <hr>
 
                 <div class="gp-side-panel">
                     <div class="gp-side-panel-title">
                         Recently Asked Questions
+                            <a href="{% url 'forum' %}">VIEW ALL</a>
+
                     </div>
 
                     <div class="gp-side-panel-content">
@@ -159,6 +148,7 @@
                                     </form>
                                 </div>
                             {% endfor %}
+
                         {% else %}
                             <h2>No Questions asked Yet</h2>
                         {% endif %}
@@ -166,6 +156,34 @@
 
                 </div>
 
+
+            </div>
+
+
+
+            <div class="col-sm-4 gp-side-panel-container">
+                <hr>
+                <div class="gp-side-panel">
+                    <div class="gp-side-panel-title">
+                        Recently Shared Story
+                    </div>
+
+                    <div class="gp-side-panel-content">
+                        {% if recent_story %}
+                            {% for obj in recent_story %}
+                                <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
+                                    <div class="gp-ques-block">
+                                        <a href="{% url 'story_detail' obj.id %}"><h2 class="gp-ques-title">{{ obj.title_name }}</h2></a>
+                                        <p class="gp-ques-date">{{ obj.created_date }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h2>No Stories Shared Yet</h2>
+                        {% endif %}
+                    </div>
+
+                </div>
 
             </div>
         </div>

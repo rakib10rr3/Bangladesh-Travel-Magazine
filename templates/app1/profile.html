@@ -67,6 +67,7 @@
                 </form>
             </div>
 
+              <h3> <a href="{% url 'story_share' %}"><span class="glyphicon glyphicon-plus"></span>Story</a></h3>
             <div id="tour" class="tab-pane fade gp-tab-pane">
                 <div class="list-group gp-list-group-tour">
                     {% for obj in tour_list %}
@@ -77,46 +78,15 @@
                             <span class="gp-text-date">{{ obj.created_date }}</span>
                             <div class="gp-margin-top-10">
                                 <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                                <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
+                                <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar"><span class="glyphicon glyphicon-plus"></span>Image</a>
+                                 <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
                             </div>
                         </div>
 
                     {% endfor %}
                 </div>
-
             </div>
 
-
-            <div id="tour" class="tab-pane fade gp-tab-pane">
-                <div class="list-group gp-list-group-tour">
-                    {% for obj in tour_list %}
-
-                        <a href="#" class="list-group-item">
-                            <span class="gp-text-title"><a
-                                    href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                            <span class="gp-text-date">{{ obj.created_date }}</span>
-                            <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                            <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
-                        </a>
-
-                    {% endfor %}
-                </div>
-
-            </div>
-
-            <div id="questions" class="tab-pane fade gp-tab-pane">
-                <div class="list-group gp-list-group-tour">
-                    {% for obj in q_list %}
-
-                        <a href="#" class="list-group-item">
-                            <span class="gp-text-title"><a href="{% url 'que_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                            <span class="gp-text-date">{{ obj.created }}</span>
-                            <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                            <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar">Add more image</a>
-                        </a>
-
-                    {% endfor %}
-                </div>
 
             </div>
 

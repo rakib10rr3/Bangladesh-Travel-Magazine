@@ -102,6 +102,7 @@
 
                     {# <li><a href="/admin/">{{ user.username }}</a></li>#}
                     {# Source: http://stackoverflow.com/questions/806835/django-redirect-to-previous-page-after-login#}
+                    <li><a href="{% url 'forum' %}">Forum</a></li>
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
 
                 {% else %}

@@ -16,7 +16,8 @@ def index(request):
     if request.user.is_authenticated:
 
         page_list = Place.objects.order_by('-views')[:5]
-        question_list = Question.objects.order_by('-created')
+        recent_story=Story.objects.order_by('-created_date')[:5]
+        question_list = Question.objects.order_by('-created')[:5]
         q_form = QuestionForm()
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
@@ -24,6 +25,7 @@ def index(request):
                       {
                           'page_list': page_list,
                           'question_list': question_list,
+                          'recent_story': recent_story,
                           'q_form': q_form,
                           'a_form': a_form,
                           'user_profile': user_profile,
@@ -31,6 +33,15 @@ def index(request):
     else:
         return render(request, 'app1/index_default.html',
                       {})
+
+def forum(request):
+    question_list = Question.objects.order_by('-created')[:5]
+    q_form = QuestionForm()
+    a_form = AnswerForm()
+    return render(request, 'app1/forum.html',
+                  { 'q_form': q_form,
+                          'a_form': a_form,'question_list': question_list})
+
 
 
 def division_detail(request, division_name_slug):
@@ -72,7 +83,7 @@ def add_page(request):
         form = PageForm(request.POST, request.FILES)
         if form.is_valid():
             bet = form.save(commit=True)
-            div=bet.division.slug
+            div = bet.division.slug
             print(div)
             # probably better to use a redirect here.
             return division_detail(request, div)
@@ -83,66 +94,6 @@ def add_page(request):
 
     context_dict = {'form': form, }
     return render(request, 'app1/add_page.html', context_dict)
-
-
-def story(request, division_name_slug, page_id):
-    try:
-        stories = Story.objects.filter(story_page__id=page_id)
-        track_url(request, page_id)
-    except Story.DoesNotExist:
-        stories = None
-
-    user = request.user
-    # storyByThisUser = stories.likes.filter(id=user.id)
-    print(user.id)
-    # print(storyByThisUser)
-    like_list = []
-    comment_list = []
-
-    for s in stories:
-        print(s.id)
-        story_ = Story.objects.get(id=s.id)
-        for s2 in story_.comments.all():
-            if s2.author_id == user.id:
-                comment_list.append(s2.id)
-        if story_.likes.filter(id=user.id).exists():
-            like_list.append(s.id)
-
-    print(like_list)
-    print(comment_list)
-    form = CommentForm()
-    return render(request, 'app1/story.html',
-                  {
-                      'stories': stories,
-                      'division': division_name_slug,
-                      'page': Place.objects.get(id=page_id),
-                      'like_list': like_list,
-                      'comment_list': comment_list,
-                      'form': form
-                  })
-
-
-def story_share(request):
-    print('Running Story_share ')
-    if request.method == 'POST':
-        form = storyForm(request.POST, request.FILES)
-        if form.is_valid():
-            bet = form.save(commit=False)
-            bet.user = request.user
-            bet.save()
-            print(bet)
-            print(bet.story_page)
-
-            context_dict = {'story_id': bet.id, 'page': bet.story_page}
-            # return  redirect('image_share',context_dict)
-            # return render(request, 'app1/image_upload.html', context_dict)
-            return redirect('image_share', bet.id)
-        else:
-            print(form.errors)
-    else:
-        form = storyForm()
-    context_dict = {'form': form}
-    return render(request, 'app1/story_share.html', context_dict)
 
 
 def view_profile(request, user_name):
@@ -198,12 +149,6 @@ def view_profile(request, user_name):
                       'user_info': user_info,
                       'tour_list': tour_list,
                   })
-
-
-def story_delete(request, story_id):
-    story = Story.objects.get(id=story_id)
-    story.delete()
-    return redirect('user_profile', request.user.username)
 
 
 def image_redirect(request, context_dict):
@@ -296,22 +241,96 @@ def add_comment(request):
         return HttpResponse('')
 
 
-def story_detail(request, story_id):
-    story = Story.objects.get(pk=story_id)
-    user = request.user
-    like_list = []
-    if story.likes.filter(id=user.id).exists():
-        like_list.append(story.id)
-    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list, })
-
-
 def comment_delete(request):
     if request.method == 'POST':
         comment_id = request.POST['comment_id']
         print(comment_id)
         comment = Comment.objects.get(id=comment_id)
+        print(comment)
         comment.delete()
         return HttpResponse('')
+
+
+# sssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+def story_share(request):
+
+    if request.method == 'POST':
+        form = storyForm(request.POST, request.FILES)
+        if form.is_valid():
+            bet = form.save(commit=False)
+            bet.user = request.user
+            bet.save()
+            print(bet)
+            print(bet.story_page)
+
+            context_dict = {'story_id': bet.id, 'page': bet.story_page}
+            # return  redirect('image_share',context_dict)
+            # return render(request, 'app1/image_upload.html', context_dict)
+            return redirect('image_share', bet.id)
+        else:
+            print(form.errors)
+    else:
+        form = storyForm()
+    context_dict = {'form': form}
+    return render(request, 'app1/story_share.html', context_dict)
+
+
+def story(request, division_name_slug, page_id):
+    try:
+        stories = Story.objects.filter(story_page__id=page_id)
+        track_url(request, page_id)
+    except Story.DoesNotExist:
+        stories = None
+
+    user = request.user
+    # storyByThisUser = stories.likes.filter(id=user.id)
+    print(user.id)
+    # print(storyByThisUser)
+    like_list = []
+    comment_list = []
+
+    for s in stories:
+        print(s.id)
+        story_ = Story.objects.get(id=s.id)
+        for s2 in story_.comments.all():
+            if s2.author_id == user.id:
+                comment_list.append(s2.id)
+        if story_.likes.filter(id=user.id).exists():
+            like_list.append(s.id)
+
+    print(like_list)
+    print(comment_list)
+    form = CommentForm()
+    return render(request, 'app1/story.html',
+                  {
+                      'stories': stories,
+                      'division': division_name_slug,
+                      'page': Place.objects.get(id=page_id),
+                      'like_list': like_list,
+                      'comment_list': comment_list,
+                      'form': form
+                  })
+
+
+def story_detail(request, story_id):
+    story = Story.objects.get(pk=story_id)
+    user = request.user
+    comment_list = []
+    for s2 in story.comments.all():
+        if s2.author_id == user.id:
+            comment_list.append(s2.id)
+
+    like_list = []
+    if story.likes.filter(id=user.id).exists():
+        like_list.append(story.id)
+    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list,'comment_list': comment_list})
+
+
+def story_delete(request, story_id):
+    story = Story.objects.get(id=story_id)
+    story.delete()
+    return redirect('user_profile', request.user.username)
 
 
 def save_question(request):
@@ -325,7 +344,7 @@ def save_question(request):
         else:
             print(form.errors)
 
-    return redirect('index')
+    return redirect('forum')
 
 
 def save_answer(request, q_id):
@@ -342,3 +361,17 @@ def save_answer(request, q_id):
         else:
             print(form.errors)
     return redirect('index')
+
+
+def story_edit(request, story_id):
+    story = Story.objects.get(id=story_id)
+    if request.method == "POST":
+        form = storyForm(request.POST, instance=story)
+        if form.is_valid():
+            bet = form.save(commit=False)
+            bet.user = request.user
+            bet.save()
+            return redirect('story_detail', bet.id)
+    else:
+        form = storyForm(instance=story)
+    return render(request, 'app1/story_edit.html', {'form': form})

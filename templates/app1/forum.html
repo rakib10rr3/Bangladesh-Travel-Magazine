@@ -1,0 +1,90 @@
+{% extends 'app1/base.html' %}
+
+{% block body_block %}
+
+
+    <div class="col-sm-4 gp-side-panel-container">
+
+        <div class="gp-side-panel">
+            <div class="gp-side-panel-title">
+                Have A Travel Query?
+            </div>
+
+            <form class="gp-side-panel-form" role="form" id="question_form" method="post"
+                  action="{% url 'save_question' %}">
+                {% csrf_token %}
+                {% for hidden in q_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {% for field in q_form.visible_fields %}
+                    <div class="form-group">
+                        <p class="required">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary btn-block" type="submit">Ask</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <div class="gp-side-panel">
+            <div class="gp-side-panel-title">
+                Recently Asked Questions
+            </div>
+
+            <div class="gp-side-panel-content">
+                {% if question_list %}
+                    {% for obj in question_list %}
+                        <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
+                            <div class="gp-ques-block">
+                                <h2 class="gp-ques-title">{{ obj.question }}</h2>
+                                <p class="gp-ques-date">{{ obj.created }}</p>
+                            </div>
+
+                            <div class="gp-ques-ans">
+
+                                {% if obj.answers.all.exists %}
+                                    <p class="gp-ques-ans-count">Total {{ obj.answers.all.count }} answer found!</p>
+
+                                    {% for obj2 in obj.answers.all %}
+                                        <div class="gp-ques-ans-block">
+                                            <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                            <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                        </div>
+                                    {% endfor %}
+
+                                {% else %}
+                                    <p class="gp-ques-ans-count">No answer found yet!</p>
+                                {% endif %}
+
+                            </div>
+
+                            <form method="POST" role="form" id="answer_form" class="gp-side-panel-form"
+                                  action="{% url 'save_answer' obj.id %}">
+                                {% csrf_token %}
+                                {% for hidden in a_form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <div class="form-group">
+
+                                            <textarea placeholder="Have you the answer?" class="form-control" cols="40"
+                                                      id="id_text" maxlength="500" name="text"
+                                                      rows="1" required=""></textarea>
+
+                                </div>
+                                <button class="btn btn-primary btn-block" type="submit" name="submit">Give Answer
+                                </button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h2>No Questions asked Yet</h2>
+                {% endif %}
+
+
+
+
+
+{% endblock %}
