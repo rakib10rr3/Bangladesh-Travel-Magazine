@@ -33,7 +33,7 @@ def index(request):
     else:
         return render(request, 'app1/index_default.html',
                       {})
-
+@login_required
 def forum(request):
     question_list = Question.objects.order_by('-created')[:5]
     q_form = QuestionForm()
@@ -43,7 +43,7 @@ def forum(request):
                           'a_form': a_form,'question_list': question_list})
 
 
-
+@login_required
 def division_detail(request, division_name_slug):
     # Create a context dictionary which we can pass to the template rendering engine.
 
@@ -70,14 +70,14 @@ def division_detail(request, division_name_slug):
     # Go render the response and return it to the client.
     return render(request, 'app1/division_detail.html', context_dict)
 
-
+@login_required
 def track_url(request, page_id):
     what = Place.objects.get(id=page_id)
     what.views += 1
     what.save()
     return
 
-
+@login_required
 def add_page(request):
     if request.method == 'POST':
         form = PageForm(request.POST, request.FILES)
@@ -95,7 +95,7 @@ def add_page(request):
     context_dict = {'form': form, }
     return render(request, 'app1/add_page.html', context_dict)
 
-
+@login_required
 def view_profile(request, user_name):
     if request.method == 'POST':
         print(request.POST)
@@ -150,7 +150,7 @@ def view_profile(request, user_name):
                       'tour_list': tour_list,
                   })
 
-
+@login_required
 def image_redirect(request, context_dict):
     division = context_dict['division']
 
@@ -161,7 +161,7 @@ def image_redirect(request, context_dict):
 
     return redirect('image_share', division, page, story_obj_id)
 
-
+@login_required
 def image_share(request, story_id):
     print('Image Share Running')
     # page_ob = context_dict['story_page']
@@ -193,7 +193,7 @@ def image_share(request, story_id):
     context_dict2 = {'form': form, 'story_obj': story, 'page': page}
     return render(request, 'app1/image_upload.html', context_dict2)
 
-
+@login_required
 def like(request):
     story_id = request.GET.get('obj_id', None)
     story = Story.objects.get(id=story_id)
@@ -216,7 +216,7 @@ def like(request):
     }
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
-
+@login_required
 def image_delete(request, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
     obj.delete()
@@ -225,7 +225,7 @@ def image_delete(request, story_id, value_id):
     context_dict = {'story_id': story_id, 'page': page}
     return redirect('image_share', story_id)
 
-
+@login_required
 def add_comment(request):
     user = request.user
     if request.method == 'POST':
@@ -240,7 +240,7 @@ def add_comment(request):
         )
         return HttpResponse('')
 
-
+@login_required
 def comment_delete(request):
     if request.method == 'POST':
         comment_id = request.POST['comment_id']
@@ -252,7 +252,7 @@ def comment_delete(request):
 
 
 # sssssssssssssssssssssssssssssssssssssssssssssssssssss
-
+@login_required
 def story_share(request):
 
     if request.method == 'POST':
@@ -275,7 +275,7 @@ def story_share(request):
     context_dict = {'form': form}
     return render(request, 'app1/story_share.html', context_dict)
 
-
+@login_required
 def story(request, division_name_slug, page_id):
     try:
         stories = Story.objects.filter(story_page__id=page_id)
@@ -312,7 +312,7 @@ def story(request, division_name_slug, page_id):
                       'form': form
                   })
 
-
+@login_required
 def story_detail(request, story_id):
     story = Story.objects.get(pk=story_id)
     user = request.user
@@ -326,13 +326,13 @@ def story_detail(request, story_id):
         like_list.append(story.id)
     return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list,'comment_list': comment_list})
 
-
+@login_required
 def story_delete(request, story_id):
     story = Story.objects.get(id=story_id)
     story.delete()
     return redirect('user_profile', request.user.username)
 
-
+@login_required
 def save_question(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
@@ -346,7 +346,7 @@ def save_question(request):
 
     return redirect('forum')
 
-
+@login_required
 def save_answer(request, q_id):
     question = Question.objects.get(id=q_id)
     print(question)
@@ -362,7 +362,7 @@ def save_answer(request, q_id):
             print(form.errors)
     return redirect('index')
 
-
+@login_required
 def story_edit(request, story_id):
     story = Story.objects.get(id=story_id)
     if request.method == "POST":
@@ -375,3 +375,5 @@ def story_edit(request, story_id):
     else:
         form = storyForm(instance=story)
     return render(request, 'app1/story_edit.html', {'form': form})
+
+ # custom change list creating -_-

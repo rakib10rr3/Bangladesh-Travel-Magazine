@@ -55,3 +55,5 @@ urlpatterns = [
     # New!
     # url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_name_slug>[\w\-]+)/view/$',views.story_view, name='story_view'),  # New!
 ]
+
+# custom change list creating -_-

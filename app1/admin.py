@@ -9,7 +9,7 @@ class PageAdmin(admin.ModelAdmin):          # this is for to simplify urls
 
 
 
-
+ # custom change list creating -_-
 admin.site.register(Division,DivisionAdmin)
 admin.site.register(Place, PageAdmin)
 admin.site.register(Story)

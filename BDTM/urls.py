@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^$', include('app1.urls')),
     url(r'^Home/', include('app1.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
+
 ]
 
 # urlpatterns = [
