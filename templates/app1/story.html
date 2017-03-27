@@ -3,7 +3,7 @@
 {% block body_block %}
 
 
-
+    {# story show begins #}
     {% if stories %}
 
         <div class="jumbotron gp-jumbotron">
@@ -66,6 +66,7 @@
                         <strong>{{ obj.member }}</strong> members.</p>
                     <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
                     <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
+                    <p class="card-type"><strong>Division:</strong> {{ obj.give_me_div }}</p>
                     <p class="card-text">
                         {% if obj.des|length > 50 %}
                             {{ obj.des|linebreaks|safe|truncatewords:"50" }}
@@ -146,9 +147,9 @@
         <div class="jumbotron gp-jumbotron">
             <h1>Sorry no stories Shared yet!</h1>
         </div>
-
-
     {% endif %}
+
+    {# story show Ends #}
 
     <div class="gp-center">
         <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>

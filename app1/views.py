@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question,Answer
 
 try:
     from django.utils import simplejson as json
@@ -14,21 +14,43 @@ except ImportError:
 
 def index(request):
     if request.user.is_authenticated:
-
-        page_list = Place.objects.order_by('-views')[:5]
+        page_list = Place.objects.order_by('-views')[:3]
         recent_story=Story.objects.order_by('-created_date')[:5]
         question_list = Question.objects.order_by('-created')[:5]
         q_form = QuestionForm()
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
+        user = request.user
+        # storyByThisUser = stories.likes.filter(id=user.id)
+        print(user.id)
+        # print(storyByThisUser)
+        like_list = []
+        comment_list = []
+
+        for s in recent_story:
+            print(s.id)
+            story_ = Story.objects.get(id=s.id)
+            for s2 in story_.comments.all():
+                if s2.author_id == user.id:
+                    comment_list.append(s2.id)
+            if story_.likes.filter(id=user.id).exists():
+                like_list.append(s.id)
+
+        print(like_list)
+        print(comment_list)
+        form = CommentForm()
+
         return render(request, 'app1/index.html',
                       {
                           'page_list': page_list,
                           'question_list': question_list,
-                          'recent_story': recent_story,
+                          'stories': recent_story,
                           'q_form': q_form,
                           'a_form': a_form,
                           'user_profile': user_profile,
+                          'like_list': like_list,
+                          'comment_list': comment_list,
+                          'form': form
                       })
     else:
         return render(request, 'app1/index_default.html',
@@ -52,17 +74,40 @@ def division_detail(request, division_name_slug):
         # Can we find a category name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance or raises an exception.
-
         division = Division.objects.get(slug=division_name_slug)
-
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
+
         pages = Place.objects.filter(division=division).order_by('-views')
+        stories=Story.objects.filter(story_division=division).order_by('-created_date')[:5]
+        user = request.user
+        # storyByThisUser = stories.likes.filter(id=user.id)
+        print(user.id)
+        # print(storyByThisUser)
+        like_list = []
+        comment_list = []
+
+        for s in stories:
+            print(s.id)
+            story_ = Story.objects.get(id=s.id)
+            for s2 in story_.comments.all():
+                if s2.author_id == user.id:
+                    comment_list.append(s2.id)
+            if story_.likes.filter(id=user.id).exists():
+                like_list.append(s.id)
+
+        print(like_list)
+        print(comment_list)
+        form = CommentForm()
         # Adds our results list to the template context under name pages.
+        context_dict['stories'] = stories
         context_dict['page_list'] = pages
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['division'] = division
+        context_dict['like_list']= like_list
+        context_dict['comment_list']= comment_list
+        context_dict['form']= form
     except Division.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.

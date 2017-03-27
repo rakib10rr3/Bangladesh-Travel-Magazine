@@ -54,6 +54,7 @@ def desti(instance, filename):
 
 class Story(models.Model):
     user = models.ForeignKey(User)
+    story_division=models.ForeignKey(Division)
     story_page = models.ForeignKey(Place)
     type_name = models.ForeignKey(Type)
     title_name = models.CharField(max_length=100)
@@ -64,6 +65,10 @@ class Story(models.Model):
     likes = models.ManyToManyField(User, related_name='likes')
     def give_me_page(self):
         return self.story_page
+    def give_me_div(self):
+        return self.story_page.division
+
+
 
     def get_absolute_url(self):
         return reverse('story_detail', args=[str(self.id)])

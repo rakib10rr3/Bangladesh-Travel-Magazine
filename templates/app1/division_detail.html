@@ -18,6 +18,158 @@
         {% if division %}
             <h1>{{ division.title }}</h1>
 
+
+
+    {# story show begins #}
+    {% if stories %}
+
+        <div class="gp-center">
+            <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+        </div>
+
+        <div class="container-fluid gp-container-normal">
+
+        {% for obj in stories %}
+
+            <div class="gp-div-post-full">
+
+                {% if obj.stories.all.exists %}
+
+                    <div class="gp-slide-show">
+                        <div class="gp-slide-shadow"></div>
+                        <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                             data-ride="carousel">
+                            <!-- Wrapper for slides -->
+
+                            <div class="carousel-inner" role="listbox">
+
+                                {% for obj2 in  obj.stories.all %}
+                                    <div class="item {% if forloop.first %}active{% endif %}">
+                                        <img class="card-img-top gp-card-img" src="{{ obj2.file.url }}">
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <!-- Left and right controls -->
+                            <a class="left carousel-control" id="gp-carousel-control"
+                               href="#myCarousel{{ forloop.counter }}"
+                               role="button"
+                               data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" id="gp-carousel-control"
+                               href="#myCarousel{{ forloop.counter }}"
+                               role="button"
+                               data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    {#                    {% else %}#}
+                    {#                        <p class="gp-post-no-image-text">No images shared by <strong>{{ obj.user }}</strong>.</p>#}
+                {% endif %}
+
+                <div class="gp-desc">
+                    <h4 class="card-title">{{ obj.title_name }}</h4>
+                    <p class="card-text-date">{{ obj.created_date }}</p>
+                    <p class="card-text-author">Tour by <a
+                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
+                        <strong>{{ obj.member }}</strong> members.</p>
+                    <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
+                    <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
+                    <p class="card-text">
+                        {% if obj.des|length > 50 %}
+                            {{ obj.des|linebreaks|safe|truncatewords:"50" }}
+                            <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
+                        {% else %}
+                            {{ obj.des|linebreaks|safe }}
+                        {% endif %}
+
+                    </p>
+                </div>
+                <div class="gp-util-bar">
+                    <div class="gp-div-half">
+                        <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
+                            <span id="gp-like-logo-{{ obj.id }}"
+                                  class="glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}"></span>
+                            <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
+                        </a>
+                    </div>
+                    <div class="gp-div-half">
+                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                    </div>
+                </div>
+
+                <!-- Comment show start -->
+                <div class="gp-comment-group">
+                    <div class="gp-total-comments">
+                        <a onclick="toggleDiv(this,{{ forloop.counter }})" class="gp-flat-link">
+                            Total {{ obj.comments.count }} comments.
+                        </a>
+                    </div>
+
+                    <div id="{{ forloop.counter }}">
+                        {% for comment in obj.comments.all %}
+                            <div class="gp-comment">
+                                <p class="gp-username"><a
+                                        href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
+                                </p>
+                                <p class="gp-date">{{ comment.created_date }}</p>
+                                <p class="gp-content">{{ comment.text }}</p>
+
+                                {% if comment.id in comment_list %}
+                                    <div class="bg-margin-top-10">
+                                        <button class="btn btn-danger"
+                                                onclick="del_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
+                                            Delete
+                                        </button>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Comment show end -->
+
+
+                    <!-- Adding a comment part start -->
+
+                    <form id="add_comment{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
+                          class="gp-form-story-comment">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" rows="1" id="text{{ forloop.counter }}" maxlength="1000"
+                                      name="text" required=""></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-default" onclick="commentDiv({{ forloop.counter }})">
+                            Give Comment
+                        </button>
+                    </form>
+
+                    <!-- Adding-Comment part end -->
+                </div>
+            </div>
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="jumbotron gp-jumbotron">
+            <h1>Sorry no stories Shared yet!</h1>
+        </div>
+    {% endif %}
+
+{# story show Ends #}
+
+
+
+
+
+
+            {# division trend show begin #}
             {% if page_list %}
                 {% for page in page_list %}
 
@@ -76,11 +228,130 @@
             {% else %}
                 <h1 class="gp-page-title">No place currently in this Division.</h1>
             {% endif %}
+            {# division trend show end #}
         {% else %}
             <h1 class="gp-page-title error ">The division  does not exist!</h1>
         {% endif %}
 
     </div>
+
+    <script type="text/javascript">
+
+
+    function give_answer(divId) {
+
+        alert("Created a New Comment");
+        $("#answer_form" + divId).on('submit', function (event) {
+            event.preventDefault();
+            console.log('imran hossain ');
+            var element = $(this);
+            element.off('submit');
+            var obj_id = element.attr("data-id");
+            $.ajax({
+                url: '/Home/save_answer/',
+                type: 'POST',
+                data: {
+                    text: $('.text').val(),
+                    q_id: obj_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#qa" + divId).load(" #qa" + divId);
+                    $('.text').val("");
+
+                }
+            });
+
+
+        });
+    }
+    function toggleDiv(element, divId) {
+        $("#" + divId).slideToggle();
+        {#            $(element).slideUp();#}
+    }
+
+    function del_comment(divId, CommentId) {
+        $.ajax({
+            url: '/Home/del_comment/',
+            type: 'POST',
+            data: {
+                comment_id: CommentId,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function () {
+                // alert("Created a New Comment");
+                $("#" + divId).load(" #" + divId);
+            }
+        });
+
+    }
+
+
+    function commentDiv(formId) {
+
+        $("#add_comment" + formId).on('submit', function (event) {
+
+            event.preventDefault();
+            var element = $(this);
+            element.off('submit');
+            var _id = element.attr("data-id");
+            $.ajax({
+                url: '/Home/add_comment/',
+                type: 'POST',
+                data: {
+                    text: $('#text' + formId).val(),
+                    story_id: _id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#" + formId).load(" #" + formId);
+                }
+            });
+        });
+    }
+
+    $('a.gp-like-button').on('click', function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var _id = element.attr("data-id");
+        var likeBtn = '#gp-like-logo-' + _id;
+        var totalLikeTxt = '#gp-total-like-' + _id;
+        $.ajax({
+            url: '/Home/like',
+            type: 'GET',
+            data: {obj_id: _id},
+            dataType: "json",
+            success: function (response) {
+
+                if (response.isLiked == true) {
+                    $(likeBtn).removeClass("glyphicon-heart-empty");
+                    $(likeBtn).addClass("glyphicon-heart");
+
+                } else {
+                    $(likeBtn).removeClass("glyphicon-heart");
+                    $(likeBtn).addClass("glyphicon-heart-empty");
+                }
+                $(totalLikeTxt).html(response.totalLikes);
+            }
+        });
+    });
+
+
+</script>
+
+
+
+
+
+
+
+
+
 {% endblock %}
+
+
+
 
 <!-- creating custom change list -->

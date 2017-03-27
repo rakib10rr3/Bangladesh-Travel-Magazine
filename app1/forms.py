@@ -31,8 +31,9 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('story_page','title_name', 'member', 'budget', 'type_name', 'des')
+        fields = ('story_division','story_page','title_name', 'member', 'budget', 'type_name', 'des')
         help_texts = {
+            'story_division': 'Select a division',
             'story_page': 'Select a page',
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
