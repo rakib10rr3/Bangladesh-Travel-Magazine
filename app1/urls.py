@@ -22,11 +22,12 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^Forum/$', views.forum, name='forum'),
+    url(r'^forum/$', views.forum, name='forum'),
     url(r'^save_question/$', views.save_question, name='save_question'),
     url(r'^save_answer/(?P<q_id>\d+)$', views.save_answer, name='save_answer'),
     url(r'^like/$', views.like, name='like'),
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
+
     url(r'^story_edit/(?P<story_id>\d+)/$', views.story_edit, name='story_edit'),
     url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),

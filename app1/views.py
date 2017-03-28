@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question,Answer
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question
 
 try:
     from django.utils import simplejson as json
@@ -15,7 +15,7 @@ except ImportError:
 def index(request):
     if request.user.is_authenticated:
         page_list = Place.objects.order_by('-views')[:3]
-        recent_story=Story.objects.order_by('-created_date')[:5]
+        recent_story = Story.objects.order_by('-created_date')[:5]
         question_list = Question.objects.order_by('-created')[:5]
         q_form = QuestionForm()
         a_form = AnswerForm()
@@ -55,14 +55,16 @@ def index(request):
     else:
         return render(request, 'app1/index_default.html',
                       {})
+
+
 @login_required
 def forum(request):
     question_list = Question.objects.order_by('-created')[:5]
     q_form = QuestionForm()
     a_form = AnswerForm()
     return render(request, 'app1/forum.html',
-                  { 'q_form': q_form,
-                          'a_form': a_form,'question_list': question_list})
+                  {'q_form': q_form,
+                   'a_form': a_form, 'question_list': question_list})
 
 
 @login_required
@@ -79,7 +81,7 @@ def division_detail(request, division_name_slug):
         # Note that filter returns >= 1 model instance.
 
         pages = Place.objects.filter(division=division).order_by('-views')
-        stories=Story.objects.filter(story_division=division).order_by('-created_date')[:5]
+        stories = Story.objects.filter(story_division=division).order_by('-created_date')[:5]
         user = request.user
         # storyByThisUser = stories.likes.filter(id=user.id)
         print(user.id)
@@ -105,9 +107,9 @@ def division_detail(request, division_name_slug):
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['division'] = division
-        context_dict['like_list']= like_list
-        context_dict['comment_list']= comment_list
-        context_dict['form']= form
+        context_dict['like_list'] = like_list
+        context_dict['comment_list'] = comment_list
+        context_dict['form'] = form
     except Division.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
@@ -115,12 +117,14 @@ def division_detail(request, division_name_slug):
     # Go render the response and return it to the client.
     return render(request, 'app1/division_detail.html', context_dict)
 
+
 @login_required
 def track_url(request, page_id):
     what = Place.objects.get(id=page_id)
     what.views += 1
     what.save()
     return
+
 
 @login_required
 def add_page(request):
@@ -139,6 +143,7 @@ def add_page(request):
 
     context_dict = {'form': form, }
     return render(request, 'app1/add_page.html', context_dict)
+
 
 @login_required
 def view_profile(request, user_name):
@@ -195,6 +200,7 @@ def view_profile(request, user_name):
                       'tour_list': tour_list,
                   })
 
+
 @login_required
 def image_redirect(request, context_dict):
     division = context_dict['division']
@@ -205,6 +211,7 @@ def image_redirect(request, context_dict):
     story_obj_id = story_obj.id
 
     return redirect('image_share', division, page, story_obj_id)
+
 
 @login_required
 def image_share(request, story_id):
@@ -238,6 +245,7 @@ def image_share(request, story_id):
     context_dict2 = {'form': form, 'story_obj': story, 'page': page}
     return render(request, 'app1/image_upload.html', context_dict2)
 
+
 @login_required
 def like(request):
     story_id = request.GET.get('obj_id', None)
@@ -261,6 +269,7 @@ def like(request):
     }
     return HttpResponse(json.dumps(jsonData), content_type='application/json')
 
+
 @login_required
 def image_delete(request, story_id, value_id):
     obj = Picture.objects.get(pk=value_id)
@@ -269,6 +278,7 @@ def image_delete(request, story_id, value_id):
     page = story.give_me_page()
     context_dict = {'story_id': story_id, 'page': page}
     return redirect('image_share', story_id)
+
 
 @login_required
 def add_comment(request):
@@ -285,6 +295,7 @@ def add_comment(request):
         )
         return HttpResponse('')
 
+
 @login_required
 def comment_delete(request):
     if request.method == 'POST':
@@ -299,7 +310,6 @@ def comment_delete(request):
 # sssssssssssssssssssssssssssssssssssssssssssssssssssss
 @login_required
 def story_share(request):
-
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -319,6 +329,7 @@ def story_share(request):
         form = storyForm()
     context_dict = {'form': form}
     return render(request, 'app1/story_share.html', context_dict)
+
 
 @login_required
 def story(request, division_name_slug, page_id):
@@ -357,6 +368,7 @@ def story(request, division_name_slug, page_id):
                       'form': form
                   })
 
+
 @login_required
 def story_detail(request, story_id):
     story = Story.objects.get(pk=story_id)
@@ -369,13 +381,15 @@ def story_detail(request, story_id):
     like_list = []
     if story.likes.filter(id=user.id).exists():
         like_list.append(story.id)
-    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list,'comment_list': comment_list})
+    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list, 'comment_list': comment_list})
+
 
 @login_required
 def story_delete(request, story_id):
     story = Story.objects.get(id=story_id)
     story.delete()
     return redirect('user_profile', request.user.username)
+
 
 @login_required
 def save_question(request):
@@ -390,6 +404,7 @@ def save_question(request):
             print(form.errors)
 
     return redirect('forum')
+
 
 @login_required
 def save_answer(request, q_id):
@@ -407,6 +422,7 @@ def save_answer(request, q_id):
             print(form.errors)
     return redirect('index')
 
+
 @login_required
 def story_edit(request, story_id):
     story = Story.objects.get(id=story_id)
@@ -421,4 +437,9 @@ def story_edit(request, story_id):
         form = storyForm(instance=story)
     return render(request, 'app1/story_edit.html', {'form': form})
 
- # custom change list creating -_-
+    # custom change list creating -_-
+
+
+def about(request):
+    return render(request, 'app1/about.html',
+                  {})
