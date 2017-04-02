@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 
-
 class Division(models.Model):
     title = models.CharField(max_length=10, unique=True)
     views = models.IntegerField(default=0)
@@ -19,8 +18,10 @@ class Division(models.Model):
     def __str__(self):
         return self.title
 
+
 class Type(models.Model):
-    type_name = models.CharField(max_length=10,null=True)
+    type_name = models.CharField(max_length=10, null=True)
+
     def __str__(self):
         return self.type_name
 
@@ -31,7 +32,8 @@ class Place(models.Model):
     slug = models.SlugField()
     # description field
     des = models.TextField(max_length=500, blank=False)
-    division = models.ForeignKey(Division,related_name='places')
+    division = models.ForeignKey(Division, related_name='places')
+
     # changing default save method to save slug field
     def save(self, *args, **kwargs):
         # Uncomment if you don't want the slug to change every time the name changes
@@ -54,7 +56,7 @@ def desti(instance, filename):
 
 class Story(models.Model):
     user = models.ForeignKey(User)
-    story_division=models.ForeignKey(Division)
+    story_division = models.ForeignKey(Division)
     story_page = models.ForeignKey(Place)
     type_name = models.ForeignKey(Type)
     title_name = models.CharField(max_length=100)
@@ -63,18 +65,18 @@ class Story(models.Model):
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
+
     def give_me_page(self):
         return self.story_page
+
     def give_me_div(self):
         return self.story_page.division
-
-
 
     def get_absolute_url(self):
         return reverse('story_detail', args=[str(self.id)])
 
     def __str__(self):
-            return self.title_name
+        return self.title_name
 
     @property
     def total_likes(self):
@@ -92,6 +94,13 @@ class Story(models.Model):
         else:
             return False
 
+    @property
+    def is_user_story(self, user_id):
+        if self.filter(id=user_id).exists():
+            return True
+        else:
+            return False
+
 
 class Picture(models.Model):
     """This is a small demo using just two fields. The slug field is really not
@@ -104,6 +113,9 @@ class Picture(models.Model):
     story = models.ForeignKey(Story, related_name='stories')
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
+
+
+
 
     def __str__(self):
         return self.user.username + "->" + self.page.name
@@ -120,8 +132,6 @@ class Picture(models.Model):
         """delete -- Remove to leave file."""
         self.file.delete(False)
         super(Picture, self).delete(*args, **kwargs)
-
-
 
 
 # user class
@@ -157,6 +167,7 @@ class Comment(models.Model):
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     approved_comment = models.BooleanField(default=False)
+
     @property
     def is_user_comment(self, user_id):
         if self.filter(id=user_id).exists():
@@ -173,20 +184,31 @@ class Comment(models.Model):
         return self.text
 
 
-
 class Question(models.Model):
-    author=models.ForeignKey(User)
-    question=models.TextField(max_length=500)
-    created=models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User)
+    question = models.TextField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return  self.question
+        return self.question
+
+
+
 
 class Answer(models.Model):
-    answered_by=models.ForeignKey(User)
-    answer_of=models.ForeignKey(Question,related_name='answers')
-    text=models.TextField(max_length=500)
-    created=models.DateTimeField(auto_now_add=True)
+    answered_by = models.ForeignKey(User)
+    answer_of = models.ForeignKey(Question, related_name='answers')
+    text = models.TextField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.text
 
- # custom change list creating -_-
+    @property
+    def is_user_answer(self, user_id):
+        if self.filter(id=user_id).exists():
+            return True
+        else:
+            return False
+
+

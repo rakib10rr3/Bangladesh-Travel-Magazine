@@ -80,6 +80,7 @@
             <ul class="nav navbar-nav gp-navbar-nav">
                 {% if user.is_authenticated %}
 
+                     <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Divisions
@@ -110,6 +111,7 @@
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li><a href="{% url 'registration_register' %}?next={{ request.path }}">Register Here</a></li>
                     <li><a href="{% url 'auth_login' %}?next={{ request.path }}">Login</a></li>
+
                 {% endif %}
             </ul>
         </div>

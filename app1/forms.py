@@ -52,6 +52,14 @@ class storyForm(forms.ModelForm):
             'type_name': Select(attrs={'class': 'form-control'}),
             'des': Textarea(attrs={'class': 'form-control'}),
         }
+    def __init__(self, *args, **kwargs):
+        super(storyForm, self).__init__(*args, **kwargs)
+        instance = kwargs.get('id_story_division')
+        print(instance)
+        if instance:
+            self.fields['story_page'].queryset = Place.objects.filter(division=instance.story_division)
+
+
 
 
 class ProfileForm(forms.ModelForm):

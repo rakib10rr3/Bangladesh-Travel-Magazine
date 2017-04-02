@@ -164,6 +164,7 @@ def view_profile(request, user_name):
                 gender=request.POST['gender'],
                 country=request.POST['country']
             )
+            result_.save()
             print('Result: ' + str(result_))
 
     # =====================================================
@@ -190,8 +191,8 @@ def view_profile(request, user_name):
         user_info['country'] = user_pro_info[0].get('country')
 
     tour_list = Story.objects.filter(user=the_user)
-
     print(tour_list)
+
 
     return render(request, 'app1/profile.html',
                   {
@@ -307,6 +308,8 @@ def comment_delete(request):
 
 
 # sssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+
 @login_required
 def story_share(request):
     if request.method == 'POST':

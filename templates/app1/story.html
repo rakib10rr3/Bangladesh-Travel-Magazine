@@ -18,6 +18,12 @@
 
         {% for obj in stories %}
 
+           {% if obj.is_user_story %}
+
+
+           {% endif %}
+
+
             <div class="gp-div-post-full">
 
                 {% if obj.stories.all.exists %}
