@@ -441,6 +441,18 @@ def story_edit(request, story_id):
 
     # custom change list creating -_-
 
+def search(request):
+    if request.method == "POST":
+        txt=request.POST.get("place")
+        print(txt)
+        if txt =='':
+            return redirect('index')
+        place=Place.objects.filter(name__contains=txt)
+        return render(request, 'app1/search_result.html', {'place': place})
+
+
+    # custom change
+
 
 def about(request):
     return render(request, 'app1/about.html',

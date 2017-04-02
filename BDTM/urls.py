@@ -27,12 +27,12 @@ urlpatterns = [
     # url(r'^upload/', include('fileupload.urls')),
 
     url(r'^admin/', admin.site.urls),
-
     # url(r'^$', include('app1.urls')),
     # url(r'^Home/', include('app1.urls')),
 
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^about/$', views.about, name='about'),
+    url(r'^search/$', views.search, name='search'),
 
     url(r'^forum/$', views.forum, name='forum'),
     url(r'^$', views.index, name='index'),  # Replace

@@ -27,7 +27,7 @@ class Type(models.Model):
 
 
 class Place(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.TextField(max_length=50, unique=True)
     views = models.IntegerField(default=0)
     slug = models.SlugField()
     # description field
@@ -41,6 +41,8 @@ class Place(models.Model):
         # self.slug = slugify(self.name)
         self.slug = slugify(self.name)
         super(Place, self).save(*args, **kwargs)
+    def give_me_div_slug(self):
+        return self.division.slug
 
     def __str__(self):
         return self.name
@@ -136,7 +138,6 @@ class Picture(models.Model):
 
 # user class
 
-
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     # comes up with some basic attributes(username,passward,email)
@@ -159,8 +160,6 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     def __str__(self):
         return self.display_name
-
-
 class Comment(models.Model):
     story = models.ForeignKey(Story, related_name='comments')
     author = models.ForeignKey(User)
@@ -183,7 +182,6 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
-
 class Question(models.Model):
     author = models.ForeignKey(User)
     question = models.TextField(max_length=500)
@@ -191,9 +189,6 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question
-
-
-
 
 class Answer(models.Model):
     answered_by = models.ForeignKey(User)
