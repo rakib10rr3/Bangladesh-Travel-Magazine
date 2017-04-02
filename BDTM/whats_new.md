@@ -18,14 +18,16 @@
     
     
 # Design completed
-    - Share Story
+    - Share Story [C]
     - Upload Image
-    - index (without login)
-    - index
-    - Add Place
+    - index (without login) [C]
+    - index [C]
+    - Add Place [C]
     - Division Details
     - Story list
-    - single story
+    - single story [C]
     - login
     - logout
-    - profile
+    - Reset Password [C]
+    - profile [C]
+    - forum [C]

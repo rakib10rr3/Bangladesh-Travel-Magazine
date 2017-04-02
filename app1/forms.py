@@ -24,6 +24,7 @@ class PageForm(forms.ModelForm):
         # Widgets Name: https://docs.djangoproject.com/en/dev/ref/forms/widgets/
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
+            'division': Select(attrs={'class': 'form-control'}),
             'des': Textarea(attrs={'class': 'form-control'}),
         }
 
@@ -33,8 +34,8 @@ class storyForm(forms.ModelForm):
         model = Story
         fields = ('story_division','story_page','title_name', 'member', 'budget', 'type_name', 'des')
         help_texts = {
-            'story_division': 'Select a division',
-            'story_page': 'Select a page',
+            'story_division': 'Select a Division',
+            'story_page': 'Select a Place',
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
             'budget': 'What was Your budget ?',
@@ -42,6 +43,8 @@ class storyForm(forms.ModelForm):
             'des': 'How was your travel?',
         }
         widgets = {
+            'story_division': Select(attrs={'class': 'form-control'}),
+            'story_page': Select(attrs={'class': 'form-control'}),
             'title_name': TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'Awesome title!'}),
             'member': NumberInput(attrs={'class': 'form-control'}),

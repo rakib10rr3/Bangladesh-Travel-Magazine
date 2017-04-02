@@ -18,17 +18,55 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from app1 import views
 
 urlpatterns = [
-    #url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
-    #url(r'^upload/', include('fileupload.urls')),
+    # url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
+    # url(r'^upload/', include('fileupload.urls')),
+
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('app1.urls')),
-    url(r'^Home/', include('app1.urls')),
+
+    # url(r'^$', include('app1.urls')),
+    # url(r'^Home/', include('app1.urls')),
+
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^about/$', views.about, name='about'),
+
+    url(r'^forum/$', views.forum, name='forum'),
+    url(r'^$', views.index, name='index'),  # Replace
+
+    # -------
+
+    url(r'^save_question/$', views.save_question, name='save_question'),
+    url(r'^save_answer/(?P<q_id>\d+)$', views.save_answer, name='save_answer'),
+    url(r'^like/$', views.like, name='like'),
+    url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
+
+    url(r'^story_edit/(?P<story_id>\d+)/$', views.story_edit, name='story_edit'),
+    url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
+    url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
+    url(r'^add_comment/$', views.add_comment, name='add_comment'),
+
+    # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
+
+    url(r'^story_share/$', views.story_share, name='story_share'),
+
+    url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
+
+    url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
+
+    url(r'^Division/add_page/$', views.add_page, name='add_page'),
+
+    url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_id>\d+)/$', views.story, name='story'),  # New!
+
+
+    # New!
+    url(r'^Story/(?P<story_id>\d+)/image_share/$', views.image_share, name='image_share'),  # New!
+    url(r'^Story/(?P<story_id>\d+)/image_delete/(?P<value_id>\d+)$', views.image_delete, name='delete_pic'),
 
 ]
 

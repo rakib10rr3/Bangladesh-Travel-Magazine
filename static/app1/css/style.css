@@ -22,7 +22,7 @@ body.gp-body {
     padding: 20px 0 20px 0;
 }
 
-.bg-margin-top-10 {
+.gp-margin-top-10 {
     margin-top: 10px;
 }
 
@@ -71,10 +71,66 @@ Index Page
     /*border-bottom: 16px solid #009688;*/
     border-left: 2px solid #009688;
     border-right: 2px solid #009688;
+    overflow: auto;
+}
+
+.gp-side-panel .gp-carousel .item .gp-card-img {
+    height: 150px;
+}
+
+.gp-side-panel div.gp-div-post-summery {
+    border-top: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.gp-side-panel div.gp-div-post-summery:first-child {
+    margin-top: 0;
+}
+
+.gp-side-panel .gp-desc .card-text {
+    font-size: 15px;
+    margin: 0;
+}
+
+.gp-side-panel .gp-slide-shadow {
+    text-align: center;
+    height: auto;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%);
+}
+
+.gp-side-panel .gp-slide-shadow h4 {
+    margin-top: 15px;
+    margin-bottom: 2px;
+}
+
+.gp-side-panel .gp-slide-shadow h4 a {
+    color: #fff;
+}
+
+.gp-side-panel .gp-slide-shadow p {
+    margin: 0 0 5px;
+    color: #fff;
+}
+
+.gp-side-panel .gp-bottom-btn-panel {
+    background: transparent;
+    text-align: center;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.gp-side-panel .gp-bottom-btn-panel .btn {
+    border-radius: 50px;
+}
+
+.gp-side-panel .gp-bottom-radius {
+    border-radius: 0 0 5px 5px;
 }
 
 .gp-side-panel-form {
-    padding: 0 10px 20px;
+    padding: 0 10px 15px;
 }
 
 .gp-side-panel-content {
@@ -95,7 +151,6 @@ Index Page
     padding: 0;
     background: #fff;
     margin: 0 0 10px;
-    /*border-radius: 5px;*/
 }
 
 .gp-ques-ans-panel-block:first-child {
@@ -405,6 +460,10 @@ div.gp-jumbotron {
     border-radius: 3px;
     font-size: 18px;
     font-weight: bold;
+}
+
+.gp-jumbotron.gp-danger {
+    background-color: #FF5252;
 }
 
 div.gp-jumbotron h1 {

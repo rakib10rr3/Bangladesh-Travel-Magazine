@@ -4,6 +4,7 @@
     <div class="jumbotron gp-jumbotron">
         <h1>{{ user.username }}</h1>
     </div>
+
     <div class="container-fluid gp-container-normal">
         <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
             <li class="active"><a data-toggle="tab" href="#user">User Information</a></li>
@@ -32,7 +33,7 @@
                         <input id="display_name" type="text" class="form-control gp-editable" name="display_name"
                                placeholder="Display Name"
                                value="{{ user_info.display_name }}"
-                               disabled>
+                               disabled required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
@@ -67,33 +68,40 @@
                 </form>
             </div>
 
-              <h3> <a href="{% url 'story_share' %}"><span class="glyphicon glyphicon-plus"></span>Story</a></h3>
             <div id="tour" class="tab-pane fade gp-tab-pane">
                 <div class="list-group gp-list-group-tour">
-                    {% for obj in tour_list %}
+                    {% if obj.count > 0 %}
+                        {% for obj in tour_list %}
 
-                        <div class="gp-profile-story-list-item">
+                            <div class="gp-profile-story-list-item">
                             <span class="gp-text-title"><a
                                     href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                            <span class="gp-text-date">{{ obj.created_date }}</span>
-                            <div class="gp-margin-top-10">
-                                <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">Delete</a>
-                                <a href="{% url 'image_share' obj.id %}" class="btn btn-toolbar"><span class="glyphicon glyphicon-plus"></span>Image</a>
-                                 <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <span class="gp-text-date">{{ obj.created_date }}</span>
+                                <div class="gp-margin-top-10">
+                                    <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span>
+                                        Delete</a>
+                                    <a href="{% url 'image_share' obj.id %}" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Image</a>
+                                    <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="gp-profile-story-list-item">
+                            <div class="gp-center">
+                                You have no story shared!
                             </div>
                         </div>
-
-                    {% endfor %}
+                    {% endif %}
                 </div>
-            </div>
-
-
             </div>
 
 
         </div>
 
+
     </div>
+
 
 
 

@@ -166,7 +166,7 @@ def view_profile(request, user_name):
             )
             print('Result: ' + str(result_))
 
-    # user = request.user
+    # =====================================================
 
     the_user = User.objects.filter(username=user_name)
 
@@ -219,7 +219,6 @@ def image_share(request, story_id):
     # page_ob = context_dict['story_page']
     # page_id = page_ob.id
     # page = Place.objects.get(id=page_id)
-
 
     story = Story.objects.get(id=story_id)
 
@@ -420,7 +419,7 @@ def save_answer(request, q_id):
             # probably better to use a redirect here.
         else:
             print(form.errors)
-    return redirect('index')
+    return redirect('forum')
 
 
 @login_required

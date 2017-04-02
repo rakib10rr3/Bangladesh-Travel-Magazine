@@ -109,7 +109,7 @@
 
                                 {% if comment.id in comment_list %}
                                     <div class="bg-margin-top-10">
-                                        <button class="btn btn-danger" onclick="del_comment( {{ forloop.parentloop.counter}}, {{comment.id }})">
+                                        <button class="btn btn-danger" onclick="del_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
                                             Delete
                                         </button>
                                     </div>
@@ -126,14 +126,15 @@
                     <form id="add_comment{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
                           class="gp-form-story-comment">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <textarea class="form-control" rows="1" id="text{{ forloop.counter }}" maxlength="1000"
-                                      name="text" required=""></textarea>
-                        </div>
 
-                        <button type="submit" class="btn btn-default" onclick="commentDiv({{ forloop.counter }})">
-                            Give Comment
-                        </button>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="text{{ forloop.counter }}" maxlength="1000" name="text" required>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="commentDiv({{ forloop.counter }})" type="submit">
+                                    <i class="glyphicon glyphicon-send"></i>
+                                </button>
+                            </div>
+                        </div>
                     </form>
 
                     <!-- Adding-Comment part end -->
@@ -144,16 +145,18 @@
 
     {% else %}
 
-        <div class="jumbotron gp-jumbotron">
+        <div class="jumbotron gp-jumbotron gp-danger">
             <h1>Sorry no stories Shared yet!</h1>
         </div>
     {% endif %}
 
     {# story show Ends #}
-
-    <div class="gp-center">
-        <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+    <div class="container-fluid gp-container-normal">
+        <div class="gp-center">
+            <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+        </div>
     </div>
+
     <script>
 
         function toggleDiv(element, divId) {
@@ -161,19 +164,19 @@
             {#            $(element).slideUp();#}
         }
 
-        function del_comment(divId,CommentId){
-             $.ajax({
-                    url: '/Home/del_comment/',
-                    type: 'POST',
-                    data: {
-                        comment_id: CommentId,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function () {
-                        // alert("Created a New Comment");
-                        $("#" + divId).load(" #" + divId);
-                    }
-                });
+        function del_comment(divId, CommentId) {
+            $.ajax({
+                url: '{% url 'comment_delete' %}',
+                type: 'POST',
+                data: {
+                    comment_id: CommentId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#" + divId).load(" #" + divId);
+                }
+            });
 
         }
 
@@ -187,7 +190,7 @@
                 element.off('submit');
                 var _id = element.attr("data-id");
                 $.ajax({
-                    url: '/Home/add_comment/',
+                    url: '{% url 'add_comment' %}',
                     type: 'POST',
                     data: {
                         text: $('#text' + formId).val(),
@@ -209,7 +212,7 @@
             var likeBtn = '#gp-like-logo-' + _id;
             var totalLikeTxt = '#gp-total-like-' + _id;
             $.ajax({
-                url: '/Home/like',
+                url: '{% url 'like' %}',
                 type: 'GET',
                 data: {obj_id: _id},
                 dataType: "json",

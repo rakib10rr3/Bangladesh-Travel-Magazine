@@ -8,7 +8,6 @@
 
             <div class="container gp-div-post-full">
 
-
                 {% if obj.stories.all.exists %}
 
                     <div class="gp-slide-show">
@@ -53,9 +52,11 @@
                     <p class="card-text-author">Tour by <a
                             href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
                         <strong>{{ obj.member }}</strong> members.</p>
-                    <p><strong>Budget:</strong>{{ obj.budget }}</p>
-                    <p><strong>Type:</strong>{{ obj.type_name }}</p>
-                    <p class="card-text">{{ obj.des }}</p>
+                    <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
+                    <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
+                    <p class="card-text">
+                        {{ obj.des|linebreaks|safe }}
+                    </p>
                 </div>
                 <div class="gp-util-bar">
                     <div class="gp-div-half">
@@ -92,7 +93,7 @@
                                 <p class="gp-content">{{ comment.text }}</p>
                                 {% if comment.id in comment_list %}
                                     <div class="bg-margin-top-10">
-                                       <button class="btn btn-danger" onclick="del_comment( {{ 1}}, {{comment.id }})">
+                                        <button class="btn btn-danger" onclick="del_comment( {{ 1 }}, {{ comment.id }})">
                                             Delete
                                         </button>
                                     </div>
@@ -108,22 +109,16 @@
                     <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form-story-comment">
                         {% csrf_token %}
 
-                        <div class="form-group">
-                            <textarea class="form-control text" rows="1" maxlength="1000" name="text"
-                                      required=""></textarea>
+                        <div class="input-group">
+                            <input class="form-control text" maxlength="1000" type="text" name="text" required>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="commentDiv()" type="submit">
+                                    <i class="glyphicon glyphicon-send"></i>
+                                </button>
+                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-default" onclick="commentDiv()">
-                            Give Comment
-                        </button>
                     </form>
-
-                    {#                    <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form">#}
-                    {#                        {% csrf_token %}#}
-                    {#                        <textarea cols="40" rows="1" class="text" maxlength="1000" name="text" required=""></textarea>#}
-                    {##}
-                    {#                        <button type="submit" class="btn btn-default" onclick="commentDiv()">Asq Question</button>#}
-                    {#                    </form>#}
 
                     <!-- Adding-Comment part end -->
 
@@ -147,19 +142,19 @@
         }
 
 
-        function del_comment(divId,CommentId){
-             $.ajax({
-                    url: '/Home/del_comment/',
-                    type: 'POST',
-                    data: {
-                        comment_id: CommentId,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function () {
-                        // alert("Created a New Comment");
-                        $("#" + divId).load(" #" + divId);
-                    }
-                });
+        function del_comment(divId, CommentId) {
+            $.ajax({
+                url: '{% url 'comment_delete' %}',
+                type: 'POST',
+                data: {
+                    comment_id: CommentId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#" + divId).load(" #" + divId);
+                }
+            });
 
         }
 
@@ -171,12 +166,12 @@
                 element.off('submit');
                 var _id = element.attr("data-id");
                 $.ajax({
-                    url: '/Home/add_comment/',
+                    url: '{% url 'add_comment' %}',
                     type: 'POST',
                     data: {
                         text: $('.text').val(),
                         story_id: _id,
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
                         // alert("Created a New Comment");
@@ -202,7 +197,7 @@
             var totalLikeTxt = '#gp-total-like-' + _id;
 
             $.ajax({
-                url: '/Home/like',
+                url: '{% url 'like' %}',
                 type: 'GET',
                 data: {obj_id: _id},
                 dataType: "json",

@@ -4,13 +4,12 @@
 {% block body_block %}
 
     <div class="jumbotron gp-jumbotron">
-        <h1>Add a Place to <a href="/app1/{{ division.slug }}/"> {{ division.title }}</a>
-            division</h1>
+        <h1>Add a Place!</h1>
     </div>
 
     <div class="container-fluid gp-container-normal">
 
-        <form class="gp-form" role="form" id="page_form" method="post" action="/Home/Division/add_page/"
+        <form class="gp-form" role="form" id="page_form" method="post" action="{% url 'add_page' %}"
               enctype="multipart/form-data">
 
             {% csrf_token %}
@@ -24,7 +23,7 @@
                     {{ field.errors }}
                 </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit" name="submit">Add Place</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Add Place</button>
 
         </form>
 
