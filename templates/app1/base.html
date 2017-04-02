@@ -80,7 +80,7 @@
             <ul class="nav navbar-nav gp-navbar-nav">
                 {% if user.is_authenticated %}
 
-                     <a href="{% url 'story_share' %}" class="btn btn-lg btn-primary">Share Your Tour Story</a>
+
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Divisions
@@ -106,6 +106,9 @@
                     <li><a href="{% url 'forum' %}">Community</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                    {% if request.user.is_superuser %}
+                        <li><a href="/admin">Super_admin</a></li>
+                    {% endif %}
 
                 {% else %}
                     <li><a href="{% url 'index' %}">Home</a></li>

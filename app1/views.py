@@ -190,10 +190,10 @@ def view_profile(request, user_name):
             0].get('birth_date')
         user_info['country'] = user_pro_info[0].get('country')
 
+
+    print(the_user)
     tour_list = Story.objects.filter(user=the_user)
     print(tour_list)
-
-
     return render(request, 'app1/profile.html',
                   {
                       'the_user': the_user[0],

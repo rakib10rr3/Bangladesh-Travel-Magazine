@@ -1,131 +1,143 @@
 {% extends 'app1/base.html' %}
 
 {% block body_block %}
-    <div class="jumbotron gp-jumbotron">
-        <h1>{{ user.username }}</h1>
-    </div>
+<div class="jumbotron gp-jumbotron">
+    <h1>{{ user.username }}</h1>
+</div>
 
-    <div class="container-fluid gp-container-normal">
-        <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#user">User Information</a></li>
-            <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
-        </ul>
+<div class="container-fluid gp-container-normal">
+    <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#user">User Information</a></li>
+        <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
+    </ul>
 
-        <div class="tab-content gp-narrow-width gp-tab-content">
-            <div id="user" class="tab-pane fade in active gp-tab-pane">
-                <form method="post" action=".">
+    <div class="tab-content gp-narrow-width gp-tab-content">
+        <div id="user" class="tab-pane fade in active gp-tab-pane">
+            <form method="post" action=".">
 
-                    {% csrf_token %}
+                {% csrf_token %}
 
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="Username"
-                               value="{{ the_user.username }}" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input id="email" type="text" class="form-control" name="email" placeholder="Email"
-                               value="{{ the_user.email }}" disabled>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="display_name">Display Name</label>
-                        <input id="display_name" type="text" class="form-control gp-editable" name="display_name"
-                               placeholder="Display Name"
-                               value="{{ user_info.display_name }}"
-                               disabled required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select class="form-control gp-editable" id="gender" name="gender" disabled>
-                            <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected
-                            </option>
-                            <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
-                            <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="birth_date">Birth Date</label>
-                        <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date"
-                               value="{{ user_info.birth_date }}" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input id="country" type="text" class="form-control gp-editable" name="country"
-                               value="{{ user_info.country }}"
-                               placeholder="Your Country"
-                               disabled>
-                    </div>
-
-                    {% if the_user == request.user %}
-                        <div class="gp-button-panel">
-                            <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
-                            <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
-                            <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
-                        </div>
-                    {% endif %}
-
-                </form>
-            </div>
-
-            <div id="tour" class="tab-pane fade gp-tab-pane">
-                <div class="list-group gp-list-group-tour">
-                    {% if obj.count > 0 %}
-                        {% for obj in tour_list %}
-
-                            <div class="gp-profile-story-list-item">
-                            <span class="gp-text-title"><a
-                                    href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
-                                <span class="gp-text-date">{{ obj.created_date }}</span>
-                                <div class="gp-margin-top-10">
-                                    <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span>
-                                        Delete</a>
-                                    <a href="{% url 'image_share' obj.id %}" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Image</a>
-                                    <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                </div>
-                            </div>
-
-                        {% endfor %}
-                    {% else %}
-                        <div class="gp-profile-story-list-item">
-                            <div class="gp-center">
-                                You have no story shared!
-                            </div>
-                        </div>
-                    {% endif %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" class="form-control" name="username" placeholder="Username"
+                           value="{{ the_user.username }}" disabled>
                 </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input id="email" type="text" class="form-control" name="email" placeholder="Email"
+                           value="{{ the_user.email }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="display_name">Display Name</label>
+                    <input id="display_name" type="text" class="form-control gp-editable" name="display_name"
+                           placeholder="Display Name"
+                           value="{{ user_info.display_name }}"
+                           disabled required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="form-control gp-editable" id="gender" name="gender" disabled>
+                        <option value="N" {% if user_info.gender == 'N' %} selected {% endif %}>No Gender Selected
+                        </option>
+                        <option value="M" {% if user_info.gender == 'M' %} selected {% endif %}>Male</option>
+                        <option value="F" {% if user_info.gender == 'F' %} selected {% endif %}>Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="birth_date">Birth Date</label>
+                    <input id="birth_date" type="date" class="form-control gp-editable" name="birth_date"
+                           value="{{ user_info.birth_date }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input id="country" type="text" class="form-control gp-editable" name="country"
+                           value="{{ user_info.country }}"
+                           placeholder="Your Country"
+                           disabled>
+                </div>
+
+                {% if the_user == request.user %}
+                    <div class="gp-button-panel">
+                        <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
+                        <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
+                        <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
+                    </div>
+                {% endif %}
+
+            </form>
+        </div>
+
+        <div id="tour" class="tab-pane fade gp-tab-pane">
+
+
+            <h1><a href="{% url 'story_share' %}" class="">
+            <span class="glyphicon glyphicon-tree-conifer"></span>
+            Share Your Tour Story
+            <span class="glyphicon glyphicon-tree-deciduous"></span>
+        </a>
+        </h1>
+
+            <div class="list-group gp-list-group-tour">
+                {% if tour_list.count > 0  %}
+                    {% for obj in tour_list %}
+
+                    <div class="gp-profile-story-list-item">
+                    <span class="gp-text-title"><a
+                            href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                    <span class="gp-text-date">{{ obj.created_date }}</span>
+                    {% if  the_user == request.user %}
+                    <div class="gp-margin-top-10">
+                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger"><span
+                                class="glyphicon glyphicon-remove-sign"></span>
+                            Delete</a>
+                        <a href="{% url 'image_share' obj.id %}" class="btn btn-default"><span
+                                class="glyphicon glyphicon-picture"></span> Image</a>
+                        <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span
+                                class="glyphicon glyphicon-pencil"></span></a>
+                    </div>
+                {% endif %}
+                </div>
+
+                {% endfor %}
+                {% else %}
+                <div class="gp-profile-story-list-item">
+                    <div class="gp-center">
+                        You have no story shared!
+                    </div>
+                </div>
+                {% endif %}
             </div>
-
-
         </div>
 
 
     </div>
 
 
+</div>
 
 
-    <script>
-        $(function () {
-            $("a#gp-btn-change").click(function (element) {
-                element.preventDefault();
+<script>
+    $(function () {
+        $("a#gp-btn-change").click(function (element) {
+            element.preventDefault();
 
-                if ($(".gp-editable").is(":disabled")) {
+            if ($(".gp-editable").is(":disabled")) {
 
-                    $(".gp-editable").prop("disabled", false);
-                    $("input[type=submit]").slideDown();
-                    $(this).text("Cancel");
+                $(".gp-editable").prop("disabled", false);
+                $("input[type=submit]").slideDown();
+                $(this).text("Cancel");
 
-                } else {
+            } else {
 
-                    $(".gp-editable").prop("disabled", true);
-                    $("input[type=submit]").slideUp();
-                    $(this).text("Change Profile");
-                }
+                $(".gp-editable").prop("disabled", true);
+                $("input[type=submit]").slideUp();
+                $(this).text("Change Profile");
+            }
 
-            });
         });
-    </script>
+    });
+</script>
 
 {% endblock %}
 
