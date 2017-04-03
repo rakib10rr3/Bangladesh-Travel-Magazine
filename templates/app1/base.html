@@ -65,7 +65,7 @@
 {#gp-fill#}
 {#{% endif %}#}
 
-<nav class="navbar navbar-default navbar-fixed-top gp-navbar" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top gp-navbar" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -81,7 +81,7 @@
                 {% if user.is_authenticated %}
 
 
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'index' %}"><i class="glyphicon glyphicon-home"></i></a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Divisions
                             <span class="caret"></span></a>
@@ -107,7 +107,7 @@
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                     {% if request.user.is_superuser %}
-                        <li><a href="/admin">Super_admin</a></li>
+                        <li><a href="/admin"><i class="glyphicon glyphicon-cog"></i></a></li>
                     {% endif %}
                     <form class="navbar-form navbar-left" method="post" action="{% url 'search' %}">{% csrf_token %}
                         <div class="input-group">

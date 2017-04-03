@@ -3,14 +3,12 @@
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
         <p>Welcome {{ user.username }}!</p>
-        {#    <div class="gp-center">#}
         <h1><a href="{% url 'story_share' %}" class="">
             <span class="glyphicon glyphicon-tree-conifer"></span>
             Share Your Tour Story
             <span class="glyphicon glyphicon-tree-deciduous"></span>
         </a>
         </h1>
-        {#    </div>#}
     </div>
 
     <div class=" container-fluid gp-container-normal">
@@ -28,7 +26,7 @@
 
                                 <div class="gp-slide-show">
                                     <div class="gp-slide-shadow"></div>
-                                    <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                                    <div id="storyCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
                                          data-ride="carousel">
                                         <!-- Wrapper for slides -->
 
@@ -43,14 +41,14 @@
                                         </div>
                                         <!-- Left and right controls -->
                                         <a class="left carousel-control" id="gp-carousel-control"
-                                           href="#myCarousel{{ forloop.counter }}"
+                                           href="#storyCarousel{{ forloop.counter }}"
                                            role="button"
                                            data-slide="prev">
                                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                                             <span class="sr-only">Previous</span>
                                         </a>
                                         <a class="right carousel-control" id="gp-carousel-control"
-                                           href="#myCarousel{{ forloop.counter }}"
+                                           href="#storyCarousel{{ forloop.counter }}"
                                            role="button"
                                            data-slide="next">
                                             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
@@ -161,6 +159,26 @@
             {# ------------------------------------------------------------ #}
 
             <div class="col-sm-4 gp-side-panel-container">
+
+                <div class="gp-side-panel">
+                    <div class="gp-side-panel-title">
+                        View stories form
+                    </div>
+
+                    <div class="gp-side-panel-content">
+                        <ul class="gp-side-panel-list">
+                            <li><a href="{% url 'division_detail' "dhaka" %}">Dhaka</a></li>
+                            <li><a href="{% url 'division_detail' "chittagong" %}">Chittagong</a></li>
+                            <li><a href="{% url 'division_detail' "rajshahi" %}">Rajshahi</a></li>
+                            <li><a href="{% url 'division_detail' "sylhet" %}">Sylhet</a></li>
+                            <li><a href="{% url 'division_detail' "khulna" %}">Khulna</a></li>
+                            <li><a href="{% url 'division_detail' "barisal" %}">Barisal</a></li>
+                            <li><a href="{% url 'division_detail' "rangpur" %}">Rangpur</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
 
                 <div class="gp-side-panel">
                     <div class="gp-side-panel-title">

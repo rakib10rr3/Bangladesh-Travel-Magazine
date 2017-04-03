@@ -190,7 +190,6 @@ def view_profile(request, user_name):
             0].get('birth_date')
         user_info['country'] = user_pro_info[0].get('country')
 
-
     print(the_user)
     tour_list = Story.objects.filter(user=the_user)
     print(tour_list)
@@ -305,9 +304,6 @@ def comment_delete(request):
         print(comment)
         comment.delete()
         return HttpResponse('')
-
-
-# sssssssssssssssssssssssssssssssssssssssssssssssssssss
 
 
 @login_required
@@ -441,17 +437,22 @@ def story_edit(request, story_id):
 
     # custom change list creating -_-
 
+
 def search(request):
     if request.method == "POST":
-        txt=request.POST.get("place")
+        txt = request.POST.get("place")
         print(txt)
-        if txt =='':
+        if txt == '':
             return redirect('index')
-        place=Place.objects.filter(name__contains=txt)
-        return render(request, 'app1/search_result.html', {'place': place})
+        place = Place.objects.filter(name__contains=txt)
+        return render(request, 'app1/search_result.html',
+                      {
+                          'place': place,
+                          'query': txt
+                      })
 
 
-    # custom change
+        # custom change
 
 
 def about(request):

@@ -1,13 +1,33 @@
 {% extends 'app1/base.html' %}
 
 {% block body_block %}
-    {% if place.count %}
-        {% for obj in place %}
-            View All Stories Shared in  <a href="{% url 'story' obj.give_me_div_slug obj.id %}">{{ obj }}</a>
-        {% endfor %}
-    {% else %}
-        <p>Sorry No result Found</p>
-        <a href="{% url 'add_page' %}" >ADD a Page</a>
-    {% endif %}
+
+    <div class="jumbotron gp-jumbotron">
+        <h1>Search result for "{{ query }}"</h1>
+    </div>
+
+    <div class=" container-fluid gp-container-normal">
+        {% if place.count %}
+
+            <ul class="gp-list-search-result">
+                {% for obj in place %}
+                    <a href="{% url 'story' obj.give_me_div_slug obj.id %}">
+                        <li>
+                            <p class="gp-title">{{ obj }}, {{ obj.division }}</p>
+                            <p class="gp-desc">{{ obj.des }}</p>
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <div class="alert alert-danger">
+                <strong>Sorry!</strong> No result Found!
+            </div>
+            <div class="gp-center">
+                <a class="btn btn-lg btn-primary" href="{% url 'add_page' %}">Add a new Place</a>
+            </div>
+        {% endif %}
+    </div>
 
 {% endblock %}

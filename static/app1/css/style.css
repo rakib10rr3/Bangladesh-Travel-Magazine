@@ -1,3 +1,7 @@
+/*
+http://getbootstrap.com/customize/?id=f391bc59dda7003f34c12024b8b959bc
+ */
+
 /**
 Common
  */
@@ -31,8 +35,8 @@ body.gp-body {
  */
 
 nav.gp-navbar {
-    background-color: #095855;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    /*background-color: #095855;*/
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, .2);
 }
 
 .gp-navbar .nav {
@@ -204,12 +208,76 @@ Index Page
     font-size: 12px;
 }
 
+/******************/
+.gp-side-panel-list {
+    list-style: none;
+    background: #fff;
+    margin: 0;
+    padding: 5px 0;
+    font-size: 18px;
+}
+
+.gp-side-panel-list a {
+    padding: 3px 5px;
+    text-align: center;
+    display: block;
+}
+
+.gp-side-panel-list a:hover {
+    text-decoration: none;
+    background: #eee;
+    color: #00695C;
+}
+
+/**
+Search
+ */
+.gp-list-search-result {
+    padding: 0;
+}
+
+.gp-list-search-result a:hover {
+    text-decoration: none;
+}
+
+.gp-list-search-result a:hover li {
+    background: #eee;
+    border-radius: 10px;
+}
+
+.gp-list-search-result li {
+    font-size: 20px;
+    list-style: none;
+    margin: 5px 0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: all .2s ease-in-out;
+}
+
+.gp-list-search-result .gp-title {
+    margin: 0 0 5px;
+    font-weight: bold;
+}
+
+.gp-list-search-result .gp-desc {
+    text-align: left;
+    font-size: 16px;
+    color: #888;
+    padding: 0;
+}
+
+
+
 /**
  * Common type style
  */
 
 .gp-center {
     text-align: center;
+}
+
+.gp-border-bottom {
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
 }
 
 html, body, p, a, li, div {
@@ -486,8 +554,7 @@ div.gp-jumbotron a:hover {
 Profile page
  */
 .gp-button-panel {
-    margin: 10px 0;
-
+    padding: 10px 0;
 }
 
 .gp-tab-pane {

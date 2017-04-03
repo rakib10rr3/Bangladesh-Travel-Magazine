@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=4bfc3050e1c0eb954197a2a1272d092d)
- * Config saved to config.json and https://gist.github.com/4bfc3050e1c0eb954197a2a1272d092d
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=f391bc59dda7003f34c12024b8b959bc)
+ * Config saved to config.json and https://gist.github.com/f391bc59dda7003f34c12024b8b959bc
  */
 if (typeof jQuery === 'undefined') {
     throw new Error('Bootstrap\'s JavaScript requires jQuery')
@@ -796,7 +796,8 @@ if (typeof jQuery === 'undefined') {
             .off('focusin.bs.modal') // guard against infinite focus loop
             .on('focusin.bs.modal', $.proxy(function (e) {
                 if (document !== e.target &&
-                    this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+                    this.$element[0] !== e.target &&
+                    !this.$element.has(e.target).length) {
                     this.$element.trigger('focus')
                 }
             }, this))

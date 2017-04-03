@@ -59,14 +59,14 @@ urlpatterns = [
 
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
 
-    url(r'^Division/add_page/$', views.add_page, name='add_page'),
+    url(r'^division/add_page/$', views.add_page, name='add_page'),
 
     url(r'^(?P<division_name_slug>[\w\-]+)/(?P<page_id>\d+)/$', views.story, name='story'),  # New!
 
 
     # New!
-    url(r'^Story/(?P<story_id>\d+)/image_share/$', views.image_share, name='image_share'),  # New!
-    url(r'^Story/(?P<story_id>\d+)/image_delete/(?P<value_id>\d+)$', views.image_delete, name='delete_pic'),
+    url(r'^story/(?P<story_id>\d+)/image_share/$', views.image_share, name='image_share'),  # New!
+    url(r'^story/(?P<story_id>\d+)/image_delete/(?P<value_id>\d+)$', views.image_delete, name='delete_pic'),
 
 ]
 
