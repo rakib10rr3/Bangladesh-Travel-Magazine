@@ -19,7 +19,7 @@ class PageForm(forms.ModelForm):
         help_texts = {
             'name': 'Place Name',
             'division': 'Select A Division',
-            'des': 'Whats the place About',
+            'des': 'One line description about the place',
         }
         # Widgets Name: https://docs.djangoproject.com/en/dev/ref/forms/widgets/
         widgets = {

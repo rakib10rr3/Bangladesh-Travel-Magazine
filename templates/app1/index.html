@@ -279,6 +279,8 @@
                                     <div class="gp-ques-block">
                                         <h2 class="gp-ques-title">{{ obj.question }}</h2>
                                         <p class="gp-ques-date">{{ obj.created }}</p>
+                                        <p class="card-text-author">Asked by <a href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
+
                                     </div>
 
                                     {# ========Answer loop============= #}
@@ -290,6 +292,7 @@
 
                                             {% for obj2 in obj.answers.all %}
                                                 <div class="gp-ques-ans-block">
+                                                <h4><a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a></h4>
                                                     <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
                                                     <p class="gp-ques-ans-date">{{ obj2.created }}</p>
                                                 </div>

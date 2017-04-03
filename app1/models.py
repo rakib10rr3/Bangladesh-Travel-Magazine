@@ -31,7 +31,7 @@ class Place(models.Model):
     views = models.IntegerField(default=0)
     slug = models.SlugField()
     # description field
-    des = models.TextField(max_length=500, blank=False)
+    des = models.TextField(max_length=100, blank=False)
     division = models.ForeignKey(Division, related_name='places')
 
     # changing default save method to save slug field
