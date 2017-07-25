@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 
 class Division(models.Model):
@@ -54,7 +55,9 @@ class Place(models.Model):
 # upload destination for images
 def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
-
+# upload destination for images
+def user_desti(instance, filename):
+    return "%s/%s" % (instance.display_name,filename)
 
 class Story(models.Model):
     user = models.ForeignKey(User)
@@ -115,10 +118,6 @@ class Picture(models.Model):
     story = models.ForeignKey(Story, related_name='stories')
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
-
-
-
-
     def __str__(self):
         return self.user.username + "->" + self.page.name
 
@@ -144,7 +143,8 @@ class UserProfile(models.Model):
     # user = models.OneToOneField(User)
     user = models.OneToOneField(User)
     display_name = models.TextField(max_length=100, default='')
-    birth_date = models.DateTimeField(blank=True, null=True)
+    birth_date = models.DateField(blank=True, null=True)
+    image = models.ImageField(upload_to=user_desti,blank=True)
     GENDER_TYPE = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -160,25 +160,35 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     def __str__(self):
         return self.display_name
+
+# here is the profile model
+
+def user_post_save(sender, instance, created, **kwargs):
+    """Create a user profile when a new user account is created"""
+    if created == True:
+        p = UserProfile()
+        p.user = instance
+        p.save()
+
+post_save.connect(user_post_save, sender=User)
+
+
 class Comment(models.Model):
     story = models.ForeignKey(Story, related_name='comments')
     author = models.ForeignKey(User)
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     approved_comment = models.BooleanField(default=False)
-
     @property
     def is_user_comment(self, user_id):
         if self.filter(id=user_id).exists():
             return True
         else:
             return False
-
     @property
     def approve(self):
         self.approved_comment = True
         self.save()
-
     def __str__(self):
         return self.text
 
@@ -186,7 +196,6 @@ class Question(models.Model):
     author = models.ForeignKey(User)
     question = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return self.question
 

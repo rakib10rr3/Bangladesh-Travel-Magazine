@@ -1,30 +1,18 @@
 {% extends 'app1/base.html' %}
 
+{% load i18n staticfiles %}
+
+{% block title %}Adding Multiple Files{% endblock %}
 
 {% block body_block %}
-    <div class="jumbotron gp-jumbotron">
-        <h1>Share your experience with others!</h1>
-    </div>
-    <div class="container-fluid gp-container-normal">
-        <form class="gp-form" role="form" id="story_form" method="post" action="." enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    <p class="required">{{ field.help_text }}</p>
-                    {{ field.errors }}
-                    {{ field }}
-                </div>
-            {% endfor %}
-            <input type="file" id="files" name="myfiles" multiple>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-            <output id="result"></output>
+        <input type="file" id="files" name="myfiles" multiple>
+        <button type="submit">{% trans "Save" %}</button>
+        <output id="result"></output>
+    </form>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Share</button>
-        </form>
-    </div>
     <script type="text/javascript">
 
         {#        document.getElementById("files").onchange = function () {#}
@@ -87,5 +75,3 @@
     </script>
 
 {% endblock %}
-
-<!-- creating custom change list -->

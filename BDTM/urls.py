@@ -35,18 +35,27 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
 
     url(r'^forum/$', views.forum, name='forum'),
+
     url(r'^$', views.index, name='index'),  # Replace
 
     # -------
 
     url(r'^save_question/$', views.save_question, name='save_question'),
+
     url(r'^save_answer/(?P<q_id>\d+)$', views.save_answer, name='save_answer'),
+
     url(r'^like/$', views.like, name='like'),
+
+    url(r'^update_userprofile/(?P<user_id>\d+)/$', views.update_userprofile, name='update_userprofile'),    # New! New!
+
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
 
     url(r'^story_edit/(?P<story_id>\d+)/$', views.story_edit, name='story_edit'),
+
     url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
+
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
+
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
 
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
@@ -66,6 +75,9 @@ urlpatterns = [
 
     # New!
     url(r'^story/(?P<story_id>\d+)/image_share/$', views.image_share, name='image_share'),  # New!
+
+    url(r'^story/(?P<story_id>\d+)/image_share_jquery/$', views.image_share_jquery, name='image_share_jquery'),  # New!
+
     url(r'^story/(?P<story_id>\d+)/image_delete/(?P<value_id>\d+)$', views.image_delete, name='delete_pic'),
 
 ]

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User  # for using the User one to one mod
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import PageForm, CommentForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
+from .forms import PageForm, CommentForm,UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question
 
 try:
@@ -145,73 +145,146 @@ def add_page(request):
     return render(request, 'app1/add_page.html', context_dict)
 
 
+# @login_required
+# def view_profile(request, user_name):
+#     if request.method == 'POST':
+#         print(request.POST)
+#         if not UserProfile.objects.filter(user=request.user).exists():
+#             form = ProfileForm(request.POST)
+#             if form.is_valid():
+#                 bet = form.save(commit=False)
+#                 bet.user = request.user
+#                 bet.save()
+#             else:
+#                 print(form.errors)
+#         else:
+#             result_ = UserProfile.objects.filter(user=request.user).update(
+#                 display_name=request.POST['display_name'],
+#                 birth_date=request.POST['birth_date'],
+#                 gender=request.POST['gender'],
+#                 country=request.POST['country']
+#             )
+#             result_.save()
+#             print('Result: ' + str(result_))
+#
+#     # =====================================================
+#
+#     the_user = User.objects.filter(username=user_name)
+#
+#     user_info = {
+#         'display_name': '',
+#         'gender': '',
+#         'birth_date': '',
+#         'country': '',
+#     }
+#
+#     if UserProfile.objects.filter(user=the_user).exists():
+#         user_pro_info = UserProfile.objects.filter(user=the_user).values()
+#         print(user_pro_info[0])
+#         # Just style one.. -_-
+#         user_info['display_name'] = user_pro_info[0]['display_name']
+#         # Just style two.. -_-
+#         user_info['gender'] = user_pro_info[0].get('gender')
+#         user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get(
+#             'birth_date') is None else user_pro_info[
+#             0].get('birth_date')
+#         user_info['country'] = user_pro_info[0].get('country')
+#
+#     print(the_user)
+#     tour_list = Story.objects.filter(user=the_user)
+#     print(tour_list)
+#     return render(request, 'app1/profile.html',
+#                   {
+#                       'the_user': the_user[0],
+#                       'user_info': user_info,
+#                       'tour_list': tour_list,
+#
+#                  })
 @login_required
 def view_profile(request, user_name):
-    if request.method == 'POST':
-        print(request.POST)
-        if not UserProfile.objects.filter(user=request.user).exists():
-            form = ProfileForm(request.POST)
-            if form.is_valid():
-                bet = form.save(commit=False)
-                bet.user = request.user
-                bet.save()
-            else:
-                print(form.errors)
-        else:
-            result_ = UserProfile.objects.filter(user=request.user).update(
-                display_name=request.POST['display_name'],
-                birth_date=request.POST['birth_date'],
-                gender=request.POST['gender'],
-                country=request.POST['country']
-            )
-            result_.save()
-            print('Result: ' + str(result_))
-
-    # =====================================================
+    # if request.method == 'POST':
+    #     print(request.POST)
+    #     if not UserProfile.objects.filter(user=request.user).exists():
+    #         form = ProfileForm(request.POST)
+    #         if form.is_valid():
+    #             bet = form.save(commit=False)
+    #             bet.user = request.user
+    #             bet.save()
+    #         else:
+    #             print(form.errors)
+    #     else:
+    #         result_ = UserProfile.objects.filter(user=request.user).update(
+    #             display_name=request.POST['display_name'],
+    #             birth_date=request.POST['birth_date'],
+    #             gender=request.POST['gender'],
+    #             country=request.POST['country']
+    #         )
+    #         result_.save()
+    #         print('Result: ' + str(result_))
+    #
+    # # =====================================================
 
     the_user = User.objects.filter(username=user_name)
 
-    user_info = {
-        'display_name': '',
-        'gender': '',
-        'birth_date': '',
-        'country': '',
-    }
+    # user_info = {
+    #     'display_name': '',
+    #     'gender': '',
+    #     'birth_date': '',
+    #     'country': '',
+    # }
 
-    if UserProfile.objects.filter(user=the_user).exists():
-        user_pro_info = UserProfile.objects.filter(user=the_user).values()
-        print(user_pro_info[0])
-        # Just style one.. -_-
-        user_info['display_name'] = user_pro_info[0]['display_name']
-        # Just style two.. -_-
-        user_info['gender'] = user_pro_info[0].get('gender')
-        user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get(
-            'birth_date') is None else user_pro_info[
-            0].get('birth_date')
-        user_info['country'] = user_pro_info[0].get('country')
+    # if UserProfile.objects.filter(user=the_user).exists():
+    #     user_pro_info = UserProfile.objects.filter(user=the_user).values()
+    #     print(user_pro_info[0])
+    #     # Just style one.. -_-
+    #     user_info['display_name'] = user_pro_info[0]['display_name']
+    #     # Just style two.. -_-
+    #     user_info['gender'] = user_pro_info[0].get('gender')
+    #     user_info['birth_date'] = user_pro_info[0].get('birth_date').strftime('%Y-%m-%d') if not user_pro_info[0].get(
+    #         'birth_date') is None else user_pro_info[
+    #         0].get('birth_date')
+    #     user_info['country'] = user_pro_info[0].get('country')
 
-    print(the_user)
+    print(the_user[0])
     tour_list = Story.objects.filter(user=the_user)
     print(tour_list)
+
     return render(request, 'app1/profile.html',
                   {
                       'the_user': the_user[0],
-                      'user_info': user_info,
+                      #'user_info': user_info,
                       'tour_list': tour_list,
                   })
+
+
+
+
+@login_required
+
+def update_userprofile(request, user_id):
+    the_user = User.objects.get(id=user_id)
+
+    print(the_user.username)
+    user_profile = UserProfile.objects.get(user_id=the_user)
+    print(user_profile)
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES,instance=user_profile)
+        if form.is_valid():
+            bet = form.save(commit=False)
+            bet.save()
+            return redirect('user_profile', the_user.username)
+    else:
+        form = UserProfileForm(instance=user_profile)
+    return render(request, 'app1/profile_edit.html', {'form': form})
 
 
 @login_required
 def image_redirect(request, context_dict):
     division = context_dict['division']
-
     page = context_dict['page']
-
     story_obj = context_dict['story_obj']
     story_obj_id = story_obj.id
-
     return redirect('image_share', division, page, story_obj_id)
-
 
 @login_required
 def image_share(request, story_id):
@@ -243,6 +316,38 @@ def image_share(request, story_id):
         form = imageForm()
     context_dict2 = {'form': form, 'story_obj': story, 'page': page}
     return render(request, 'app1/image_upload.html', context_dict2)
+
+def image_share_jquery(request,story_id):
+    story = Story.objects.get(id=story_id)
+    page = story.give_me_page()
+    if request.method == "POST":
+        files = request.FILES.getlist('myfiles')
+        for number, a_file in enumerate(files):
+            instance = Picture(
+                user=request.user,
+                page=page,
+                story=story,
+                file=a_file
+            )
+            instance.save()
+        request.session['number_of_files'] = number + 1
+        return redirect('image_share', story_id)
+    else:
+        return render(request, 'app1/add_attachment.html', {})
+
+def image_share_jquery2(request,story_id):
+    story = Story.objects.get(id=story_id)
+    page = story.give_me_page()
+    files = request.FILES.getlist('myfiles')
+    for number, a_file in enumerate(files):
+        instance = Picture(
+            user=request.user,
+            page=page,
+            story=story,
+            file=a_file
+        )
+        instance.save()
+    request.session['number_of_files'] = number + 1
 
 
 @login_required
@@ -320,7 +425,10 @@ def story_share(request):
             context_dict = {'story_id': bet.id, 'page': bet.story_page}
             # return  redirect('image_share',context_dict)
             # return render(request, 'app1/image_upload.html', context_dict)
-            return redirect('image_share', bet.id)
+            #return redirect('image_share', bet.id)
+            #return redirect('image_share_jquery', bet.id)
+            image_share_jquery2(request,bet.id)
+            return redirect('index')
         else:
             print(form.errors)
     else:

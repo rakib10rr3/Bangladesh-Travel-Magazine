@@ -1,0 +1,142 @@
+<div class="jumbotron gp-jumbotron">
+    <h1>Share your experience with others!</h1>
+</div>
+<div class="container-fluid gp-container-normal">
+    <form class="gp-form" role="form" id="story_form" method="post" action="." enctype="multipart/form-data">
+        <input type="hidden" name="csrfmiddlewaretoken"
+               value="6wgPbwuu5B7LyquzKeqCXsgLgMrxpfR7NpNOp9NEL37dwD4AmaBQmMEM2xE8Rap6">
+
+
+        <div class="form-group">
+            <p class="required">Select a Division</p>
+
+            <select class="form-control" id="id_story_division" name="story_division" required="">
+                <option value="" selected="selected">---------</option>
+                <option value="1">Dhaka</option>
+                <option value="2">Chittagong</option>
+                <option value="3">Rajshahi</option>
+                <option value="4">Barisal</option>
+                <option value="5">Sylhet</option>
+                <option value="6">Khulna</option>
+                <option value="7">Rangpur</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <p class="required">Select a Place</p>
+
+            <select class="form-control" id="id_story_page" name="story_page" required="">
+                <option value="" selected="selected">---------</option>
+                <option value="1">IIUC</option>
+                <option value="2">UAP</option>
+                <option value="3">Sajek</option>
+                <option value="4">shaj</option>
+                <option value="5">NSU</option>
+                <option value="7">Saint Martin's Island</option>
+                <option value="8">Jaflong</option>
+                <option value="9">Ratargul swamp forest</option>
+                <option value="10">Cox's Bazar</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <p class="required">Give an Awesome title of the Tour!</p>
+
+            <input class="form-control" id="id_title_name" maxlength="100" name="title_name"
+                   placeholder="Awesome title!" type="text" required="">
+        </div>
+
+        <div class="form-group">
+            <p class="required">How many member traveled with you?</p>
+
+            <input class="form-control" id="id_member" name="member" type="number" value="0" required="">
+        </div>
+
+        <div class="form-group">
+            <p class="required">What was Your budget ?</p>
+
+            <input class="form-control" id="id_budget" maxlength="15" name="budget" type="text" required="">
+        </div>
+
+        <div class="form-group">
+            <p class="required">Please Select a Type</p>
+
+            <select class="form-control" id="id_type_name" name="type_name" required="">
+                <option value="" selected="selected">---------</option>
+                <option value="1">Personal</option>
+                <option value="2">Family</option>
+                <option value="3">Friends</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <p class="required">How was your travel?</p>
+
+            <textarea class="form-control" cols="40" id="id_des" maxlength="5000" name="des" rows="10"
+                      required=""></textarea>
+        </div>
+
+        <input type="file" id="files" name="myfiles" multiple="">
+
+        <output id="result"></output>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Share</button>
+    </form>
+</div>
+<script type="text/javascript">
+
+    {#        document.getElementById("files").onchange = function () {#}
+    {#            var reader = new FileReader();#}
+    {#            reader.onload = function (e) {#}
+    {#                document.getElementById("image").src = e.target.result;#}
+    {#            };#}
+    {#            reader.readAsDataURL(this.files[0]);#}
+    {#        };#}
+    window.onload = function () {
+
+        //Check File API support
+        if (window.File && window.FileList && window.FileReader) {
+            var filesInput = document.getElementById("files");
+
+            filesInput.addEventListener("change", function (event) {
+
+                var files = event.target.files; //FileList object
+                var output = document.getElementById("result");
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+
+                    //Only pics
+                    if (!file.type.match('image'))
+                        continue;
+
+                    var picReader = new FileReader();
+
+                    picReader.addEventListener("load", function (event) {
+
+                        var picFile = event.target;
+
+                        var div = document.createElement("div");
+
+                        div.innerHTML = "<img style='height: 75px; border: 1px solid #000; margin: 5px'  class='thumbnail' src='" + picFile.result + "'" +
+                            "title='" + picFile.name + "'/> <a href='#' class='remove_pict'>X</a>";
+
+                        output.insertBefore(div, null);
+                        div.children[1].addEventListener("click", function (event) {
+                            div.parentNode.removeChild(div);
+                        });
+
+                    });
+
+                    //Read the image
+                    picReader.readAsDataURL(file);
+                }
+
+            });
+        }
+        else {
+            console.log("Your browser does not support File API");
+        }
+    }
+
+</script>

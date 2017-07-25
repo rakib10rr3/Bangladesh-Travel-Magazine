@@ -60,6 +60,18 @@ class storyForm(forms.ModelForm):
             self.fields['story_page'].queryset = Place.objects.filter(division=instance.story_division)
 
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('display_name','birth_date','gender', 'country', 'image')
+        help_texts = {
+            'display_name': 'Display Name',
+            'birth_date': 'Your Birthdate',
+            'gender': 'Gender',
+            'country': 'Country',
+            'image': 'Give an image',
+        }
+
 
 
 class ProfileForm(forms.ModelForm):

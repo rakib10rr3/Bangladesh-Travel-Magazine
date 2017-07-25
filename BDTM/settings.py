@@ -123,6 +123,12 @@ STATICFILES_DIRS = (
 STATIC_PATH,
 )
 
+#The value of this variable is the application name plus
+#the model name separated by a dot
+
+AUTH_PROFILE_MODULE = 'app1.UserProfile'
+
+#for storing media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
