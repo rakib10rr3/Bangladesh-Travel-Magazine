@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     url(r'^search_ques/$', views.search_ques, name='search_ques'),
     url(r'^forum/$', views.forum, name='forum'),
+    url(r'^notifications/$', views.notifications, name='notifications'),
 
     url(r'^$', views.index, name='index'),  # Replace
 

@@ -98,7 +98,7 @@
                             {{ user.username }}
                         </a>
                     </li>
-                    <li><span class="label ts-label-notify">{{ notification_count }}</span></li>
+                    <li><a href="{% url 'notifications' %}"><span class="label ts-label-notify">{{ notification_count }}</span></a></li>
 
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                     {% if request.user.is_superuser %}
@@ -125,8 +125,6 @@
     {% block body_block %}
 
     {% endblock %}
-
-
 </div>
 <div class="footer">
     <div class="ts-footer-menu">
@@ -152,7 +150,7 @@
 
 <![endif]-->
 
-{% block javasript_block %}
+{% block javascript_block %}
 
 {% endblock %}
 

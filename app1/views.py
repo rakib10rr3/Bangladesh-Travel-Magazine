@@ -365,8 +365,13 @@ def like(request):
     if story.likes.filter(id=user.id).exists():
         story.likes.remove(user)
         isLiked = False
+
+        delete_notify_story_new_like(story_id, story.user.id, user.id)
     else:
         story.likes.add(user)
+
+        add_notify_story_new_like(story_id, story.user.id, user.id)
+
     totalLikes = story.total_likes
 
     jsonData = {
@@ -388,28 +393,37 @@ def image_delete(request, story_id, value_id):
 
 @login_required
 def add_comment(request):
-    user = request.user
     if request.method == 'POST':
+        user = request.user
         text = request.POST['text']
         story_id = request.POST['story_id']
         story = Story.objects.get(id=story_id)
         print(story)
-        Comment.objects.create(
+        c = Comment.objects.create(
             text=text,
             story=story,
             author=user
         )
+
+        add_notify_story_new_comment(story.user.id, c.id, user.id)
+
         return HttpResponse('')
 
 
 @login_required
 def comment_delete(request):
     if request.method == 'POST':
+        user = request.user
         comment_id = request.POST['comment_id']
         print(comment_id)
         comment = Comment.objects.get(id=comment_id)
         print(comment)
         comment.delete()
+
+        story_id = comment.story_id
+        story = Story.objects.get(id=story_id)
+        delete_notify_story_new_comment(story.user.id, comment_id, user.id)
+
         return HttpResponse('')
 
 
@@ -525,11 +539,14 @@ def save_answer(request, q_id):
     if request.method == 'POST':
         form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():
-            bet = form.save(commit=False)
-            bet.answered_by = request.user
-            bet.answer_of = question
-            bet.save()
+            ans = form.save(commit=False)
+            ans.answered_by = request.user
+            ans.answer_of = question
+            ans.save()
             # probably better to use a redirect here.
+
+            add_notify_question_new_comment(question.author_id, ans.id, ans.answered_by_id)
+
         else:
             print(form.errors)
     return redirect('forum')
@@ -552,6 +569,7 @@ def story_edit(request, story_id):
     # custom change list creating -_-
 
 
+@login_required
 def search(request):
     if request.method == "POST":
         txt = request.POST.get("place")
@@ -566,6 +584,7 @@ def search(request):
                       })
 
 
+@login_required
 def search_ques(request):
     if request.method == "POST":
         txt = request.POST.get("ques")
@@ -583,25 +602,75 @@ def search_ques(request):
         # custom change
 
 
+def notifications(request):
+    user = request.user
+    n = Notification.objects.filter(recipient_id=user.id).order_by('-date_created')
+
+    # TODO: change to all read!
+    return render(request, 'app1/notifications.html',
+                  {
+                      'notifications': n,
+                  })
+
+
 def about(request):
     return render(request, 'app1/about.html',
                   {})
 
 
-# Utility Functions
+'''
+==================================================
+    Utility Functions for Notification
+==================================================
+'''
+
+
 def add_notification(recipient, sender, notify_from, ref_type, ref_value):
     n = Notification(recipient_id=recipient, sender_id=sender, notify_from=notify_from,
                      ref_type=ref_type, ref_value=ref_value)
     n.save()
 
 
-def add_notify_story_new_comment(story_id, story_author_id, commentator_id):
-    add_notification(story_author_id, commentator_id, "story", "story", story_id)
+def delete_notification(recipient, sender, notify_from, ref_type, ref_value):
+    n = Notification.objects.filter(recipient_id=recipient, sender_id=sender, notify_from=notify_from,
+                                    ref_type=ref_type, ref_value=ref_value)
+    n.delete()
+
+
+'''
+Notification for comment in a Story
+'''
+
+
+def add_notify_story_new_comment(story_author_id, comment_id, commentator_id):
+    if story_author_id != commentator_id:
+        add_notification(story_author_id, commentator_id, "story_cmnt", "comment", comment_id)
+
+
+def delete_notify_story_new_comment(story_author_id, comment_id, commentator_id):
+    if story_author_id != commentator_id:
+        delete_notification(story_author_id, commentator_id, "story_cmnt", "comment", comment_id)
+
+'''
+Notification for like in a Story
+'''
 
 
 def add_notify_story_new_like(story_id, story_author_id, liker_id):
-    add_notification(story_author_id, liker_id, "story", "like", story_id)
+    if story_author_id != liker_id:
+        add_notification(story_author_id, liker_id, "story_like", "story", story_id)
 
 
-def add_notify_question_new_comment(question_id, question_author_id, commentator_id):
-    add_notification(question_author_id, commentator_id, "question", "question", question_id)
+def delete_notify_story_new_like(story_id, story_author_id, liker_id):
+    if story_author_id != liker_id:
+        delete_notification(story_author_id, liker_id, "story_like", "story", story_id)
+
+
+'''
+Notification for comment in a Question (Not Final)
+'''
+
+
+def add_notify_question_new_comment(question_author_id, answer_id, answer_giver_id):
+    if question_author_id != answer_giver_id:
+        add_notification(question_author_id, answer_giver_id, "q_a", "answer", answer_id)

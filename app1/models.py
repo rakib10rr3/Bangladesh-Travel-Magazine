@@ -20,7 +20,8 @@ class Division(models.Model):
     def __str__(self):
         return self.title
 
-#changed
+
+# changed
 class Type(models.Model):
     type_name = models.CharField(max_length=10, null=True)
 
@@ -57,9 +58,12 @@ class Place(models.Model):
 # upload destination for images
 def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
+
+
 # upload destination for images
 def user_desti(instance, filename):
-    return "%s/%s/%s" % ("Profile",instance.display_name,filename)
+    return "%s/%s/%s" % ("Profile", instance.display_name, filename)
+
 
 class Story(models.Model):
     user = models.ForeignKey(User)
@@ -121,9 +125,6 @@ class Picture(models.Model):
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
 
-
-
-
     def __str__(self):
         return self.user.username + "->" + self.page.name
 
@@ -150,7 +151,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     display_name = models.TextField(max_length=100, default='')
     birth_date = models.DateField(blank=True, null=True)
-    image = models.ImageField(upload_to=user_desti,blank=True)
+    image = models.ImageField(upload_to=user_desti, blank=True)
     GENDER_TYPE = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -167,6 +168,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.display_name
 
+
 # here is the profile model
 
 def user_post_save(sender, instance, created, **kwargs):
@@ -175,6 +177,7 @@ def user_post_save(sender, instance, created, **kwargs):
         p = UserProfile()
         p.user = instance
         p.save()
+
 
 post_save.connect(user_post_save, sender=User)
 
@@ -185,16 +188,19 @@ class Comment(models.Model):
     text = models.TextField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
     approved_comment = models.BooleanField(default=False)
+
     @property
     def is_user_comment(self, user_id):
         if self.filter(id=user_id).exists():
             return True
         else:
             return False
+
     @property
     def approve(self):
         self.approved_comment = True
         self.save()
+
     def __str__(self):
         return self.text
 
@@ -203,6 +209,7 @@ class Question(models.Model):
     author = models.ForeignKey(User)
     question = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.question
 
@@ -239,7 +246,7 @@ Added by: Shohag
 Example:
 
 Shohag (sender_id) commented on Imran's (recipient_id) story.
-[from:'story’, ref_type:'story’, ref_value:123(story_id)]
+[from:'story_cmnt’, ref_type:'comment’, ref_value:123(comment_id)]
 
 """
 
@@ -254,6 +261,6 @@ class Notification(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "Notification from "\
-                + self.sender.username + " to "\
-                + self.recipient.username + "."
+        return "Notification from " \
+               + self.sender.username + " to " \
+               + self.recipient.username + "."

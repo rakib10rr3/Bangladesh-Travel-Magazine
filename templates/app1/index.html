@@ -367,119 +367,124 @@
 
     </div>
 
-    {% block javasript_block %}
 
-        <script type="text/javascript">
+{% endblock %}
+
+{% block javascript_block %}
+
+    <script type="text/javascript">
 
 
-            {#        function give_answer(divId) {#}
-            {##}
-            {#            alert("Created a New Comment");#}
-            {#            $("#answer_form" + divId).on('submit', function (event) {#}
-            {#                event.preventDefault();#}
-            {#                console.log('imran hossain ');#}
-            {#                var element = $(this);#}
-            {#                element.off('submit');#}
-            {#                var obj_id = element.attr("data-id");#}
-            {#                $.ajax({#}
-            {#                    url: '/Home/save_answer/',#}
-            {#                    type: 'POST',#}
-            {#                    data: {#}
-            {#                        text: $('.text').val(),#}
-            {#                        q_id: obj_id,#}
-            {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
-            {#                    },#}
-            {#                    success: function () {#}
-            {#                        // alert("Created a New Comment");#}
-            {#                        $("#qa" + divId).load(" #qa" + divId);#}
-            {#                        $('.text').val("");#}
-            {##}
-            {#                    }#}
-            {#                });#}
-            {##}
-            {##}
-            {#            });#}
-            {#        }#}
+        {#        function give_answer(divId) {#}
+        {##}
+        {#            alert("Created a New Comment");#}
+        {#            $("#answer_form" + divId).on('submit', function (event) {#}
+        {#                event.preventDefault();#}
+        {#                console.log('imran hossain ');#}
+        {#                var element = $(this);#}
+        {#                element.off('submit');#}
+        {#                var obj_id = element.attr("data-id");#}
+        {#                $.ajax({#}
+        {#                    url: '/Home/save_answer/',#}
+        {#                    type: 'POST',#}
+        {#                    data: {#}
+        {#                        text: $('.text').val(),#}
+        {#                        q_id: obj_id,#}
+        {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
+        {#                    },#}
+        {#                    success: function () {#}
+        {#                        // alert("Created a New Comment");#}
+        {#                        $("#qa" + divId).load(" #qa" + divId);#}
+        {#                        $('.text').val("");#}
+        {##}
+        {#                    }#}
+        {#                });#}
+        {##}
+        {##}
+        {#            });#}
+        {#        }#}
 
-            function toggleDiv(element, divId) {
-                $("#" + divId).slideToggle();
-                {#            $(element).slideUp();#}
-            }
+        function toggleDiv(element, divId) {
+            $("#" + divId).slideToggle();
+            {#            $(element).slideUp();#}
+        }
 
-            function del_comment(divId, CommentId) {
+        function del_comment(divId, CommentId) {
+            $.ajax({
+                url: '{% url 'comment_delete' %}',
+                type: 'POST',
+                data: {
+                    comment_id: CommentId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#" + divId).load(" #" + divId);
+                }
+            });
+
+        }
+
+
+        function commentDiv(formId) {
+
+            $("#add_comment" + formId).on('submit', function (event) {
+
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var _id = element.attr("data-id");
                 $.ajax({
-                    url: '{% url 'comment_delete' %}',
+                    url: '{% url 'add_comment' %}',
                     type: 'POST',
                     data: {
-                        comment_id: CommentId,
+                        text: $('#text' + formId).val(),
+                        story_id: _id,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
                         // alert("Created a New Comment");
-                        $("#" + divId).load(" #" + divId);
-                    }
-                });
-
-            }
-
-
-            function commentDiv(formId) {
-
-                $("#add_comment" + formId).on('submit', function (event) {
-
-                    event.preventDefault();
-                    var element = $(this);
-                    element.off('submit');
-                    var _id = element.attr("data-id");
-                    $.ajax({
-                        url: '{% url 'add_comment' %}',
-                        type: 'POST',
-                        data: {
-                            text: $('#text' + formId).val(),
-                            story_id: _id,
-                            csrfmiddlewaretoken: '{{ csrf_token }}'
-                        },
-                        success: function () {
-                            // alert("Created a New Comment");
-                            $("#" + formId).load(" #" + formId);
-                        }
-                    });
-                });
-            }
-
-            $('a.gp-like-button').on('click', function (event) {
-                event.preventDefault();
-                var element = $(this);
-                var _id = element.attr("data-id");
-                var likeBtn = '#gp-like-logo-' + _id;
-                var totalLikeTxt = '#gp-total-like-' + _id;
-                $.ajax({
-                    url: '{% url 'like' %}',
-                    type: 'GET',
-                    data: {obj_id: _id},
-                    dataType: "json",
-                    success: function (response) {
-
-                        if (response.isLiked == true) {
-                            $(likeBtn).removeClass("glyphicon-heart-empty");
-                            $(likeBtn).addClass("glyphicon-heart");
-
-                        } else {
-                            $(likeBtn).removeClass("glyphicon-heart");
-                            $(likeBtn).addClass("glyphicon-heart-empty");
-                        }
-                        $(totalLikeTxt).html(response.totalLikes);
+                        $("#" + formId).load(" #" + formId);
                     }
                 });
             });
-            $("#button321").click(function () {
-                $("#item321").toggle();
+        }
+
+        $('a.gp-like-button').on('click', function (event) {
+            event.preventDefault();
+            var element = $(this);
+            var _id = element.attr("data-id");
+            var likeBtn = '#gp-like-logo-' + _id;
+            var totalLikeTxt = '#gp-total-like-' + _id;
+
+            var data = {
+                obj_id: _id
+            };
+
+            $.get('{% url 'like' %}', data, function (response) {
+
+                console.log(response);
+
+                if (response.isLiked == true) {
+                    $(likeBtn).removeClass("glyphicon-heart-empty");
+                    $(likeBtn).addClass("glyphicon-heart");
+
+                } else {
+                    $(likeBtn).removeClass("glyphicon-heart");
+                    $(likeBtn).addClass("glyphicon-heart-empty");
+                }
+                $(totalLikeTxt).html(response.totalLikes);
             });
+        });
 
 
-        </script>
+        $("#button321").click(function () {
+            $("#item321").toggle();
+        });
 
-    {% endblock %}
+
+    </script>
 
 {% endblock %}
+
 

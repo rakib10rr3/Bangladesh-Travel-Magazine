@@ -1,0 +1,51 @@
+{% extends 'app1/base.html' %}
+
+{% block body_block %}
+    <div class="jumbotron gp-jumbotron">
+        <h1>Hay {{ user }}! Your notifications!</h1>
+    </div>
+
+    <div class="container-fluid gp-container-normal">
+
+        {% if notifications %}
+
+            <ul>
+
+                {% for item in notifications %}
+
+                    {#            Shohag (sender_id) commented on Imran's (recipient_id) story. #}
+                    {# [from:'story_cmnt’, ref_type:'comment’, ref_value:123(comment_id)] #}
+
+                    <li>
+
+                        {% if item.notify_from == 'story_like' %}
+
+                            <p><a href="{% url 'story_detail' item.ref_value %}"><strong>{{ item.sender }}</strong> gives a like to your story.</a></p>
+
+                        {% elif item.notify_from == 'story_cmnt' %}
+
+                            <p><a href="#"><strong>{{ item.sender }}</strong> gives a comment to your story.</a></p>
+
+                        {% elif item.notify_from == 'q_a' %}
+
+                            <p><a href="#"><strong>{{ item.sender }}</strong> gives a comment to your question.</a></p>
+
+                        {% endif %}
+
+                        <p>{{ item.date_created }}</p>
+                    </li>
+
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p>You have no notification.</p>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
