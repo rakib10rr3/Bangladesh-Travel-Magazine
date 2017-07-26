@@ -21,6 +21,11 @@
 
                     {% for obj in stories %}
 
+                           {% if  obj.user.userprofile.image  %} <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50"> {% else %}   <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                             height="50">{% endif %}<a
+                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
+
+
                         <div class="gp-div-post-full">
 
                             {% if obj.stories.all.exists %}
@@ -64,9 +69,8 @@
                             <div class="gp-desc">
                                 <h4 class="card-title">{{ obj.title_name }}</h4>
                                 <p class="card-text-date">{{ obj.created_date }}</p>
-                                <p class="card-text-author">Tour by <a
-                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
-                                    <strong>{{ obj.member }}</strong> members.</p>
+
+
                                 <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
                                 <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
                                 <p class="card-text">

@@ -28,6 +28,11 @@
 
                 {% if obj.stories.all.exists %}
 
+                     {% if  obj.user.userprofile.image  %} <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50"> {% else %}   <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                             height="50">{% endif %}<a
+                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
+
+
                     <div class="gp-slide-show">
                         <div class="gp-slide-shadow"></div>
                         <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
