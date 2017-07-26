@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import Textarea, TextInput, NumberInput, FileInput, Select
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms import Textarea, TextInput, NumberInput, FileInput, Select, DateField
 
 from .models import Place, Story, Picture, Comment, UserProfile, Question, Answer
 
@@ -15,7 +16,7 @@ class PageForm(forms.ModelForm):
         # we can either exclude the category field from the form,
         # exclude = ('category',)
         # or specify the fields to include (i.e. not include the category field)
-        fields = ('name','division','des')
+        fields = ('name', 'division', 'des')
         help_texts = {
             'name': 'Place Name',
             'division': 'Select A Division',
@@ -32,7 +33,7 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('story_division','story_page','title_name', 'member', 'budget', 'type_name', 'des')
+        fields = ('story_division', 'story_page', 'title_name', 'member', 'budget', 'type_name', 'des')
         help_texts = {
             'story_division': 'Select a Division',
             'story_page': 'Select a Place',
@@ -52,6 +53,7 @@ class storyForm(forms.ModelForm):
             'type_name': Select(attrs={'class': 'form-control'}),
             'des': Textarea(attrs={'class': 'form-control'}),
         }
+
     def __init__(self, *args, **kwargs):
         super(storyForm, self).__init__(*args, **kwargs)
         instance = kwargs.get('id_story_division')
@@ -60,10 +62,15 @@ class storyForm(forms.ModelForm):
             self.fields['story_page'].queryset = Place.objects.filter(division=instance.story_division)
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('display_name','birth_date','gender', 'country', 'image')
+        fields = ('display_name', 'birth_date', 'gender', 'country', 'image')
+        # birth_date = DateField(widget=AdminDateWidget)
         help_texts = {
             'display_name': 'Display Name',
             'birth_date': 'Your Birthdate',
@@ -71,7 +78,12 @@ class UserProfileForm(forms.ModelForm):
             'country': 'Country',
             'image': 'Give an image',
         }
-#changed
+        widgets = {
+            'birth_date': DateInput(),
+        }
+
+
+# changed
 
 
 class ProfileForm(forms.ModelForm):
@@ -114,4 +126,4 @@ class AnswerForm(forms.ModelForm):
             'text': TextInput(attrs={'class': 'form-control'}),
         }
 
- # custom change list creating -_-
+        # custom change list creating -_-
