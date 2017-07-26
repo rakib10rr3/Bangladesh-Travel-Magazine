@@ -19,7 +19,7 @@ class Division(models.Model):
     def __str__(self):
         return self.title
 
-
+#changed
 class Type(models.Model):
     type_name = models.CharField(max_length=10, null=True)
 

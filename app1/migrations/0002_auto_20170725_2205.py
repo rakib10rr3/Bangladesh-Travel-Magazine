@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 import app1.models
 from django.db import migrations, models
-
-
+#changed
 class Migration(migrations.Migration):
 
     dependencies = [

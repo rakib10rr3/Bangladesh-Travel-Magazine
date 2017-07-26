@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from app1 import views
-
+#changed
 urlpatterns = [
     # url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
     # url(r'^upload/', include('fileupload.urls')),

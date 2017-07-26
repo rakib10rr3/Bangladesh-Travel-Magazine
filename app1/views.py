@@ -260,7 +260,7 @@ def view_profile(request, user_name):
 
 
 @login_required
-
+#changed
 def update_userprofile(request, user_id):
     the_user = User.objects.get(id=user_id)
 

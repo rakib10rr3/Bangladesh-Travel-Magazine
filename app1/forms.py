@@ -71,7 +71,7 @@ class UserProfileForm(forms.ModelForm):
             'country': 'Country',
             'image': 'Give an image',
         }
-
+#changed
 
 
 class ProfileForm(forms.ModelForm):
