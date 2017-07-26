@@ -98,7 +98,17 @@
                     {# <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>#}
 
                     {% if user.is_authenticated %}
+
+                        {% if user.userprofile.image %}
+                          <img src="{{ user.userprofile.image.url }}" class="img-circle" alt="Cinque Terre" width="50"
+                             height="50">
+                        {% else %}
+                            <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                             height="50">
+
+                        {% endif %}
                         <li><a href="{% url 'user_profile' user.username %}">{{ user.username }}</a></li>
+
                     {% endif %}
 
                     {# <li><a href="/admin/">{{ user.username }}</a></li>#}

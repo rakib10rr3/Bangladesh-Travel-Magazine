@@ -57,7 +57,7 @@ def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
 # upload destination for images
 def user_desti(instance, filename):
-    return "%s/%s" % (instance.display_name,filename)
+    return "%s/%s/%s" % ("Profile",instance.display_name,filename)
 
 class Story(models.Model):
     user = models.ForeignKey(User)

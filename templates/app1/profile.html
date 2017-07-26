@@ -4,27 +4,32 @@
 
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
-        <h1>{{ user.username }}</h1>
+        <h1>{{ the_user.username }}</h1>
     </div>
 
     <div class="container-fluid gp-container-normal">
 
-           <div id="user_information ">
-               this is where we shall show a general information page like facebook with hovering pic and all
+        <div id="user_information ">
+            this is where we shall show a general information page like facebook with hovering pic and all
 
-               baki nicher tab gulare ekpashe side navigation bar er moto kore dis
-               <h1 class="alert-info"> Display_name =  {{ the_user.userprofile.display_name }}</h1>
-               <h1 class="alert-info"> Birthdate =     {{ the_user.userprofile.birth_date }}</h1>
-               <h1 class="alert-info"> Gender =  {{ the_user.userprofile.gender }}</h1>
-               <h1 class="alert-info"> Country =  {{ the_user.userprofile.country }}</h1>
+            baki nicher tab gulare ekpashe side navigation bar er moto kore dis
+            <h1 class="alert-info"> Display_name = {{ the_user.userprofile.display_name }}</h1>
+            <h1 class="alert-info"> Birthdate = {{ the_user.userprofile.birth_date }}</h1>
+            <h1 class="alert-info"> Gender = {{ the_user.userprofile.gender }}</h1>
+            <h1 class="alert-info"> Country = {{ the_user.userprofile.country }}</h1>
 
 
-               {% if the_user.userprofile.image %}
-                    <img height="300" width="400" src="{{ the_user.userprofile.image.url }}">
-                {% endif %}
+            {% if the_user.userprofile.image %}
+                <img height="300" width="400" src="{{ the_user.userprofile.image.url }}">
 
-                 <a href="{% url 'update_userprofile' user.id %}" class="btn btn-primary">Edit Your Profile </a>
+            {% else %}
+                <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                     height="50">
 
+            {% endif %}
+            {% if the_user == request.user %}
+                <a href="{% url 'update_userprofile' user.id %}" class="btn btn-primary">Edit Your Profile </a>
+            {% endif %}
         </div>
 
         <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
@@ -32,7 +37,6 @@
             <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
 
         </ul>
-
 
 
         <div class="tab-content gp-narrow-width gp-tab-content ">

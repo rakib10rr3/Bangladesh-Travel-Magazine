@@ -5,45 +5,53 @@
 {% block body_block %}
 
 
-<div class="container-fluid gp-container-normal">
-       <form class="gp-form" role="form" id="story_form" method="post" action="." enctype="multipart/form-data">
-            <input type="hidden" name="csrfmiddlewaretoken" value="ShEarnFjCubI4XqGclfJDbSYj0L3ZLDsB2IOz0OaGFnG4kR7YqaKIFIAjKQJCBiw">
+    <div class="container-fluid gp-container-normal">
+        <form class="gp-form" role="form" id="story_form" method="post" action="." enctype="multipart/form-data">
+           {% csrf_token %}
 
 
-                <div class="form-group">
-                    <p class="required">Display Name</p>
+            <div class="form-group">
+                <p class="required">Display Name</p>
 
-                    <textarea cols="40" id="id_display_name" maxlength="100" name="display_name" rows="10" required="">imran HOssain</textarea>
-                </div>
+                <textarea cols="40" id="id_display_name" maxlength="100" name="display_name" rows="10" required="">imran HOssain</textarea>
+            </div>
 
-                <div class="form-group">
-                    <p class="required">Your Birthdate</p>
+            <div class="form-group">
+                <p class="required">Your Birthdate</p>
 
-                    <input id="id_birth_date" name="birth_date" type="text">
-                </div>
+                <input id="id_birth_date" name="birth_date" type="text">
+            </div>
 
-                <div class="form-group">
-                    <p class="required">Gender</p>
+            <div class="form-group">
+                <p class="required">Gender</p>
 
-                    <select id="id_gender" name="gender">
-<option value="">---------</option>
-<option value="M" selected="selected">Male</option>
-<option value="F">Female</option>
-<option value="N">None</option>
-</select>
-                </div>
+                <select id="id_gender" name="gender">
+                    <option value="">---------</option>
+                    <option value="M" selected="selected">Male</option>
+                    <option value="F">Female</option>
+                    <option value="N">None</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <p class="required">Country</p>
+            <div class="form-group">
+                <p class="required">Country</p>
 
-                    <textarea cols="40" id="id_country" maxlength="50" name="country" rows="10">imran</textarea>
-                </div>
+                <textarea cols="40" id="id_country" maxlength="50" name="country" rows="10">imran</textarea>
+            </div>
 
-                <div class="form-group">
-                    <p class="required">Give an image</p>
+            <div class="form-group">
+                <p class="required">Give an image</p>
 
-                    <input id="id_image" name="image" type="file">
-                </div>
+                <input id="id_image" name="image" type="file">
+            </div>
+            {% if the_user.userprofile.image %}
+            <img height="300" width="400" src="{{ the_user.userprofile.image.url }}">
+
+            {% else %}
+            <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                 height="50">
+            {% endif %}
+
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
         </form>

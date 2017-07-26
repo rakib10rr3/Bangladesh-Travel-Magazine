@@ -275,7 +275,7 @@ def update_userprofile(request, user_id):
             return redirect('user_profile', the_user.username)
     else:
         form = UserProfileForm(instance=user_profile)
-    return render(request, 'app1/profile_edit.html', {'form': form})
+    return render(request, 'app1/profile_edit.html', {'form': form,'the_user':the_user})
 
 
 @login_required
