@@ -2,9 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 from itertools import chain
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification
 
 try:
     from django.utils import simplejson as json
@@ -414,6 +415,9 @@ def comment_delete(request):
 
 @login_required
 def story_share(request):
+    """
+    Add new Story
+    """
     if request.method == 'POST':
         form = storyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -434,6 +438,7 @@ def story_share(request):
             print(form.errors)
     else:
         form = storyForm()
+
     context_dict = {'form': form}
     return render(request, 'app1/story_share.html', context_dict)
 
@@ -581,3 +586,22 @@ def search_ques(request):
 def about(request):
     return render(request, 'app1/about.html',
                   {})
+
+
+# Utility Functions
+def add_notification(recipient, sender, notify_from, ref_type, ref_value):
+    n = Notification(recipient_id=recipient, sender_id=sender, notify_from=notify_from,
+                     ref_type=ref_type, ref_value=ref_value)
+    n.save()
+
+
+def add_notify_story_new_comment(story_id, story_author_id, commentator_id):
+    add_notification(story_author_id, commentator_id, "story", "story", story_id)
+
+
+def add_notify_story_new_like(story_id, story_author_id, liker_id):
+    add_notification(story_author_id, liker_id, "story", "like", story_id)
+
+
+def add_notify_question_new_comment(question_id, question_author_id, commentator_id):
+    add_notification(question_author_id, commentator_id, "question", "question", question_id)

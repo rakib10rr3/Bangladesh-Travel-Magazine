@@ -101,7 +101,7 @@
                             <form class="xyz-form" role="form" method="post" action="{% url "login" %}">
                                 {% csrf_token %}
 
-                                {#                                <h1 class="gp-page-title">Please Log in</h1>#}
+
 
                                 <div class="form-group">
                                     <label for="id_username">Your Username</label>
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-
+{% block javasript_block %}
 
     <script>
         $(function () {
@@ -171,6 +171,9 @@
             });
         });
     </script>
+
+
+{% endblock %}
 
 {% endblock %}
 

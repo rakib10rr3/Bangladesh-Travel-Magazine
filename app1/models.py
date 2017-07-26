@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 
+
 class Division(models.Model):
     title = models.CharField(max_length=10, unique=True)
     views = models.IntegerField(default=0)
@@ -42,6 +43,7 @@ class Place(models.Model):
         # self.slug = slugify(self.name)
         self.slug = slugify(self.name)
         super(Place, self).save(*args, **kwargs)
+
     def give_me_div_slug(self):
         return self.division.slug
 
@@ -118,6 +120,10 @@ class Picture(models.Model):
     story = models.ForeignKey(Story, related_name='stories')
     file = models.ImageField(upload_to=desti)
     slug = models.SlugField(max_length=50, blank=True)
+
+
+
+
     def __str__(self):
         return self.user.username + "->" + self.page.name
 
@@ -192,12 +198,14 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
+
 class Question(models.Model):
     author = models.ForeignKey(User)
     question = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.question
+
 
 class Answer(models.Model):
     answered_by = models.ForeignKey(User)
@@ -216,3 +224,36 @@ class Answer(models.Model):
             return False
 
 
+"""
+Added by: Shohag
+----------------------------
+- id
+- User (recipient_id)
+- User (sender_id)
+- unread: (true/false)
+- from (story, community, admin)
+- ref_type (story, question)
+- ref_value (story_id, question_id)
+- created_at
+
+Example:
+
+Shohag (sender_id) commented on Imran's (recipient_id) story.
+[from:'story’, ref_type:'story’, ref_value:123(story_id)]
+
+"""
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, related_name="recipient")
+    sender = models.ForeignKey(User, related_name="sender")
+    unread = models.BooleanField(default=True)
+    notify_from = models.TextField(max_length=50)
+    ref_type = models.TextField(max_length=50)
+    ref_value = models.TextField(max_length=50)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Notification from "\
+                + self.sender.username + " to "\
+                + self.recipient.username + "."

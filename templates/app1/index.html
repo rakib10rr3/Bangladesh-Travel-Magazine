@@ -5,7 +5,7 @@
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
         <p>Welcome {{ user.username }}!</p>
-        <h1><a  href="{% url 'story_share' %}" class="">
+        <h1><a href="{% url 'story_share' %}" class="">
             <span class="glyphicon glyphicon-tree-conifer"></span>
             Share Your Tour Story
             <span class="glyphicon glyphicon-tree-deciduous"></span>
@@ -21,9 +21,12 @@
 
                     {% for obj in stories %}
 
-                           {% if  obj.user.userprofile.image  %} <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50"> {% else %}   <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
-                             height="50">{% endif %}<a
-                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
+                        {% if  obj.user.userprofile.image %}
+                            <img src="{{ obj.user.userprofile.image.url }}" alt="{{ obj.user }}" width="50" height="50">
+                        {% else %}
+                            <img src="/media/default-placeholder.png" class="img-circle" alt="{{ obj.user }}" width="50" height="50">
+                        {% endif %}
+                        <a href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
 
 
                         <div class="gp-div-post-full">
@@ -364,120 +367,119 @@
 
     </div>
 
-    <script type="text/javascript">
+    {% block javasript_block %}
+
+        <script type="text/javascript">
 
 
-        {#        function give_answer(divId) {#}
-        {##}
-        {#            alert("Created a New Comment");#}
-        {#            $("#answer_form" + divId).on('submit', function (event) {#}
-        {#                event.preventDefault();#}
-        {#                console.log('imran hossain ');#}
-        {#                var element = $(this);#}
-        {#                element.off('submit');#}
-        {#                var obj_id = element.attr("data-id");#}
-        {#                $.ajax({#}
-        {#                    url: '/Home/save_answer/',#}
-        {#                    type: 'POST',#}
-        {#                    data: {#}
-        {#                        text: $('.text').val(),#}
-        {#                        q_id: obj_id,#}
-        {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
-        {#                    },#}
-        {#                    success: function () {#}
-        {#                        // alert("Created a New Comment");#}
-        {#                        $("#qa" + divId).load(" #qa" + divId);#}
-        {#                        $('.text').val("");#}
-        {##}
-        {#                    }#}
-        {#                });#}
-        {##}
-        {##}
-        {#            });#}
-        {#        }#}
+            {#        function give_answer(divId) {#}
+            {##}
+            {#            alert("Created a New Comment");#}
+            {#            $("#answer_form" + divId).on('submit', function (event) {#}
+            {#                event.preventDefault();#}
+            {#                console.log('imran hossain ');#}
+            {#                var element = $(this);#}
+            {#                element.off('submit');#}
+            {#                var obj_id = element.attr("data-id");#}
+            {#                $.ajax({#}
+            {#                    url: '/Home/save_answer/',#}
+            {#                    type: 'POST',#}
+            {#                    data: {#}
+            {#                        text: $('.text').val(),#}
+            {#                        q_id: obj_id,#}
+            {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
+            {#                    },#}
+            {#                    success: function () {#}
+            {#                        // alert("Created a New Comment");#}
+            {#                        $("#qa" + divId).load(" #qa" + divId);#}
+            {#                        $('.text').val("");#}
+            {##}
+            {#                    }#}
+            {#                });#}
+            {##}
+            {##}
+            {#            });#}
+            {#        }#}
 
-        function toggleDiv(element, divId) {
-            $("#" + divId).slideToggle();
-            {#            $(element).slideUp();#}
-        }
+            function toggleDiv(element, divId) {
+                $("#" + divId).slideToggle();
+                {#            $(element).slideUp();#}
+            }
 
-        function del_comment(divId, CommentId) {
-            $.ajax({
-                url: '{% url 'comment_delete' %}',
-                type: 'POST',
-                data: {
-                    comment_id: CommentId,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function () {
-                    // alert("Created a New Comment");
-                    $("#" + divId).load(" #" + divId);
-                }
-            });
-
-        }
-
-
-        function commentDiv(formId) {
-
-            $("#add_comment" + formId).on('submit', function (event) {
-
-                event.preventDefault();
-                var element = $(this);
-                element.off('submit');
-                var _id = element.attr("data-id");
+            function del_comment(divId, CommentId) {
                 $.ajax({
-                    url: '{% url 'add_comment' %}',
+                    url: '{% url 'comment_delete' %}',
                     type: 'POST',
                     data: {
-                        text: $('#text' + formId).val(),
-                        story_id: _id,
+                        comment_id: CommentId,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
                         // alert("Created a New Comment");
-                        $("#" + formId).load(" #" + formId);
+                        $("#" + divId).load(" #" + divId);
+                    }
+                });
+
+            }
+
+
+            function commentDiv(formId) {
+
+                $("#add_comment" + formId).on('submit', function (event) {
+
+                    event.preventDefault();
+                    var element = $(this);
+                    element.off('submit');
+                    var _id = element.attr("data-id");
+                    $.ajax({
+                        url: '{% url 'add_comment' %}',
+                        type: 'POST',
+                        data: {
+                            text: $('#text' + formId).val(),
+                            story_id: _id,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function () {
+                            // alert("Created a New Comment");
+                            $("#" + formId).load(" #" + formId);
+                        }
+                    });
+                });
+            }
+
+            $('a.gp-like-button').on('click', function (event) {
+                event.preventDefault();
+                var element = $(this);
+                var _id = element.attr("data-id");
+                var likeBtn = '#gp-like-logo-' + _id;
+                var totalLikeTxt = '#gp-total-like-' + _id;
+                $.ajax({
+                    url: '{% url 'like' %}',
+                    type: 'GET',
+                    data: {obj_id: _id},
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response.isLiked == true) {
+                            $(likeBtn).removeClass("glyphicon-heart-empty");
+                            $(likeBtn).addClass("glyphicon-heart");
+
+                        } else {
+                            $(likeBtn).removeClass("glyphicon-heart");
+                            $(likeBtn).addClass("glyphicon-heart-empty");
+                        }
+                        $(totalLikeTxt).html(response.totalLikes);
                     }
                 });
             });
-        }
-
-        $('a.gp-like-button').on('click', function (event) {
-            event.preventDefault();
-            var element = $(this);
-            var _id = element.attr("data-id");
-            var likeBtn = '#gp-like-logo-' + _id;
-            var totalLikeTxt = '#gp-total-like-' + _id;
-            $.ajax({
-                url: '{% url 'like' %}',
-                type: 'GET',
-                data: {obj_id: _id},
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.isLiked == true) {
-                        $(likeBtn).removeClass("glyphicon-heart-empty");
-                        $(likeBtn).addClass("glyphicon-heart");
-
-                    } else {
-                        $(likeBtn).removeClass("glyphicon-heart");
-                        $(likeBtn).addClass("glyphicon-heart-empty");
-                    }
-                    $(totalLikeTxt).html(response.totalLikes);
-                }
+            $("#button321").click(function () {
+                $("#item321").toggle();
             });
-        });
-        $("#button321").click(function () {
-            $("#item321").toggle();
-        });
 
 
-    </script>
+        </script>
 
-
-
-
+    {% endblock %}
 
 {% endblock %}
-<!-- creating custom change list -->
 

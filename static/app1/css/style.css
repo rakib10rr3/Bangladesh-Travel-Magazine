@@ -40,8 +40,8 @@ nav.gp-navbar {
 }
 
 .gp-navbar .nav {
-    float: none;
-    text-align: center;
+    /*float: none;*/
+    /*text-align: center;*/
 }
 
 .gp-navbar .nav li {
@@ -58,6 +58,20 @@ nav.gp-navbar .gp-navbar-nav > li > a {
     /*color: #fff;*/
     font-weight: bold;
     text-transform: capitalize;
+}
+
+.ts-nav-pro-img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+/**
+Notification badge
+ */
+.label.ts-label-notify {
+    background-color: rgba(0, 0, 0, .25);
+    font-size: 100%;
 }
 
 /**
@@ -265,8 +279,6 @@ Search
     color: #888;
     padding: 0;
 }
-
-
 
 /**
  * Common type style
@@ -521,31 +533,48 @@ Comments
     display: block;
 }
 
-div.gp-jumbotron {
+div.gp-jumbotron, div.gp-jumbotron-transparent {
     background-color: #009688;
-    color: #fff;
     text-align: center;
     border-radius: 3px;
     font-size: 18px;
     font-weight: bold;
 }
 
+div.gp-jumbotron {
+    background-color: #009688;
+    color: #fff;
+}
+
 .gp-jumbotron.gp-danger {
     background-color: #FF5252;
 }
 
-div.gp-jumbotron h1 {
+div.gp-jumbotron-transparent {
+    background: transparent;
+    color: #333;
+}
+
+div.gp-jumbotron h1, div.gp-jumbotron-transparent h1 {
     font-size: 32px;
     margin: 0;
+}
+
+div.gp-jumbotron a, div.gp-jumbotron-transparent a {
+    transition: all .2s linear;
 }
 
 div.gp-jumbotron a {
     color: #fff;
     border-bottom: 3px solid #fff;
-    transition: all .2s linear;
 }
 
-div.gp-jumbotron a:hover {
+div.gp-jumbotron-transparent a {
+    color: #333;
+    border-bottom: 3px solid #666;
+}
+
+div.gp-jumbotron a:hover, div.gp-jumbotron-transparent a:hover {
     border-bottom: 3px solid transparent;
     text-decoration: none;
 }
@@ -611,12 +640,41 @@ Profile page
     font-size: 14px;
 }
 
+.ts-footer-menu {
+    margin: 5px 0 10px;
+    font-size: 14px;
+}
+
+.ts-footer-menu span {
+    margin: 0 10px 0;
+    text-transform: uppercase;
+}
+
+.ts-footer-menu a {
+    padding: 5px 0;
+}
+
+.ts-footer-menu a:hover {
+    text-decoration: none;
+    background: #009688;
+    color: #fff;
+    padding: 5px 10px;
+}
+
+/**
+Utility Size class
+ */
+.ts-top-bottom-margin-30 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
 /**
  * Style for big screens ;)
  */
 
 @media screen and (min-width: 1024px) {
-    .gp-container-normal {
+    .gp-container-normal, .navbar div {
         max-width: 1024px;
     }
 

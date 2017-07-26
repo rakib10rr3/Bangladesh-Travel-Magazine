@@ -7,6 +7,21 @@
 
     <div class="container-fluid gp-container-normal">
 
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form class="gp-form" role="form" method="post" action=".">
             {% csrf_token %}
 
@@ -21,23 +36,14 @@
                        required/>
             </div>
             <button class="btn btn-primary btn-block" type="submit" value="Submit">Log In</button>
+            <input type="hidden" name="next" value="{% url "index" %}"/>
         </form>
+
+        <div class="jumbotron gp-jumbotron gp-jumbotron-transparent ts-top-bottom-margin-30">
+            <p>Not joined yet! <a href="{% url 'registration_register' %}">Join Now!</a></p>
+        </div>
+
 
     </div>
 
 {% endblock %}
-
-{#<form>#}
-{#    <div class="form-group">#}
-{#        <label for="email">Email address:</label>#}
-{#        <input type="email" class="form-control" id="email">#}
-{#    </div>#}
-{#    <div class="form-group">#}
-{#        <label for="pwd">Password:</label>#}
-{#        <input type="password" class="form-control" id="pwd">#}
-{#    </div>#}
-{#    <div class="checkbox">#}
-{#        <label><input type="checkbox"> Remember me</label>#}
-{#    </div>#}
-{#    <button type="submit" class="btn btn-default">Submit</button>#}
-{#</form>#}
