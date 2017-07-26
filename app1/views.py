@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-from .forms import PageForm, CommentForm,UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question
+from itertools import chain
+from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer
 
 try:
     from django.utils import simplejson as json
@@ -252,15 +252,13 @@ def view_profile(request, user_name):
     return render(request, 'app1/profile.html',
                   {
                       'the_user': the_user[0],
-                      #'user_info': user_info,
+                      # 'user_info': user_info,
                       'tour_list': tour_list,
                   })
 
 
-
-
 @login_required
-#changed
+# changed
 def update_userprofile(request, user_id):
     the_user = User.objects.get(id=user_id)
 
@@ -268,14 +266,14 @@ def update_userprofile(request, user_id):
     user_profile = UserProfile.objects.get(user_id=the_user)
     print(user_profile)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES,instance=user_profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.save()
             return redirect('user_profile', the_user.username)
     else:
         form = UserProfileForm(instance=user_profile)
-    return render(request, 'app1/profile_edit.html', {'form': form,'the_user':the_user})
+    return render(request, 'app1/profile_edit.html', {'form': form, 'the_user': the_user})
 
 
 @login_required
@@ -285,6 +283,7 @@ def image_redirect(request, context_dict):
     story_obj = context_dict['story_obj']
     story_obj_id = story_obj.id
     return redirect('image_share', division, page, story_obj_id)
+
 
 @login_required
 def image_share(request, story_id):
@@ -317,7 +316,8 @@ def image_share(request, story_id):
     context_dict2 = {'form': form, 'story_obj': story, 'page': page}
     return render(request, 'app1/image_upload.html', context_dict2)
 
-def image_share_jquery(request,story_id):
+
+def image_share_jquery(request, story_id):
     story = Story.objects.get(id=story_id)
     page = story.give_me_page()
     if request.method == "POST":
@@ -335,7 +335,8 @@ def image_share_jquery(request,story_id):
     else:
         return render(request, 'app1/add_attachment.html', {})
 
-def image_share_jquery2(request,story_id):
+
+def image_share_jquery2(request, story_id):
     story = Story.objects.get(id=story_id)
     page = story.give_me_page()
     files = request.FILES.getlist('myfiles')
@@ -425,9 +426,9 @@ def story_share(request):
             context_dict = {'story_id': bet.id, 'page': bet.story_page}
             # return  redirect('image_share',context_dict)
             # return render(request, 'app1/image_upload.html', context_dict)
-            #return redirect('image_share', bet.id)
-            #return redirect('image_share_jquery', bet.id)
-            image_share_jquery2(request,bet.id)
+            # return redirect('image_share', bet.id)
+            # return redirect('image_share_jquery', bet.id)
+            image_share_jquery2(request, bet.id)
             return redirect('index')
         else:
             print(form.errors)
@@ -559,6 +560,20 @@ def search(request):
                           'query': txt
                       })
 
+
+def search_ques(request):
+    if request.method == "POST":
+        txt = request.POST.get("ques")
+        print(txt)
+        if txt == '':
+            return redirect('forum')
+        question_list = Question.objects.filter(question__contains=txt)
+        q_form = QuestionForm()
+        a_form = AnswerForm()
+        return render(request, 'app1/forum.html',
+                      {'q_form': q_form,
+                       'a_form': a_form,
+                       'question_list': question_list})
 
         # custom change
 

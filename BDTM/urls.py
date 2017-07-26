@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^about/$', views.about, name='about'),
     url(r'^search/$', views.search, name='search'),
-
+    url(r'^search_ques/$', views.search_ques, name='search_ques'),
     url(r'^forum/$', views.forum, name='forum'),
 
     url(r'^$', views.index, name='index'),  # Replace
