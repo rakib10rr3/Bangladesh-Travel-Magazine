@@ -605,11 +605,24 @@ def search_ques(request):
 def notifications(request):
     user = request.user
     n = Notification.objects.filter(recipient_id=user.id).order_by('-date_created')
+    unread_count = n.filter(unread=True).count()
 
-    # TODO: change to all read!
+    # Complete: change to all read!
+    set_unread = set()
+    for item in n:
+        if item.unread:
+            set_unread.add(item.id)
+
+    n.update(unread=False)
+
+    # TODO: Limit notifications view number and make it infinite list type (more button)
+    # TODO: update link in html file for question notifications
+
     return render(request, 'app1/notifications.html',
                   {
                       'notifications': n,
+                      'unread_list': set_unread,
+                      'unread_count': unread_count,
                   })
 
 
@@ -622,6 +635,26 @@ def about(request):
 ==================================================
     Utility Functions for Notification
 ==================================================
+'''
+
+'''
+    For Story Comment
+    =================
+        notify_from :   'story_cmnt'
+        ref_type    :   'comment'
+        ref_value   :   int(comment_id)
+        
+    For Like
+    ========
+        notify_from :   'story_like'
+        ref_type    :   'story'
+        ref_value   :   int(story_id)
+        
+    For Question Comment
+    ====================
+        notify_from :   'q_a'
+        ref_type    :   'answer'
+        ref_value   :   int(answer_id)
 '''
 
 

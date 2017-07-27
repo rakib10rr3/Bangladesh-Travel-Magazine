@@ -2,47 +2,48 @@
 
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
-        <h1>Hay {{ user }}! Your notifications!</h1>
+    {% if notifications %}
+        <h1>Hay {{ user }}! You have {{ unread_count }} new notifications!</h1>
+    {% else %}
+        <h1>Hay {{ user }}! You have no new notification!</h1>
+    {% endif %}
     </div>
 
     <div class="container-fluid gp-container-normal">
 
         {% if notifications %}
 
-            <ul>
+            <div class="list-group ts-notify-list-group">
 
                 {% for item in notifications %}
 
-                    {#            Shohag (sender_id) commented on Imran's (recipient_id) story. #}
-                    {# [from:'story_cmnt’, ref_type:'comment’, ref_value:123(comment_id)] #}
+                    {% if item.notify_from == 'story_like' %}
 
-                    <li>
+                        <a href="{% url 'story_detail' item.ref_value %}" class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
+                        <p class="ts-notify-title"><strong>{{ item.sender }}</strong> gives a like to your story.</p>
 
-                        {% if item.notify_from == 'story_like' %}
+                    {% elif item.notify_from == 'story_cmnt' %}
 
-                            <p><a href="{% url 'story_detail' item.ref_value %}"><strong>{{ item.sender }}</strong> gives a like to your story.</a></p>
+                        <a href="{% url 'story_detail' item.get_story_id %}" class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
+                        <p class="ts-notify-title"><strong>{{ item.sender }}</strong> gives a comment to your story.</p>
 
-                        {% elif item.notify_from == 'story_cmnt' %}
+                    {% elif item.notify_from == 'q_a' %}
 
-                            <p><a href="#"><strong>{{ item.sender }}</strong> gives a comment to your story.</a></p>
+                        {#For future use: item.get_question_id#}
 
-                        {% elif item.notify_from == 'q_a' %}
+                        <a href="#" class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
+                        <p class="ts-notify-title"><strong>{{ item.sender }}</strong> gives an answer to your question.</p>
 
-                            <p><a href="#"><strong>{{ item.sender }}</strong> gives a comment to your question.</a></p>
+                    {% endif %}
 
-                        {% endif %}
+                <p class="ts-notify-date">{{ item.date_created }}</p>
 
-                        <p>{{ item.date_created }}</p>
-                    </li>
+                </a>
 
 
                 {% endfor %}
 
-            </ul>
-
-        {% else %}
-
-            <p>You have no notification.</p>
+            </div>
 
         {% endif %}
 

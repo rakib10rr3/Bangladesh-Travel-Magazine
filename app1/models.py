@@ -264,3 +264,30 @@ class Notification(models.Model):
         return "Notification from " \
                + self.sender.username + " to " \
                + self.recipient.username + "."
+
+    @property
+    def get_story_id(self):
+        """
+        For Story Comment
+        =================
+            notify_from :   'story_cmnt'
+            ref_type    :   'comment'
+            ref_value   :   int(comment_id)
+
+        Here we get the story_id using comment_id
+        """
+        return Comment.objects.get(id=self.ref_value).story_id
+
+    @property
+    def get_question_id(self):
+        """
+        For Question Comment
+        ====================
+            notify_from :   'q_a'
+            ref_type    :   'answer'
+            ref_value   :   int(answer_id)
+
+        Here we get the question_id using answer_id
+        """
+        return Answer.objects.get(id=self.ref_value).answer_of_id
+

@@ -74,6 +74,23 @@ Notification badge
     font-size: 100%;
 }
 
+.ts-notify-list-group .ts-notify-title {
+    font-size: 16px;
+}
+
+.ts-notify-list-group .ts-notify-date {
+    color: #888;
+    margin-bottom: 0;
+}
+
+.ts-notify-list-group .ts-notify-unread {
+    background-color: #fff9c4;
+}
+
+.ts-notify-list-group .ts-notify-unread:hover {
+    background-color: #fff59d;
+}
+
 /**
 Index Page
  */
