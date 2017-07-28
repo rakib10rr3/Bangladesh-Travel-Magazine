@@ -114,7 +114,8 @@ class QuestionForm(forms.ModelForm):
         fields = ('question',)
         widgets = {
             'question': TextInput(attrs={'class': 'form-control',
-                                         'placeholder': 'Ask here'}),
+                                         'placeholder': 'Ask here',
+                                         'id': 'question'}),
         }
 
 

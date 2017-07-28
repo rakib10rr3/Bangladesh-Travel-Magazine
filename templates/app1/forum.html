@@ -25,8 +25,7 @@
                 Have A Travel Query?
             </div>
 
-            <form class="gp-side-panel-form" role="form" id="question_form" method="post"
-                  action="{% url 'save_question' %}">
+            <form class="gp-side-panel-form" role="form" id="question_form" method="post">
                 {% csrf_token %}
                 {% for hidden in q_form.hidden_fields %}
                     {{ hidden }}
@@ -38,7 +37,7 @@
                         {{ field }}
                     </div>
                 {% endfor %}
-                <button class="btn btn-primary btn-block" type="submit">Ask</button>
+                <button id="ask" class="btn btn-primary btn-block"  type="submit">Ask</button>
             </form>
         </div>
 
@@ -192,7 +191,26 @@
             });
         }
 
+    </script>
 
+
+    <!--ask a question ajax-->
+    <script>
+            var q_form = $("#question_form");
+            q_form.submit(function () {
+                $.ajax({
+                    url: {% url 'save_question' %},
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function () {
+                        $("#" + "ques_ans").load(" #" + "ques_ans");
+                        $('#question').val('')
+
+                        //alert("yoo");
+                    }
+                });
+                return false;
+            });
     </script>
 
 
