@@ -57,6 +57,8 @@ urlpatterns = [
 
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
 
+    url(r'^del_answer/$', views.answer_delete, name='answer_delete'),
+
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
 
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html

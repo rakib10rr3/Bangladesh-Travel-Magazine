@@ -58,14 +58,17 @@ def index(request):
                       {})
 
 
-@login_required
 def forum(request):
-    question_list = Question.objects.order_by('-created')[:5]
-    q_form = QuestionForm()
-    a_form = AnswerForm()
-    return render(request, 'app1/forum.html',
-                  {'q_form': q_form,
-                   'a_form': a_form, 'question_list': question_list})
+    if request.user.is_authenticated:
+        user = request.user
+        question_list = Question.objects.order_by('-created')[:5]
+        q_form = QuestionForm()
+        a_form = AnswerForm()
+        return render(request, 'app1/forum.html',
+                      {'q_form': q_form,
+                       'a_form': a_form, 'question_list': question_list,
+                       'user_id': user.id
+                       })
 
 
 @login_required
@@ -424,6 +427,17 @@ def comment_delete(request):
         story = Story.objects.get(id=story_id)
         delete_notify_story_new_comment(story.user.id, comment_id, user.id)
 
+        return HttpResponse('')
+
+
+def answer_delete(request):
+    if request.method == 'POST':
+        user = request.user
+        answer_id = request.POST['answer_id']
+        print(answer_id)
+        answer = Answer.objects.get(id=answer_id)
+        print(answer)
+        answer.delete()
         return HttpResponse('')
 
 

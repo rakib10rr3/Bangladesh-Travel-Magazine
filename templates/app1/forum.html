@@ -7,19 +7,19 @@
     </div>
 
     <div class="container-fluid gp-container-normal">
-    <div class="gp-side-panel">
-                    <form class="navbar-form navbar-left" method="post" action="{% url 'search_ques' %}">{% csrf_token %}
-                        <div class="input-group">
-                            <input type="text" name="ques" class="form-control" placeholder="Search for Any Place">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-    </div>
-    <hr>
+        <div class="gp-side-panel">
+            <form class="navbar-form navbar-left" method="post" action="{% url 'search_ques' %}">{% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="ques" class="form-control" placeholder="Search for Any Place">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
         <div class="gp-side-panel">
             <div class="gp-side-panel-title">
                 Have A Travel Query?
@@ -44,7 +44,7 @@
 
         <hr>
 
-        <div class="gp-side-panel">
+        <div class="gp-side-panel" id="ques_ans">
             <div class="gp-side-panel-title">
                 Recently Asked Questions
             </div>
@@ -56,7 +56,8 @@
                             <div class="gp-ques-block">
                                 <h2 class="gp-ques-title">{{ obj.question }}</h2>
                                 <p class="gp-ques-date">{{ obj.created }}</p>
-                                 <p class="card-text-author">Asked by <a href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
+                                <p class="card-text-author">Asked by <a
+                                        href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
                             </div>
 
                             <div class="gp-ques-ans">
@@ -66,9 +67,20 @@
 
                                     {% for obj2 in obj.answers.all %}
                                         <div class="gp-ques-ans-block">
-                                            <h4><a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a></h4>
+                                            <h4>
+                                                <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                            </h4>
                                             <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
                                             <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+
+                                            {% if obj2.answered_by_id == user_id %}
+                                                <div class="bg-margin-top-10">
+                                                    <button class="btn btn-danger"
+                                                            onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endfor %}
 
@@ -111,6 +123,30 @@
         </div>
 
     </div>
+
+
+
+    <script>
+        function del_answer(ques_ans, answerID) {
+
+           // alert(ques_ans)
+            //alert(answerID)
+            $.ajax({
+                url: '{% url 'answer_delete' %}',
+                type: 'POST',
+                data: {
+                    answer_id: answerID,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                    $("#" + "ques_ans").load(" #" + "ques_ans");
+                     //alert("deleted")
+                }
+            });
+
+        }
+    </script>
 
 
 {% endblock %}
