@@ -5,62 +5,70 @@
     <div class="jumbotron gp-jumbotron">
         <h1>BDTM Community!</h1>
     </div>
-    <div class="gp-side-panel" id="ques_ans">
-        <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
-            <div class="gp-ques-block">
-                <h2 class="gp-ques-title">{{ ques.question }}</h2>
-                <p class="gp-ques-date">{{ ques.created }}</p>
-                <p class="card-text-author">Asked by <a
-                        href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
-            </div>
+    {% if ques %}
+        <div class="container-fluid gp-container-normal">
 
-            <div class="gp-ques-ans">
-
-                {% if ques.answers.all.exists %}
-                    <p class="gp-ques-ans-count">Total {{ ques.answers.all.count }} answer found!</p>
-
-                    {% for obj2 in ques.answers.all %}
-                        <div class="gp-ques-ans-block">
-                            <h4>
-                                <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                            </h4>
-                            <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                            <p class="gp-ques-ans-date">{{ obj2.created }}</p>
-
-                            {% if obj2.answered_by_id == user %}
-                                <div class="bg-margin-top-10">
-                                    <button class="btn btn-danger"
-                                            onclick="del_answer( {{ 1 }}, {{ obj2.id }})">
-                                        Delete
-                                    </button>
-                                </div>
-                            {% endif %}
+            <div class="container gp-div-post-full">
+                <div class="gp-side-panel" id="ques_ans">
+                    <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
+                        <div class="gp-ques-block">
+                            <h2 class="gp-ques-title">{{ ques.question }}</h2>
+                            <p class="gp-ques-date">{{ ques.created }}</p>
+                            <p class="card-text-author">Asked by <a
+                                    href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
                         </div>
-                    {% endfor %}
 
-                {% else %}
-                    <p class="gp-ques-ans-count">No answer found yet!</p>
-                {% endif %}
-                <form id="add_answer{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
-                      class="gp-form-story-comment">
-                    {% csrf_token %}
+                        <div class="gp-ques-ans">
 
-                    <div class="input-group">
-                        <input class="form-control" type="text" id="text{{ forloop.counter }}"
-                               maxlength="1000" name="text" required>
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" onclick="answerDiv({{ 1 }})"
-                                    type="submit">
-                                <i class="glyphicon glyphicon-send"></i>
-                            </button>
+                            {% if ques.answers.all.exists %}
+                                <p class="gp-ques-ans-count">Total {{ ques.answers.all.count }} answer found!</p>
+
+                                {% for obj2 in ques.answers.all %}
+                                    <div class="gp-ques-ans-block">
+                                        <h4>
+                                            <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                        </h4>
+                                        <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                        <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+
+                                        {% if obj2.answered_by_id == user %}
+                                            <div class="bg-margin-top-10">
+                                                <button class="btn btn-danger"
+                                                        onclick="del_answer( {{ 1 }}, {{ obj2.id }})">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+
+                            {% else %}
+                                <p class="gp-ques-ans-count">No answer found yet!</p>
+                            {% endif %}
+                            <form id="add_answer" data-id={{ ques.id }} method="POST" class="gp-form-story-comment">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="text"
+                                           maxlength="1000" name="text" required>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" onclick="answerDiv()" type="submit">
+                                            <i class="glyphicon glyphicon-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
-                </form>
-
+                </div>
+                {% else %}
+                <div class="jumbotron gp-jumbotron">
+                    <h1>Sorry no story found!</h1>
+                </div>
             </div>
         </div>
-    </div>
 
+    {% endif %}
     <script>
         function del_answer(ques_ans, answerID) {
 
@@ -101,26 +109,29 @@
         {#            });#}
         {##}
         {#        }#}
-        function answerDiv(formId) {
+        function answerDiv() {
 
-            $("#add_answer" + formId).on('submit', function (event) {
+            $("#add_answer").on('submit', function (event) {
 
                 event.preventDefault();
                 var element = $(this);
                 element.off('submit');
                 var _id = element.attr("data-id");
+                alert("kk"+_id);
                 $.ajax({
                     url: {% url 'save_answer' %},
                     type: 'POST',
                     data: {
-                        text: $('#text' + formId).val(),
+                        text: $('#text').val(),
                         ques_id: _id,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
-                        // alert("Created a New Comment");
+                        alert("kk");
+                         alert("Created a New Comment");
                         $("#" + "ques_ans").load(" #" + "ques_ans");
-                        //alert("deleted")
+                        //$("#1").load(" #1");
+                        //$('#text').val("");
                     }
                 });
             });
