@@ -10,7 +10,7 @@
         <div class="gp-side-panel">
             <form class="navbar-form navbar-left" method="post" action="{% url 'search_ques' %}">{% csrf_token %}
                 <div class="input-group">
-                    <input type="text" name="ques" class="form-control" placeholder="Search for Any Place">
+                    <input type="text" name="ques" class="form-control" placeholder="Search for Questions">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <i class="glyphicon glyphicon-search"></i>
@@ -37,7 +37,7 @@
                         {{ field }}
                     </div>
                 {% endfor %}
-                <button id="ask" class="btn btn-primary btn-block"  type="submit">Ask</button>
+                <button id="ask" class="btn btn-primary btn-block" type="submit">Ask</button>
             </form>
         </div>
 
@@ -53,6 +53,13 @@
                     {% for obj in question_list %}
                         <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
                             <div class="gp-ques-block">
+                                {% if  obj.author.userprofile.image %}
+                                    <img src="{{ obj.author.userprofile.image.url }}" alt="{{ obj.user }}" width="50"
+                                         height="50">
+                                {% else %}
+                                    <img src="/media/default-placeholder.png" class="img-circle" alt="{{ obj.author }}"
+                                         width="50" height="50">
+                                {% endif %}
                                 <h2 class="gp-ques-title">{{ obj.question }}</h2>
                                 <p class="gp-ques-date">{{ obj.created }}</p>
                                 <p class="card-text-author">Asked by <a
@@ -63,27 +70,42 @@
                             <div class="gp-ques-ans">
 
                                 {% if obj.answers.all.exists %}
-                                    <p class="gp-ques-ans-count">Total {{ obj.answers.all.count }} answer found!</p>
+                                    <div class="gp-total-comments">
+                                        <a onclick="toggleDiv(this, {{ forloop.counter }})" class="gp-flat-link">
+                                            Total {{ obj.answers.all.count }} comments.
+                                        </a>
+                                    </div>
+                                    <div id={{ forloop.counter }}>
 
-                                    {% for obj2 in obj.answers.all %}
-                                        <div class="gp-ques-ans-block">
-                                            <h4>
-                                                <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                                            </h4>
-                                            <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                            <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                        {% for obj2 in obj.answers.all %}
+                                            <div class="gp-ques-ans-block">
+                                                {% if  obj2.answered_by.userprofile.image %}
+                                                    <img src="{{ obj2.answered_by.userprofile.image.url }}"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50"
+                                                         height="50">
+                                                {% else %}
+                                                    <img src="/media/default-placeholder.png" class="img-circle"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50" height="50">
+                                                {% endif %}
+                                                <h4>
+                                                    <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                                </h4>
+                                                <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                                <p class="gp-ques-ans-date">{{ obj2.created }}</p>
 
-                                            {% if obj2.answered_by_id == user_id %}
-                                                <div class="bg-margin-top-10">
-                                                    <button class="btn btn-danger"
-                                                            onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-
+                                                {% if obj2.answered_by_id == user_id %}
+                                                    <div class="bg-margin-top-10">
+                                                        <button class="btn btn-danger"
+                                                                onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
                                     <p class="gp-ques-ans-count">No answer found yet!</p>
                                 {% endif %}
@@ -127,6 +149,10 @@
 
 
     <script>
+     function toggleDiv(element, divId) {
+            $("#" + divId).slideToggle();
+            {#            $(element).slideUp();#}
+        }
         function del_answer(ques_ans, answerID) {
 
             // alert(ques_ans)
@@ -196,21 +222,21 @@
 
     <!--ask a question ajax-->
     <script>
-            var q_form = $("#question_form");
-            q_form.submit(function () {
-                $.ajax({
-                    url: {% url 'save_question' %},
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function () {
-                        $("#" + "ques_ans").load(" #" + "ques_ans");
-                        $('#question').val('')
+        var q_form = $("#question_form");
+        q_form.submit(function () {
+            $.ajax({
+                url: {% url 'save_question' %},
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function () {
+                    $("#" + "ques_ans").load(" #" + "ques_ans");
+                    $('#question').val('')
 
-                        //alert("yoo");
-                    }
-                });
-                return false;
+                    //alert("yoo");
+                }
             });
+            return false;
+        });
     </script>
 
 

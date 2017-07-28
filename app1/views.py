@@ -614,7 +614,6 @@ def search(request):
                           'query': txt
                       })
 
-
 @login_required
 def search_ques(request):
     if request.method == "POST":
@@ -625,12 +624,13 @@ def search_ques(request):
         question_list = Question.objects.filter(question__contains=txt)
         q_form = QuestionForm()
         a_form = AnswerForm()
-        return render(request, 'app1/forum.html',
-                      {'q_form': q_form,
-                       'a_form': a_form,
-                       'question_list': question_list})
+        return render(request, 'app1/search_ques.html',
+                      {
+                          'query': txt,
+                          'question_list': question_list})
 
         # custom change
+
 
 
 def notifications(request):
