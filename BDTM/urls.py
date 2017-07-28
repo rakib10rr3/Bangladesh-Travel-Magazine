@@ -43,7 +43,7 @@ urlpatterns = [
 
     url(r'^save_question/$', views.save_question, name='save_question'),
 
-    url(r'^save_answer/(?P<q_id>\d+)$', views.save_answer, name='save_answer'),
+    url(r'^save_answer/$', views.save_answer, name='save_answer'),
 
     url(r'^like/$', views.like, name='like'),
 
@@ -68,7 +68,7 @@ urlpatterns = [
     url(r'^story_share/$', views.story_share, name='story_share'),
 
     url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
-
+    url(r'^ques_detail/(?P<ques_id>\d+)/$', views.ques_detail, name='ques_detail'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
 
     url(r'^division/add_page/$', views.add_page, name='add_page'),

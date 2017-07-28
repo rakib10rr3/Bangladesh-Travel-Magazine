@@ -58,6 +58,7 @@
                                 <p class="gp-ques-date">{{ obj.created }}</p>
                                 <p class="card-text-author">Asked by <a
                                         href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
+                                <a href="{% url 'ques_detail' obj.id %}">single view</a>
                             </div>
 
                             <div class="gp-ques-ans">
@@ -90,23 +91,23 @@
 
                             </div>
 
-                            <form method="POST" role="form" id="answer_form" class="gp-side-panel-form"
-                                  action="{% url 'save_answer' obj.id %}">
+
+                            <form id="add_answer{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
+                                  class="gp-form-story-comment">
                                 {% csrf_token %}
-                                {% for hidden in a_form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
 
                                 <div class="input-group">
-                                    <input name="text" placeholder="Have you the answer?" class="form-control" equired>
+                                    <input class="form-control" type="text" id="text{{ forloop.counter }}"
+                                           maxlength="1000" name="text" required>
                                     <div class="input-group-btn">
-                                        <button id="bt{{ forloop.counter }}" class="btn btn-default" type="submit">
+                                        <button class="btn btn-default" onclick="answerDiv({{ forloop.counter }})"
+                                                type="submit">
                                             <i class="glyphicon glyphicon-send"></i>
                                         </button>
                                     </div>
                                 </div>
-
                             </form>
+
                         </div>
                     {% endfor %}
                 {% else %}
@@ -129,7 +130,7 @@
     <script>
         function del_answer(ques_ans, answerID) {
 
-           // alert(ques_ans)
+            // alert(ques_ans)
             //alert(answerID)
             $.ajax({
                 url: '{% url 'answer_delete' %}',
@@ -141,11 +142,57 @@
                 success: function () {
                     // alert("Created a New Comment");
                     $("#" + "ques_ans").load(" #" + "ques_ans");
-                     //alert("deleted")
+                    //alert("deleted")
                 }
             });
 
         }
+
+        {##}
+        {#        function add_answer() {#}
+        {#            var element = $(this);#}
+        {#            var _id = element.attr("data-id");#}
+        {#            $.ajax({#}
+        {#                url: {% url 'save_answer' %},#}
+        {#                type: 'POST',#}
+        {#                data: {#}
+        {#                    ques_id: _id,#}
+        {#                    csrfmiddlewaretoken: '{{ csrf_token }}'#}
+        {#                },#}
+        {#                success: function () {#}
+        {#                    // alert("Created a New Comment");#}
+        {#                    $("#" + "ques_ans").load(" #" + "ques_ans");#}
+        {#                    //alert("deleted")#}
+        {#                }#}
+        {#            });#}
+        {##}
+        {#        }#}
+        function answerDiv(formId) {
+
+            $("#add_answer" + formId).on('submit', function (event) {
+
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var _id = element.attr("data-id");
+                $.ajax({
+                    url: {% url 'save_answer' %},
+                    type: 'POST',
+                    data: {
+                        text: $('#text' + formId).val(),
+                        ques_id: _id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        // alert("Created a New Comment");
+                        $("#" + "ques_ans").load(" #" + "ques_ans");
+                        //alert("deleted")
+                    }
+                });
+            });
+        }
+
+
     </script>
 
 

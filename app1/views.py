@@ -15,9 +15,11 @@ except ImportError:
 
 def index(request):
     if request.user.is_authenticated:
+        this_user = request.user
         page_list = Place.objects.order_by('-views')[:3]
         recent_story = Story.objects.order_by('-created_date')[:5]
         question_list = Question.objects.order_by('-created')[:5]
+
         q_form = QuestionForm()
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
@@ -344,6 +346,10 @@ def image_share_jquery2(request, story_id):
     story = Story.objects.get(id=story_id)
     page = story.give_me_page()
     files = request.FILES.getlist('myfiles')
+    print("Files = ", files)
+    if (not files):
+        return
+
     for number, a_file in enumerate(files):
         instance = Picture(
             user=request.user,
@@ -547,19 +553,24 @@ def save_question(request):
 
 
 @login_required
-def save_answer(request, q_id):
-    question = Question.objects.get(id=q_id)
-    print(question)
+def save_answer(request):
+    print("save answer is running ")
+
     if request.method == 'POST':
-        form = AnswerForm(request.POST, request.FILES)
+        form = AnswerForm(request.POST)
+        ques_id = request.POST['ques_id']
+        print("question id = ", ques_id)
+        question = Question.objects.get(id=ques_id)
+        print(question)
         if form.is_valid():
             ans = form.save(commit=False)
             ans.answered_by = request.user
             ans.answer_of = question
-            ans.save()
+            b = ans.save()
+            print(b)
             # probably better to use a redirect here.
 
-            add_notify_question_new_comment(question.author_id, ans.id, ans.answered_by_id)
+            # add_notify_question_new_comment(question.author_id, ans.id, ans.answered_by_id)
 
         else:
             print(form.errors)
@@ -582,6 +593,12 @@ def story_edit(request, story_id):
 
     # custom change list creating -_-
 
+
+@login_required
+def ques_detail(request, ques_id):
+    ques = Question.objects.get(pk=ques_id)
+    user = request.user
+    return render(request, 'app1/ques_view.html', {'ques': ques, 'user': user.id})
 
 @login_required
 def search(request):
@@ -657,13 +674,13 @@ def about(request):
         notify_from :   'story_cmnt'
         ref_type    :   'comment'
         ref_value   :   int(comment_id)
-        
+
     For Like
     ========
         notify_from :   'story_like'
         ref_type    :   'story'
         ref_value   :   int(story_id)
-        
+
     For Question Comment
     ====================
         notify_from :   'q_a'
@@ -698,6 +715,7 @@ def delete_notify_story_new_comment(story_author_id, comment_id, commentator_id)
     if story_author_id != commentator_id:
         delete_notification(story_author_id, commentator_id, "story_cmnt", "comment", comment_id)
 
+
 '''
 Notification for like in a Story
 '''
@@ -721,3 +739,4 @@ Notification for comment in a Question (Not Final)
 def add_notify_question_new_comment(question_author_id, answer_id, answer_giver_id):
     if question_author_id != answer_giver_id:
         add_notification(question_author_id, answer_giver_id, "q_a", "answer", answer_id)
+
