@@ -60,7 +60,7 @@ def desti(instance, filename):
     return "%s/%s/%s" % (instance.page, instance.user, filename)
 
 
-# upload destination for images
+# upload destination for imagesf
 def user_desti(instance, filename):
     return "%s/%s/%s" % ("Profile", instance.display_name, filename)
 
@@ -167,6 +167,12 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     def __str__(self):
         return self.display_name
+
+
+class Follower(models.Model):
+    my_id = models.ForeignKey(User, null=True, related_name="follow")
+    following = models.ForeignKey(User, unique=True,null=True, related_name="following")
+    created_date = models.DateTimeField(auto_now_add=True)
 
 
 # here is the profile model
@@ -290,4 +296,3 @@ class Notification(models.Model):
         Here we get the question_id using answer_id
         """
         return Answer.objects.get(id=self.ref_value).answer_of_id
-

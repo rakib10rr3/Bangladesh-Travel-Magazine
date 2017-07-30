@@ -36,11 +36,24 @@
 
                         {% for obj in stories %}
 
-                             {% if  obj.user.userprofile.image  %} <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50"> {% else %}   <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
-                             height="50">{% endif %}<a
-                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
+                            {% if  obj.user.userprofile.image %}
+                                <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50"
+                                     height="50"> {% else %}
+                                <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre"
+                                     width="50"
+                                     height="50">{% endif %}<a
+                                href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
+                            <strong>{{ obj.member }}</strong> members.
 
+                            <div id="follow{{ forloop.counter }}">
 
+                                {% load app1_extras %}
+
+                                {% if not obj.user == request.user %}
+                                    {% pass_follower_list request.user obj.user.id forloop.counter %}
+                                {% endif %}
+
+                            </div>
                             <div class="gp-div-post-full">
 
                                 {% if obj.stories.all.exists %}
@@ -65,14 +78,16 @@
                                                href="#storyCarousel{{ forloop.counter }}"
                                                role="button"
                                                data-slide="prev">
-                                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
                                             <a class="right carousel-control" id="gp-carousel-control"
                                                href="#storyCarousel{{ forloop.counter }}"
                                                role="button"
                                                data-slide="next">
-                                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
                                                 <span class="sr-only">Next</span>
                                             </a>
                                         </div>
@@ -108,7 +123,8 @@
                                         </a>
                                     </div>
                                     <div class="gp-div-half">
-                                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span>
+                                            Share</a>
                                     </div>
                                 </div>
 
@@ -151,9 +167,11 @@
                                         {% csrf_token %}
 
                                         <div class="input-group">
-                                            <input class="form-control" type="text" id="text{{ forloop.counter }}" maxlength="1000" name="text" required>
+                                            <input class="form-control" type="text" id="text{{ forloop.counter }}"
+                                                   maxlength="1000" name="text" required>
                                             <div class="input-group-btn">
-                                                <button class="btn btn-default" onclick="commentDiv({{ forloop.counter }})" type="submit">
+                                                <button class="btn btn-default"
+                                                        onclick="commentDiv({{ forloop.counter }})" type="submit">
                                                     <i class="glyphicon glyphicon-send"></i>
                                                 </button>
                                             </div>
@@ -200,11 +218,13 @@
 
                                                 <div class="gp-slide-shadow">
                                                     <h4 class="card-title">
-                                                        <a href="{% url 'story' page.division page.id %}" class="">{{ page.name }}</a>
+                                                        <a href="{% url 'story' page.division page.id %}"
+                                                           class="">{{ page.name }}</a>
                                                     </h4>
                                                     <p class="card-text">{{ page.des }}</p>
                                                 </div>
-                                                <div id="placeCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                                                <div id="placeCarousel{{ forloop.counter }}"
+                                                     class="carousel slide gp-carousel"
                                                      data-ride="carousel">
                                                     <!-- Wrapper for slides -->
                                                     <div class="carousel-inner" role="listbox">
@@ -212,11 +232,13 @@
 
                                                             {% if forloop.first %}
                                                                 <div class="item active">
-                                                                    <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                                                    <img class="card-img-top gp-card-img"
+                                                                         src="{{ image_obj.file.url }}">
                                                                 </div>
                                                             {% else %}
                                                                 <div class="item">
-                                                                    <img class="card-img-top gp-card-img" src="{{ image_obj.file.url }}">
+                                                                    <img class="card-img-top gp-card-img"
+                                                                         src="{{ image_obj.file.url }}">
                                                                 </div>
                                                             {% endif %}
 

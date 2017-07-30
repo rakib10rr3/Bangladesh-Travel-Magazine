@@ -1,16 +1,29 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 
 from itertools import chain
+
+from django.template import RequestContext
+
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
-from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
 
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
+
+
+def get_follow_list(request):
+    follower_obj = Follower.objects.all()
+    follower_list = []
+    for i in follower_obj:
+        if i.my_id == request.user:
+            follower_list.append(i.following_id)
+
+    return follower_list
 
 
 def index(request):
@@ -25,13 +38,13 @@ def index(request):
         user_profile = UserProfile.objects.filter(user=request.user)
         user = request.user
         # storyByThisUser = stories.likes.filter(id=user.id)
-        print(user.id)
+        print("user id= ", user.id)
         # print(storyByThisUser)
         like_list = []
         comment_list = []
-
+        follower_list = get_follow_list(request)
         for s in recent_story:
-            print(s.id)
+            # print(s.id)
             story_ = Story.objects.get(id=s.id)
             for s2 in story_.comments.all():
                 if s2.author_id == user.id:
@@ -39,11 +52,12 @@ def index(request):
             if story_.likes.filter(id=user.id).exists():
                 like_list.append(s.id)
 
-        print(like_list)
-        print(comment_list)
+        print("like list= ", like_list)
+        print("comment list= ", comment_list)
         form = CommentForm()
+        template = 'app1/index.html'
 
-        return render(request, 'app1/index.html',
+        return render(request, template,
                       {
                           'page_list': page_list,
                           'question_list': question_list,
@@ -55,6 +69,7 @@ def index(request):
                           'comment_list': comment_list,
                           'form': form
                       })
+
     else:
         return render(request, 'app1/index_default.html',
                       {})
@@ -254,12 +269,23 @@ def view_profile(request, user_name):
     print(the_user[0])
     tour_list = Story.objects.filter(user=the_user)
     print(tour_list)
-
+    follower_obj = Follower.objects.all()
+    following = []
+    follower = []
+    for i in follower_obj:
+        if i.my_id == request.user:
+            following.append(i.following_id)
+        if i.following_id == request.user.id:
+            follower.append(i.my_id)
+    print("Following = ", following)
+    print("Follower = ", follower)
     return render(request, 'app1/profile.html',
                   {
                       'the_user': the_user[0],
                       # 'user_info': user_info,
                       'tour_list': tour_list,
+                      'following': following,
+                      'follower': follower,
                   })
 
 
@@ -739,4 +765,56 @@ Notification for comment in a Question (Not Final)
 def add_notify_question_new_comment(question_author_id, answer_id, answer_giver_id):
     if question_author_id != answer_giver_id:
         add_notification(question_author_id, answer_giver_id, "q_a", "answer", answer_id)
+
+
+def update_follow_list(request):
+    if request.is_ajax():
+        print("i am in update follow and ajax")
+        text = request.GET['text']
+        print(text)
+        if (text == "Follow"):
+            follower_obj = Follower.objects.all()
+            follower_list = []
+            for i in follower_obj:
+                if i.my_id == request.user:
+                    follower_list.append(i.following_id)
+        else:
+            follower_obj = Follower.objects.all()
+            follower_list = []
+            for i in follower_obj:
+                if i.my_id == request.user:
+                    follower_list.append(i.following_id)
+        template = 'app1/partial/follow_unfollow.html'
+        return render(request, template, {'follower_list': follower_list})
+
+
+def follow_unfollow(request):
+    result = "null"
+    text = ""
+    if request.method == "POST":
+        text = request.POST['button_text']
+        action_id = request.POST['action_id']
+        print("Command text=",text)
+        print("with the id =", action_id)
+        print(type(text))
+        if text == "Unfollow":
+            print("True")
+        if text == "Unfollow":
+            print("if is running,text= ", text)
+            delete = Follower.objects.get(following_id=action_id).delete()
+            result = "Deleted"
+            print("Deleted", delete)
+
+        elif text == "Follow":
+            print("Else is running,text= ", text)
+            result = "Added"
+            if not Follower.objects.filter(following_id=action_id).exists():
+                instance = Follower(following_id=action_id, my_id=request.user)
+                value = instance.save()
+                print("Added ", action_id)
+
+        jsonData = {
+            'result': result
+        }
+        return HttpResponse(json.dumps(jsonData), content_type='application/json')
 

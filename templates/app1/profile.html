@@ -13,6 +13,8 @@
             this is where we shall show a general information page like facebook with hovering pic and all
 
             baki nicher tab gulare ekpashe side navigation bar er moto kore dis
+            <h2>Following: {{ following|length  }}</h2>
+            <h2>Follower: {{ follower|length }}</h2>
             <h1 class="alert-info"> Display_name = {{ the_user.userprofile.display_name }}</h1>
             <h1 class="alert-info"> Birthdate = {{ the_user.userprofile.birth_date }}</h1>
             <h1 class="alert-info"> Gender = {{ the_user.userprofile.gender }}</h1>

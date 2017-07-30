@@ -18,20 +18,30 @@
 
         {% for obj in stories %}
 
-           {% if obj.is_user_story %}
 
-
-           {% endif %}
 
 
             <div class="gp-div-post-full">
 
                 {% if obj.stories.all.exists %}
 
-                     {% if  obj.user.userprofile.image  %} <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50"> {% else %}   <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
+                    {% if  obj.user.userprofile.image %}
+                        <img src="{{ obj.user.userprofile.image.url }}" alt="No image shared" width="50" height="50">
+                    {% else %}
+                        <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
                              height="50">{% endif %}<a
-                                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with  <strong>{{ obj.member }}</strong> members.
+                        href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
+                    <strong>{{ obj.member }}</strong> members.
 
+                    <div id="follow{{ forloop.counter }}">
+
+                        {% load app1_extras %}
+
+                        {% if not obj.user == request.user %}
+                            {% pass_follower_list request.user obj.user.id forloop.counter %}
+                        {% endif %}
+
+                    </div>
 
                     <div class="gp-slide-show">
                         <div class="gp-slide-shadow"></div>
@@ -119,7 +129,8 @@
 
                                 {% if comment.id in comment_list %}
                                     <div class="bg-margin-top-10">
-                                        <button class="btn btn-danger" onclick="del_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
+                                        <button class="btn btn-danger"
+                                                onclick="del_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
                                             Delete
                                         </button>
                                     </div>
@@ -138,9 +149,11 @@
                         {% csrf_token %}
 
                         <div class="input-group">
-                            <input class="form-control" type="text" id="text{{ forloop.counter }}" maxlength="1000" name="text" required>
+                            <input class="form-control" type="text" id="text{{ forloop.counter }}" maxlength="1000"
+                                   name="text" required>
                             <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="commentDiv({{ forloop.counter }})" type="submit">
+                                <button class="btn btn-default" onclick="commentDiv({{ forloop.counter }})"
+                                        type="submit">
                                     <i class="glyphicon glyphicon-send"></i>
                                 </button>
                             </div>

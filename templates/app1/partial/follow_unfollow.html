@@ -1,0 +1,57 @@
+{% load app1_extras %}
+
+{#{% if follower_list %}#}
+{#    <h2>{{ follower_list }}</h2>#}
+{#{% else %}#}
+{#    <h3>No follow list</h3>#}
+{#{% endif %}#}
+
+
+
+<button onclick="change({{ div_id }})" data-action={{ obj_id }} id="text{{ div_id }}" {% if obj_id in follower_list %}class="btn btn-danger">Unfollow{% else %}class="btn btn-primary">Follow{% endif %}</button>
+
+
+{#    <button onclick="change({{ div_id }})" data-action={{ obj_id }} id="text{{ div_id }}"#}
+{#            class="btn btn-primary">Follow#}
+{#    </button>#}
+
+<script type="text/javascript">
+
+    function change(Id) {
+        console.log("Function is Running ")
+        var propty = $('#text' + Id);
+        var action_id = propty.data("action");
+        var text = propty.text();
+        console.log(text)
+        console.log(action_id)
+        //alert(action_id)
+        $.ajax({
+            url: '{% url 'follow_unfollow' %}',
+            type: 'POST',
+            data: {
+                button_text: text,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action_id: action_id
+            },
+            success: function (resp) {
+                console.log("success " +resp.result)
+                //$("#follow" + Id).load(" #follow" + Id);
+                                if (resp.result == "Added") {
+                                    propty.removeClass("btn btn-primary");
+                                    propty.addClass("btn btn-danger");
+                                    propty.text("Unfollow");
+
+                                } else if (resp.result == "Deleted") {
+                                    propty.removeClass("btn btn-danger");
+                                    propty.addClass("btn btn-primary");
+                                    propty.text("Follow");
+                                }
+            },
+            error: function (resp) {
+                console.log("Not a Success "+resp.result)
+            }
+        });
+    }
+
+
+</script>

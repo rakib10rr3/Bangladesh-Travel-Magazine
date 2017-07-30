@@ -18,9 +18,9 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from app1 import views
 from django.contrib.auth import views as auth_views
 
-from app1 import views
 #changed
 urlpatterns = [
     # url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
@@ -42,6 +42,8 @@ urlpatterns = [
     # -------
 
     url(r'^save_question/$', views.save_question, name='save_question'),
+
+    url(r'^follow_unfollow/$', views.follow_unfollow, name='follow_unfollow'),
 
     url(r'^save_answer/$', views.save_answer, name='save_answer'),
 
@@ -66,6 +68,8 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
 
     url(r'^story_share/$', views.story_share, name='story_share'),
+
+    url(r'^update_follow_list/$', views.update_follow_list, name='update_follow_list'),
 
     url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
     url(r'^ques_detail/(?P<ques_id>\d+)/$', views.ques_detail, name='ques_detail'),  # New!
