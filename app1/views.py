@@ -1,3 +1,4 @@
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
