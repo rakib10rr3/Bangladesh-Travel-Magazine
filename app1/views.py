@@ -26,11 +26,23 @@ def get_follow_list(request):
     return follower_list
 
 
-def index(request):
+# def entry_list(request,
+#                template='app1/entry_list.html',
+#                page_template='app1/entry_list_page.html'):
+#     context = {
+#         'stories': Story.objects.order_by('-created_date'),
+#         'page_template': page_template,
+#     }
+#     if request.is_ajax():
+#         template = page_template
+#     return render(request, template, context)
+
+
+def index(request,template='app1/index.html',page_template='app1/entry_list_page.html'):
     if request.user.is_authenticated:
         this_user = request.user
         page_list = Place.objects.order_by('-views')[:3]
-        recent_story = Story.objects.order_by('-created_date')[:5]
+        recent_story = Story.objects.order_by('-created_date')
         question_list = Question.objects.order_by('-created')[:5]
 
         q_form = QuestionForm()
@@ -55,20 +67,22 @@ def index(request):
         print("like list= ", like_list)
         print("comment list= ", comment_list)
         form = CommentForm()
-        template = 'app1/index.html'
+        context = {
 
-        return render(request, template,
-                      {
-                          'page_list': page_list,
-                          'question_list': question_list,
-                          'stories': recent_story,
-                          'q_form': q_form,
-                          'a_form': a_form,
-                          'user_profile': user_profile,
-                          'like_list': like_list,
-                          'comment_list': comment_list,
-                          'form': form
-                      })
+            'page_list': page_list,
+            'question_list': question_list,
+            'stories': recent_story,
+            'q_form': q_form,
+            'a_form': a_form,
+            'user_profile': user_profile,
+            'like_list': like_list,
+            'comment_list': comment_list,
+            'form': form,
+            'page_template': page_template,
+        }
+        if request.is_ajax():
+            template = page_template
+        return render(request, template, context)
 
     else:
         return render(request, 'app1/index_default.html',
@@ -626,6 +640,7 @@ def ques_detail(request, ques_id):
     user = request.user
     return render(request, 'app1/ques_view.html', {'ques': ques, 'user': user.id})
 
+
 @login_required
 def search(request):
     if request.method == "POST":
@@ -639,6 +654,7 @@ def search(request):
                           'place': place,
                           'query': txt
                       })
+
 
 @login_required
 def search_ques(request):
@@ -656,7 +672,6 @@ def search_ques(request):
                           'question_list': question_list})
 
         # custom change
-
 
 
 def notifications(request):
@@ -794,7 +809,7 @@ def follow_unfollow(request):
     if request.method == "POST":
         text = request.POST['button_text']
         action_id = request.POST['action_id']
-        print("Command text=",text)
+        print("Command text=", text)
         print("with the id =", action_id)
         print(type(text))
         if text == "Unfollow":
@@ -817,4 +832,3 @@ def follow_unfollow(request):
             'result': result
         }
         return HttpResponse(json.dumps(jsonData), content_type='application/json')
-

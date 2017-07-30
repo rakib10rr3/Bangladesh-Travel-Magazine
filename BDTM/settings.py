@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-#changed
+# changed
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
+    'el_pagination',
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -66,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app1.context_processors.notification',
+                'django.template.context_processors.request',  ## For EL-pagination
             ],
         },
     },
@@ -121,15 +124,15 @@ USE_TZ = True
 STATIC_PATH = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-STATIC_PATH,
+    STATIC_PATH,
 )
 
-#The value of this variable is the application name plus
-#the model name separated by a dot
+# The value of this variable is the application name plus
+# the model name separated by a dot
 
 AUTH_PROFILE_MODULE = 'app1.UserProfile'
 
-#for storing media files
+# for storing media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

@@ -33,6 +33,24 @@
             font-weight: bold;
             src: url({%  static "app1/fonts/RobotoSlab-Bold.ttf" %});
         }
+
+        a.back-to-top {
+            display: none;
+            width: 60px;
+            height: 60px;
+            text-indent: -9999px;
+            position: fixed;
+            z-index: 999;
+            right: 20px;
+            bottom: 20px;
+            background: #27AE61 url('/static/app1/img/up-arrow.png') no-repeat center 43%;
+            -webkit-border-radius: 30px;
+            -moz-border-radius: 30px;
+            border-radius: 30px;
+        }
+        a:hover.back-to-top {
+            background-color: #000;
+        }
     </style>
 
     {% block style_block %}
@@ -89,16 +107,18 @@
                     <li>
 
                         {% if user.userprofile.image %}
-                            <img src="{{ user.userprofile.image.url }}" class="ts-nav-pro-img" alt="{{ user.username }}">
+                            <img src="{{ user.userprofile.image.url }}" class="ts-nav-pro-img"
+                                 alt="{{ user.username }}">
                         {% else %}
                             <img src="/media/default-placeholder.png" class="ts-nav-pro-img" alt="{{ user.username }}">
                         {% endif %}
-                    
+
                         <a style="display: inline;" href="{% url 'user_profile' user.username %}">
                             {{ user.username }}
                         </a>
                     </li>
-                    <li><a href="{% url 'notifications' %}"><span class="label ts-label-notify">{{ notification_count }}</span></a></li>
+                    <li><a href="{% url 'notifications' %}"><span
+                            class="label ts-label-notify">{{ notification_count }}</span></a></li>
 
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                     {% if request.user.is_superuser %}
