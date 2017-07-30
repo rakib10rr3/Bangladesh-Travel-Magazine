@@ -1,151 +1,376 @@
 {% extends 'app1/base.html' %}
+
+
+{% load staticfiles %}
 {##}
 {#changed#}
 
+{# this is where we shall show a general information page like #}
+{# facebook with hovering pic and all #}
+
+{# baki nicher tab gulare ekpashe side navigation bar er moto kore dis #}
+
+{% block style_block %}
+
+    <style>
+
+        .ts-profile-img-box {
+            position: relative;
+            padding: 50px;
+            background-color: #eee;
+        }
+
+        .ts-bottom-up-shadow {
+            height: 5px;
+            background-image: linear-gradient(to top, rgba(0, 0, 0, .05), rgba(0, 0, 0, 0));
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .ts-img {
+            transition: 1s border-color ease-in-out;
+        }
+
+        .ts-profile-img-box .ts-profile-img div.ts-img {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+            border: 7px solid #009688;
+        }
+
+        .ts-profile-img-box {
+            text-align: center;
+            font-size: 48px;
+        }
+
+        .ts-user-information {
+            text-align: center;
+        }
+
+        .ts-profile-img {
+            margin-bottom: 50px;
+        }
+
+        .ts-profile-view-item .ts-item-name {
+            color: #888;
+            margin-bottom: 0;
+            font-size: 16px;
+        {#            text-shadow: 1px 1px 10px rgba(0, 0, 0, .25);#}
+        }
+
+        .ts-profile-view-item .ts-item-value {
+            font-size: 21px;
+            color: #222;
+        }
+
+        .ts-story-list {
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .ts-button-box {
+            margin-bottom: 50px;
+        }
+
+        .ts-text-comment {
+        {#            margin: 0;#}
+        }
+
+        @media only screen and (min-width: 768px) {
+            .gp-container-main {
+                overflow: auto;
+            }
+
+            .ts-profile-img-box {
+                width: 30%;
+                float: left;
+                text-align: right;
+            }
+
+            .ts-story-list {
+                float: left;
+                width: 70%;
+                padding: 50px 100px;
+                border-left: 1px solid #ddd;
+            }
+
+            .ts-profile-img-box {
+                background-color: transparent;
+            }
+
+            .ts-profile-img-box .ts-profile-img div.ts-img {
+                margin: 0;
+                display: inline-block;
+                width: 180px;
+                height: 180px;
+            }
+
+            .ts-profile-img {
+                margin-bottom: 30px;
+            }
+
+            .ts-bottom-up-shadow {
+                display: none;
+            }
+        }
+
+    </style>
+
+{% endblock %}
+
 {% block body_block %}
-    <div class="jumbotron gp-jumbotron">
-        <h1>{{ the_user.username }}</h1>
-    </div>
+    <div class="ts-profile-img-box" id="ts-profile-pic-bg">
 
-    <div class="container-fluid gp-container-normal">
+        <div class="ts-profile-img">
 
-        <div id="user_information ">
-            this is where we shall show a general information page like facebook with hovering pic and all
-
-            baki nicher tab gulare ekpashe side navigation bar er moto kore dis
-            <h2>Following: {{ following|length  }}</h2>
-            <h2>Follower: {{ follower|length }}</h2>
-            <h1 class="alert-info"> Display_name = {{ the_user.userprofile.display_name }}</h1>
-            <h1 class="alert-info"> Birthdate = {{ the_user.userprofile.birth_date }}</h1>
-            <h1 class="alert-info"> Gender = {{ the_user.userprofile.gender }}</h1>
-            <h1 class="alert-info"> Country = {{ the_user.userprofile.country }}</h1>
-
-
-            {% if the_user.userprofile.image %}
-                <img height="300" width="400" src="{{ the_user.userprofile.image.url }}">
-
-            {% else %}
-                <img src="/media/default-placeholder.png" class="img-circle" alt="Cinque Terre" width="50"
-                     height="50">
-
-            {% endif %}
-            {% if the_user == request.user %}
-                <a href="{% url 'update_userprofile' user.id %}" class="btn btn-primary">Edit Your Profile </a>
-            {% endif %}
+            <div class="ts-img"
+                 style="background-image: url(
+                         {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}'/media/default-placeholder.png'{% endif %})"
+                 data-adaptive-background data-ab-css-background>
+            </div>
+            <img id="ts-pro-img-hide"
+                 src="{% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
+                 style="display: none">
         </div>
 
-        <ul class="nav nav-tabs gp-narrow-width gp-nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#user">Account Information</a></li>
-            <li><a data-toggle="tab" href="#tour">Tour Information</a></li>
+        <div class="ts-bottom-up-shadow"></div>
 
-        </ul>
-
-
-        <div class="tab-content gp-narrow-width gp-tab-content ">
-            <div id="user" class="tab-pane fade in active gp-tab-pane">
-                <form method="post" action=".">
-
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="Username"
-                               value="{{ the_user.username }}" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input id="email" type="text" class="form-control" name="email" placeholder="Email"
-                               value="{{ the_user.email }}" disabled>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="display_name">Display Name</label>
-                        <input id="display_name" type="text" class="form-control gp-editable" name="display_name"
-                               placeholder="Display Name"
-                               value="{{ user_info.display_name }}"
-                               disabled required>
-                    </div>
-
-
-                    {% if the_user == request.user %}
-                        <div class="gp-button-panel">
-                            <input style="display: none;" class="btn btn-success" type="submit" value="Save Profile">
-                            <a href="#" id="gp-btn-change" class="btn btn-default">Change Profile</a>
-                            <a class="btn btn-danger" href="{% url 'auth_password_change' %}">Change Password</a>
-                        </div>
+        <div class="ts-profile-info">
+            <div class="ts-profile-view-item">
+                <p class="ts-item-name">Name</p>
+                <p class="ts-item-value">
+                    {% if the_user.userprofile.display_name %}
+                        {{ the_user.userprofile.display_name }}
+                    {% else %}
+                        {{ None }}
                     {% endif %}
-
-                </form>
+                </p>
             </div>
 
-            <div id="tour" class="tab-pane fade gp-tab-pane">
+            {% if the_user == user %}
 
-                {% if the_user == request.user %}
-                    <div class="gp-button-panel gp-center gp-border-bottom">
-                        <a href="{% url 'story_share' %}" class="btn btn-primary">
-                            Share a New Tour Story
-                        </a>
-                    </div>
-                {% endif %}
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Username</p>
+                    <p class="ts-item-value">
+                        {{ the_user.username }}
+                    </p>
+                </div>
 
-                <div class="list-group gp-list-group-tour">
-                    {% if tour_list.count > 0 %}
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">E-mail</p>
+                    <p class="ts-item-value">
+                        {{ the_user.email }}
+                    </p>
+                </div>
+
+            {% endif %}
+
+            <div class="ts-profile-view-item">
+                <p class="ts-item-name">Gender</p>
+                <p class="ts-item-value">
+                    {% if the_user.userprofile.gender == 'M' %}
+                        Male
+                    {% elif the_user.userprofile.gender == 'F' %}
+                        Female
+                    {% else %}
+                        None
+                    {% endif %}
+                </p>
+            </div>
+
+            {% if the_user == user %}
+
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Birthday</p>
+                    <p class="ts-item-value">
+                        {{ the_user.userprofile.birth_date }}
+                    </p>
+                </div>
+
+            {% endif %}
+
+            <div class="ts-profile-view-item">
+                <p class="ts-item-name">Country</p>
+                <p class="ts-item-value">
+                    {{ the_user.userprofile.country }}
+                </p>
+            </div>
+
+            <div class="ts-profile-view-item">
+                <p class="ts-item-name">Following</p>
+                <p class="ts-item-value">
+                    {{ following|length }}
+                </p>
+            </div>
+
+            <div class="ts-profile-view-item">
+                <p class="ts-item-name">Follower</p>
+                <p class="ts-item-value">
+                    {{ follower|length }}
+                </p>
+            </div>
+
+            {% if the_user == user %}
+                <div class="ts-align-right">
+                    <a href="{% url 'update_userprofile' user.id %}" class="btn btn-default">Edit Your Profile </a>
+                </div>
+            {% endif %}
+
+        </div>
+
+
+    </div>
+
+    <div class="container-fluid gp-container-normal ts-story-list">
+
+
+        <div class="ts-shared-stories">
+            {% if the_user == request.user %}
+                <div class="ts-button-box">
+                    <a href="{% url 'story_share' %}" class="btn btn-primary btn-block">
+                        Share a New Tour Story
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="list-group gp-list-group-tour">
+                {% if tour_list.count > 0 %}
+
+                    <ul class="list-group">
+
                         {% for obj in tour_list %}
 
-                            <div class="gp-profile-story-list-item">
-                    <span class="gp-text-title"><a
-                            href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                            <li class="list-group-item">
+
+                                <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                                 <span class="gp-text-date">{{ obj.created_date }}</span>
+                                <span class="ts-text-comment">{{ obj.comments.count }} comment{% if obj.comments.count %}s{% endif %}.</span>
+
                                 {% if  the_user == request.user %}
                                     <div class="gp-margin-top-10">
-                                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger"><span
-                                                class="glyphicon glyphicon-remove-sign"></span>
-                                            Delete</a>
-                                        <a href="{% url 'image_share' obj.id %}" class="btn btn-default"><span
-                                                class="glyphicon glyphicon-picture"></span> Image</a>
-                                        <a class="btn btn-default" href="{% url 'story_edit' obj.id %}"><span
-                                                class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-remove-sign"></span> Delete
+                                        </a>
+                                        <a href="{% url 'image_share' obj.id %}" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-picture"></span> Image
+                                        </a>
+                                        <a class="btn btn-default" href="{% url 'story_edit' obj.id %}">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
                                     </div>
                                 {% endif %}
-                            </div>
+
+                            </li>
 
                         {% endfor %}
-                    {% else %}
-                        <div class="gp-profile-story-list-item">
-                            <div class="gp-center">
-                                You have no story shared!
-                            </div>
+
+                    </ul>
+
+                {% else %}
+                    <div class="gp-profile-story-list-item">
+                        <div class="gp-center">
+                            You have no story shared!
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </div>
-
         </div>
-
 
     </div>
 
+{% endblock %}
+
+{% block javascript_block %}
+
+    {# https://github.com/briangonzalez/jquery.adaptive-backgrounds.js #}
+
+    <script src="{% static "app1/js/jquery.adaptive-backgrounds.js" %}" async></script>
 
     <script>
+
         $(function () {
-            $("a#gp-btn-change").click(function (element) {
-                element.preventDefault();
-
-                if ($(".gp-editable").is(":disabled")) {
-
-                    $(".gp-editable").prop("disabled", false);
-                    $("input[type=submit]").slideDown();
-                    $(this).text("Cancel");
-
-                } else {
-
-                    $(".gp-editable").prop("disabled", true);
-                    $("input[type=submit]").slideUp();
-                    $(this).text("Change Profile");
-                }
-
-            });
+            if ($(".ts-profile-img-box").height() > $(".ts-story-list").height()) {
+                $(".ts-story-list").height($(".ts-profile-img-box").height());
+            }
         });
+
+
+        $(document).ready(function () {
+            {#            var defaults = {#}
+            {#                shadeVariation: true,#}
+            {#                shadePercentage: 0.1,#}
+            {#                shadeColors: {#}
+            {#                    light: 'rgb(200,200,200)',#}
+            {#                    dark: 'rgb(0,0,0)'#}
+            {#                },#}
+            {#                parent: "#ts-profile-pic-bg"#}
+            {#            };#}
+            {#            $.adaptiveBackground.run(defaults);#}
+
+            // Avarage Color
+            var rgb = getAverageRGB(document.getElementById('ts-pro-img-hide'));
+            {#            $("#ts-profile-pic-bg").css('background-color',#}
+            {#                'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');#}
+
+            $(".ts-img").css('border-color',
+                'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
+
+        });
+
+        function getAverageRGB(imgEl) {
+
+            var blockSize = 5, // only visit every 5 pixels
+                defaultRGB = {r: 0, g: 0, b: 0}, // for non-supporting envs
+                canvas = document.createElement('canvas'),
+                context = canvas.getContext && canvas.getContext('2d'),
+                data, width, height,
+                i = -4,
+                length,
+                rgb = {r: 0, g: 0, b: 0},
+                count = 0;
+
+            if (!context) {
+                return defaultRGB;
+            }
+
+            height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+            width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+
+            context.drawImage(imgEl, 0, 0);
+
+            try {
+                data = context.getImageData(0, 0, width, height);
+            } catch (e) {
+                /* security error, img on diff domain */
+                alert('x');
+                return defaultRGB;
+            }
+
+            length = data.data.length;
+
+            while ((i += blockSize * 4) < length) {
+                ++count;
+                rgb.r += data.data[i];
+                rgb.g += data.data[i + 1];
+                rgb.b += data.data[i + 2];
+            }
+
+            // ~~ used to floor values
+            rgb.r = ~~(rgb.r / count);
+            rgb.g = ~~(rgb.g / count);
+            rgb.b = ~~(rgb.b / count);
+
+            return rgb;
+
+        }
+
+
     </script>
 
 {% endblock %}

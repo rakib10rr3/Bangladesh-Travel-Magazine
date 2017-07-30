@@ -9,6 +9,12 @@ a {
     transition: all .2s ease-in-out;
 }
 
+img {
+
+    background-image: url("/media/default-placeholder.png");
+    background-size: cover;
+}
+
 /**
  * All about body
  */
