@@ -658,7 +658,7 @@ def search_ques(request):
         # custom change
 
 
-
+@login_required
 def notifications(request):
     user = request.user
     n = Notification.objects.filter(recipient_id=user.id).order_by('-date_created')

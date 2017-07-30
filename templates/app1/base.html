@@ -93,7 +93,7 @@
                         {% else %}
                             <img src="/media/default-placeholder.png" class="ts-nav-pro-img" alt="{{ user.username }}">
                         {% endif %}
-                    
+
                         <a style="display: inline;" href="{% url 'user_profile' user.username %}">
                             {{ user.username }}
                         </a>
@@ -142,6 +142,14 @@
 
 {# Scriptes #}
 <script src="{% static "app1/js/bootstrap.min.js" %}"></script>
+
+{#<script>#}
+{#    $(function () {#}
+{#        $("img").on("error", function () {#}
+{#            $(this).attr('src', '/media/default-placeholder.png');#}
+{#        });#}
+{#    });#}
+{#</script>#}
 
 <!--[if lt IE 9]>
 

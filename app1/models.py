@@ -149,7 +149,7 @@ class UserProfile(models.Model):
     # comes up with some basic attributes(username,passward,email)
     # user = models.OneToOneField(User)
     user = models.OneToOneField(User)
-    display_name = models.TextField(max_length=100, default='')
+    display_name = models.CharField(max_length=100, default='')
     birth_date = models.DateField(blank=True, null=True)
     image = models.ImageField(upload_to=user_desti, blank=True)
     GENDER_TYPE = (
@@ -162,7 +162,7 @@ class UserProfile(models.Model):
         choices=GENDER_TYPE,
         blank=True, null=True,
     )
-    country = models.TextField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
 
     # The additional attributes we wish to include.
     def __str__(self):
