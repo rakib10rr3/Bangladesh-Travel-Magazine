@@ -373,7 +373,7 @@ def image_share_jquery2(request, story_id):
     page = story.give_me_page()
     files = request.FILES.getlist('myfiles')
     print("Files = ", files)
-    if (not files):
+    if not files:
         return
 
     for number, a_file in enumerate(files):
@@ -499,8 +499,8 @@ def story_share(request):
     else:
         form = storyForm()
 
-    context_dict = {'form': form}
-    return render(request, 'app1/story_share.html', context_dict)
+        context_dict = {'form': form}
+        return render(request, 'app1/story_share.html', context_dict)
 
 
 @login_required
@@ -626,6 +626,7 @@ def ques_detail(request, ques_id):
     user = request.user
     return render(request, 'app1/ques_view.html', {'ques': ques, 'user': user.id})
 
+
 @login_required
 def search(request):
     if request.method == "POST":
@@ -639,6 +640,7 @@ def search(request):
                           'place': place,
                           'query': txt
                       })
+
 
 @login_required
 def search_ques(request):
@@ -794,7 +796,7 @@ def follow_unfollow(request):
     if request.method == "POST":
         text = request.POST['button_text']
         action_id = request.POST['action_id']
-        print("Command text=",text)
+        print("Command text=", text)
         print("with the id =", action_id)
         print(type(text))
         if text == "Unfollow":
@@ -817,4 +819,3 @@ def follow_unfollow(request):
             'result': result
         }
         return HttpResponse(json.dumps(jsonData), content_type='application/json')
-

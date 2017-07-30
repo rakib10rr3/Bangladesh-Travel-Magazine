@@ -27,6 +27,11 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit">Share</button>
         </form>
     </div>
+
+{% endblock %}
+
+{% block javascript_block %}
+
     <script type="text/javascript">
 
         {#        document.getElementById("files").onchange = function () {#}
@@ -36,55 +41,52 @@
         {#            };#}
         {#            reader.readAsDataURL(this.files[0]);#}
         {#        };#}
-       window.onload = function(){
+        window.onload = function () {
 
-    //Check File API support
-    if(window.File && window.FileList && window.FileReader)
-    {
-        var filesInput = document.getElementById("files");
+            //Check File API support
+            if (window.File && window.FileList && window.FileReader) {
+                var filesInput = document.getElementById("files");
 
-        filesInput.addEventListener("change", function(event){
+                filesInput.addEventListener("change", function (event) {
 
-            var files = event.target.files; //FileList object
-            var output = document.getElementById("result");
+                    var files = event.target.files; //FileList object
+                    var output = document.getElementById("result");
 
-            for(var i = 0; i< files.length; i++)
-            {
-                var file = files[i];
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
 
-                //Only pics
-                if(!file.type.match('image'))
-                  continue;
+                        //Only pics
+                        if (!file.type.match('image'))
+                            continue;
 
-                var picReader = new FileReader();
+                        var picReader = new FileReader();
 
-                picReader.addEventListener("load",function(event){
+                        picReader.addEventListener("load", function (event) {
 
-                    var picFile = event.target;
+                            var picFile = event.target;
 
-                    var div = document.createElement("div");
+                            var div = document.createElement("div");
 
-                    div.innerHTML = "<img style='height: 75px; border: 1px solid #000; margin: 5px'  class='thumbnail' src='" + picFile.result + "'" +
-                            "title='" + picFile.name + "'/> <a href='#' class='remove_pict'>X</a>";
+                            div.innerHTML = "<img style='height: 75px; border: 1px solid #000; margin: 5px'  class='thumbnail' src='" + picFile.result + "'" +
+                                "title='" + picFile.name + "'/> <a href='#' class='remove_pict'>X</a>";
 
-                    output.insertBefore(div,null);
-                    div.children[1].addEventListener("click", function(event){
-                       div.parentNode.removeChild(div);
-                    });
+                            output.insertBefore(div, null);
+                            div.children[1].addEventListener("click", function (event) {
+                                div.parentNode.removeChild(div);
+                            });
+
+                        });
+
+                        //Read the image
+                        picReader.readAsDataURL(file);
+                    }
 
                 });
-
-                 //Read the image
-                picReader.readAsDataURL(file);
             }
-
-        });
-    }
-    else
-    {
-        console.log("Your browser does not support File API");
-    }
-}
+            else {
+                console.log("Your browser does not support File API");
+            }
+        }
 
     </script>
 
