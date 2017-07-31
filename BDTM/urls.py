@@ -21,7 +21,7 @@ from django.contrib import admin
 from app1 import views
 from django.contrib.auth import views as auth_views
 
-#changged
+# changged
 urlpatterns = [
     # url(r'^$', lambda x: HttpResponseRedirect('/upload/new/')),
     # url(r'^upload/', include('fileupload.urls')),
@@ -49,7 +49,7 @@ urlpatterns = [
 
     url(r'^like/$', views.like, name='like'),
 
-    url(r'^update_userprofile/(?P<user_id>\d+)/$', views.update_userprofile, name='update_userprofile'),    # New! New!
+    url(r'^update_userprofile/(?P<user_id>\d+)/$', views.update_userprofile, name='update_userprofile'),  # New! New!
 
     url(r'^profile/(?P<user_name>[\w\-]+)/$', views.view_profile, name='user_profile'),  # New! New!
 
@@ -57,9 +57,17 @@ urlpatterns = [
 
     url(r'^story_delete/(?P<story_id>\d+)/$', views.story_delete, name='story_delete'),
 
+    url(r'^ques_delete/(?P<ques_id>\d+)/$', views.delete_ques, name='ques_delete'),
+
+    #url(r'^ques_edit/(?P<ques_id>\d+)/$', views.edit_ques, name='ques_edit'),
+
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
 
-    url(r'^del_answer/$', views.answer_delete, name='answer_delete'),
+    url(r'^answer_delete/$', views.answer_delete, name='answer_delete'),
+
+    url(r'^edit_answer/$', views.answer_edit, name='answer_edit'),
+
+    url(r'^edit_question/$', views.question_edit, name='edit_question'),
 
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
 
@@ -111,6 +119,6 @@ urlpatterns = [
 #     ]
 
 if settings.DEBUG:
-            urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-            urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#if debug is true,then anything starting with the static/ should be passed to static root,same fo
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if debug is true,then anything starting with the static/ should be passed to static root,same fo

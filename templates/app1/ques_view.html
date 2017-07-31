@@ -21,14 +21,34 @@
                                      alt="{{ ques.author }}"
                                      width="50" height="50">
                             {% endif %}
-                            <h2 class="gp-ques-title">{{ ques.question }}</h2>
-                            <p class="gp-ques-date">{{ ques.created }}</p>
+                            <div id="ques_section">
+                                <h2 class="gp-ques-title">{{ ques.question }}</h2>
+                                <p class="gp-ques-date">{{ ques.created }}</p>
+                            </div>
+                            <div id="edit_ques_form" style="display: none">
+                                form id {{ ques.id }}
+                                <form id="edit_ques">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control" name="edit_ques"
+                                           id="new_ques"
+                                           oninput="question_edit()"
+                                           value="{{ ques.question }}">
+                                </form>
+                            </div>
                             <p class="card-text-author">Asked by <a
                                     href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
+                            <form action="{% url 'ques_delete' ques.id %}">
+                                <button id="delete" onclick="del_ques({{ ques.id }})" class="btn btn-danger">Delete
+                                </button>
+                                <button id="edit" type="button" onclick="edit_ques({{ ques.id }})" class="btn btn-info">
+                                    Edit
+                                </button>
+                            </form>
+
                         </div>
 
-                        <div class="gp-ques-ans">
 
+                        <div class="gp-ques-ans">
                             {% if ques.answers.all.exists %}
                                 <div class="gp-total-comments">
                                     <a onclick="toggleDiv(1)" class="gp-flat-link">
@@ -37,8 +57,7 @@
                                 </div>
 
 
-                                <div id={{ 1 }}>
-
+                                <div>
                                     {% for obj2 in ques.answers.all %}
                                         <div class="gp-ques-ans-block">
                                             {% if  obj2.answered_by.userprofile.image %}
@@ -54,15 +73,34 @@
                                             <h4>
                                                 <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
                                             </h4>
-                                            <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                            <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                            <div id="comment_section{{ obj2.id }}">
+                                                <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                                <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                            </div>
+                                            <div id="edit_form{{ obj2.id }}" style="display: none">
+                                                form id {{ obj2.id }}
+                                                <form id="edit_answer{{ obj2.id }}">
+                                                    {% csrf_token %}
+                                                    <input type="text" class="form-control" name="edit"
+                                                           id="new_ans{{ obj2.id }}"
 
-                                            {% if obj2.answered_by_id == user %}
+                                                           value="{{ obj2.text }}">
+                                                </form>
+                                            </div>
+
+                                            {% if user == ques.author_id  %}
                                                 <div class="bg-margin-top-10">
-                                                    <button class="btn btn-danger"
-                                                            onclick="del_answer( {{ 1 }}, {{ obj2.id }})">
+                                                    <button type="button" class="btn btn-danger"
+                                                            id="delete{{ obj2.id }}"
+                                                            onclick="del_answer({{ obj2.id }})">
                                                         Delete
                                                     </button>
+                                                    {% if obj2.answered_by_id == user %}
+                                                        <button class="btn btn-info" id="edit{{ obj2.id }}"
+                                                                onclick="edit_answer({{ obj2.id }}, {{ obj2.id }})">
+                                                            Edit
+                                                        </button>
+                                                    {% endif %}
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -100,7 +138,9 @@
         function toggleDiv(divId) {
             $("#" + divId).slideToggle();
         }
-        function del_answer(ques_ans, answerID) {
+
+
+        function del_answer(answerID) {
 
             // alert(ques_ans)
             //alert(answerID)
@@ -147,7 +187,7 @@
                 var element = $(this);
                 element.off('submit');
                 var _id = element.attr("data-id");
-                alert("kk" + _id);
+                // alert("kk" + _id);
                 $.ajax({
                     url: {% url 'save_answer' %},
                     type: 'POST',
@@ -164,6 +204,79 @@
                         //$('#text').val("");
                     }
                 });
+            });
+        }
+
+        function edit_answer(formid, ans_id) {
+            ///alert(ans_id);
+
+            // ----------
+
+
+            $("#comment_section" + formid).hide();
+
+            $("#edit_form" + formid).show();
+
+            $("#delete" + formid).hide();
+            $("#edit" + formid).hide();
+
+
+            $("#edit_form" + formid).on('submit', function (event) {
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var text = $("#new_ans" + formid).val();
+                //alert(text);
+                $.ajax({
+                    url: '{% url 'answer_edit' %}',
+                    type: 'POST',
+                    data: {
+                        ans_id: ans_id,
+                        new_ans: text,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        $("#" + "ques_ans").load(" #" + "ques_ans");
+                    }
+                });
+
+            });
+        }
+
+
+        function edit_ques(ques_id) {
+            ///alert(ans_id);
+
+            // ----------
+
+
+            $("#ques_section").hide();
+
+            $("#edit_ques_form").show();
+
+            $("#delete").hide();
+            $("#edit").hide();
+
+
+            $("#edit_ques_form").on('submit', function (event) {
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var text = $("#new_ques").val();
+                // alert(text);
+                $.ajax({
+                    url: '{% url 'edit_question' %}',
+                    type: 'POST',
+                    data: {
+                        ques_id: ques_id,
+                        new_ques: text,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        $("#" + "ques_ans").load(" #" + "ques_ans");
+                    }
+                });
+
             });
         }
 

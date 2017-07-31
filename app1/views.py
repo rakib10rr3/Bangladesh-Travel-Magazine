@@ -93,7 +93,7 @@ def index(request,template='app1/index.html',page_template='app1/entry_list_page
 def forum(request):
     if request.user.is_authenticated:
         user = request.user
-        question_list = Question.objects.order_by('-created')[:5]
+        question_list = Question.objects.order_by('-created')[:10]
         q_form = QuestionForm()
         a_form = AnswerForm()
         return render(request, 'app1/forum.html',
@@ -488,6 +488,35 @@ def answer_delete(request):
         return HttpResponse('')
 
 
+def answer_edit(request):
+    if request.method == 'POST':
+        user = request.user
+        answer_id = request.POST['ans_id']
+        new_ans = request.POST['new_ans']
+
+        print(answer_id)
+        answer = Answer.objects.get(id=answer_id)
+        answer.text = new_ans
+        print(answer)
+        answer.save()
+        return HttpResponse('')
+
+
+def question_edit(request):
+    if request.method == 'POST':
+        user = request.user
+        question_id = request.POST['ques_id']
+        new_ques = request.POST['new_ques']
+
+        print(question_id)
+        question = Question.objects.get(id=question_id)
+        question.question = new_ques
+        print(question)
+        question.save()
+        return HttpResponse('')
+
+
+
 @login_required
 def story_share(request):
     """
@@ -673,6 +702,13 @@ def search_ques(request):
                           'question_list': question_list})
 
         # custom change
+
+
+def delete_ques(request, ques_id):
+    ques = Question.objects.get(pk=ques_id)
+    ques.delete()
+    return redirect('forum')
+
 
 
 def notifications(request):
