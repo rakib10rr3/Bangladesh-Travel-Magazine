@@ -135,7 +135,12 @@
                  data-adaptive-background data-ab-css-background>
             </div>
             <img id="ts-pro-img-hide"
-                 src="{% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
+                 src="
+
+
+
+
+                         {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
                  style="display: none">
         </div>
 
@@ -207,19 +212,73 @@
                 <p class="ts-item-value">
                     {{ following|length }}
                     <br>
-                    {% for obj in following %}
-                        <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
-                    {% endfor %}
+                    <!-- Trigger the modal with a button -->
+                    {% if the_user == user %}
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#following">
+                        View Following
+                    </button>
+
+                    <!-- Modal -->
+                <div id="following" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Following List</h4>
+                            </div>
+                            <div class="modal-body">
+                                {% for obj in following %}
+                                    <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endif %}
                 </p>
             </div>
+
 
             <div class="ts-profile-view-item">
                 <p class="ts-item-name">Follower</p>
                 <p class="ts-item-value">
                     {{ follower|length }}
-                    {% for obj in follower %}
-                        <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
-                    {% endfor %}
+                    <br>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#follower">
+                        View Followers
+                    </button>
+
+                    <!-- Modal -->
+                <div id="follower" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Follower List</h4>
+                            </div>
+                            <div class="modal-body">
+                                {% for obj in follower %}
+                                    <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 </p>
             </div>
 
@@ -255,9 +314,11 @@
 
                             <li class="list-group-item">
 
-                                <span class="gp-text-title"><a href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                                <span class="gp-text-title"><a
+                                        href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
                                 <span class="gp-text-date">{{ obj.created_date }}</span>
-                                <span class="ts-text-comment">{{ obj.comments.count }} comment{% if obj.comments.count %}s{% endif %}.</span>
+                                <span class="ts-text-comment">{{ obj.comments.count }} comment
+                                    {% if obj.comments.count %}s{% endif %}.</span>
 
                                 {% if  the_user == request.user %}
                                     <div class="gp-margin-top-10">
