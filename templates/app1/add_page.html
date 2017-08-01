@@ -13,19 +13,47 @@
               enctype="multipart/form-data">
 
             {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    <p class="required">{{ field.help_text }}</p>
-                    {{ field }}
-                    {{ field.errors }}
-                </div>
-            {% endfor %}
-            <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Add Place</button>
+            {#            {% for hidden in form.hidden_fields %}#}
+            {#                {{ hidden }}#}
+            {#            {% endfor %}#}
+            {#            {% for field in form.visible_fields %}#}
+            {#                <div class="form-group">#}
+            {#                    <p class="required">{{ field.help_text }}</p>#}
+            {#                    {{ field }}#}
+            {#                    {{ field.errors }}#}
+            {#                </div>#}
+            {#            {% endfor %}#}
+            <input type="text" id="id_input">
+{#            <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Add Place</button>#}
 
         </form>
 
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(function () {
+                $("#id_input").on('keyup', function () {
+                    var value = $(this).val();
+                    console.log(value)
+                    $.ajax({
+                        url: "{% url 'ajax_autocomplete' %}",
+                        data: {
+                            'search': value
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            list = data.list;
+                            $("#id_input").autocomplete({
+                                source: list,
+                                minLength: 1
+                            });
+                        }
+                    });
+                });
+            });
+
+        });
+
+    </script>
 {% endblock %}

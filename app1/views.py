@@ -10,6 +10,7 @@ from itertools import chain
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
 from .models import OwnReport, ReportCounter
+from django.http import JsonResponse
 
 try:
     from django.utils import simplejson as json
@@ -23,10 +24,11 @@ def trending_list(request):
     list = []
     for i in story_last_7_day:
         list.append(i.give_me_page())
-    save=dict(Counter(list).most_common(5))
-    return  save
+    save = dict(Counter(list).most_common(7))
+    print(save)
+    print("*" * 5, "Trending_list function end", "*" * 5)
 
-print("*" * 5, "Trending_list function end", "*" * 5)
+    return save
 
 
 def get_follow_list(request):
@@ -54,7 +56,7 @@ def get_follow_list(request):
 def index(request, template='app1/index.html', page_template='app1/entry_list_page.html'):
     if request.user.is_authenticated:
         this_user = request.user
-        #page_list = Place.objects.order_by('-views')[:3]
+        # page_list = Place.objects.order_by('-views')[:3]
         page_list = trending_list(request)
         print(type(page_list))
         recent_story = Story.objects.order_by('-created_date')
@@ -72,7 +74,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         comment_list = []
         report_me = []
         follower_list = get_follow_list(request)
-        #S29
+        # S29
         for u in report_list:
             if u.u_id == request.user.id:
                 report_me.append(u.story_id)
@@ -81,7 +83,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
             if s.report >= 5:
                 final_report.append(s.id)
         print(report_me)
-        #EndS29
+        # EndS29
         for s in recent_story:
             # print(s.id)
             story_ = Story.objects.get(id=s.id)
@@ -516,8 +518,9 @@ def answer_delete(request):
         answer.delete()
         return HttpResponse('')
 
+
 def reported_story(request):
-    report_list =[]
+    report_list = []
     stories = Story.objects.all()
     for s in stories:
         if s.report >= 5:
@@ -528,7 +531,9 @@ def reported_story(request):
             'report_list': report_list,
         }
     )
-def Own_report(request): #s29
+
+
+def Own_report(request):  # s29
     if request.method == 'POST':
         user = request.user
         story_id = request.POST['story_id']
@@ -545,7 +550,7 @@ def Own_report(request): #s29
             s.report += 1
             s.save()
             print("after", s.report)
-            print("check", s.id,"->",story_id)
+            print("check", s.id, "->", story_id)
         c = OwnReport()
         c.u_id = user.id
         c.story_id = story_id
@@ -943,3 +948,15 @@ def follow_unfollow(request):
             'result': result
         }
         return HttpResponse(json.dumps(jsonData), content_type='application/json')
+
+
+def autocomplete(request):
+    if request.is_ajax():
+        queryset = Place.objects.filter(name__startswith=request.GET.get('search', None))
+        list = []
+        for i in queryset:
+            list.append(i.name)
+        data = {
+            'list': list,
+        }
+        return JsonResponse(data)

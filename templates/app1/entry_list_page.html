@@ -1,5 +1,5 @@
 {% load el_pagination_tags %}
-{% paginate 4 stories %}
+{% paginate stories %}
 {% for obj in stories %}
     {% if obj.id not in final_report %}
         {% if obj.id not in report_list %}
@@ -155,30 +155,30 @@
         {% endif %}
     {% endif %}
 {% endfor %}
-{% show_more %}
+{% show_pages %}
 
 {% block javascript_block %}
 
-    <script type = "text/javascript" >
-    function ownreport(story_id, divid) {
+    <script type="text/javascript">
+        function ownreport(story_id, divid) {
 
-        // alert(ques_ans)
-        alert("Reported! you will not see this again :)")
-        $("#khaide" + divid).hide();
-        //alert(story_id);
-        $.ajax({
-            url: '{% url 'own_report' %}',
-            type: 'POST',
-            data: {
-                story_id: story_id,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function () {
-                //alert("Created a New Comment");
-                //load('index.html');
-            }
-        });
+            // alert(ques_ans)
+            alert("Reported! you will not see this again :)")
+            $("#khaide" + divid).hide();
+            //alert(story_id);
+            $.ajax({
+                url: '{% url 'own_report' %}',
+                type: 'POST',
+                data: {
+                    story_id: story_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    //alert("Created a New Comment");
+                    //load('index.html');
+                }
+            });
 
-    }
+        }
     </script>
 {% endblock %}

@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^save_question/$', views.save_question, name='save_question'),
 
     url(r'^follow_unfollow/$', views.follow_unfollow, name='follow_unfollow'),
-
+    url(r'^ajax/autocomplete/$', views.autocomplete, name='ajax_autocomplete'),
     url(r'^save_answer/$', views.save_answer, name='save_answer'),
 
     url(r'^like/$', views.like, name='like'),
@@ -59,16 +59,16 @@ urlpatterns = [
 
     url(r'^ques_delete/(?P<ques_id>\d+)/$', views.delete_ques, name='ques_delete'),
 
-    #url(r'^ques_edit/(?P<ques_id>\d+)/$', views.edit_ques, name='ques_edit'),
+    # url(r'^ques_edit/(?P<ques_id>\d+)/$', views.edit_ques, name='ques_edit'),
 
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
 
     url(r'^answer_delete/$', views.answer_delete, name='answer_delete'),
-    url(r'^ownreport/$', views.Own_report, name='own_report'), #s29
+    url(r'^ownreport/$', views.Own_report, name='own_report'),  # s29
     url(r'^edit_answer/$', views.answer_edit, name='answer_edit'),
 
     url(r'^edit_question/$', views.question_edit, name='edit_question'),
-    url(r'^reported_story/$', views.reported_story, name='reported_story'), #S29
+    url(r'^reported_story/$', views.reported_story, name='reported_story'),  # S29
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
 
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html

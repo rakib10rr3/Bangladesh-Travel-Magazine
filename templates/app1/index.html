@@ -70,7 +70,7 @@
                         {% if page_list %}
                             <!-- trending list start-->
                             {% for page,value in page_list.items %}
-                                <h2>Total {{value }} stories shared In this page </h2>
+                                <h2>Total {{ value }} stories shared In this page </h2>
                                 <div class="container-fluid gp-div-post-summery">
 
                                     <!-- image part for each page -->
@@ -246,19 +246,20 @@
 
 
 
-    {% block js %}
-        {{ block.super }}
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
-        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
-
-        <script>
-            $.endlessPaginate({
-                paginateOnScroll: true,
-                paginateOnScrollMargin: 20
-            });
-        </script>
-    {% endblock %}
+{#    {% block js %}#}
+{#        {{ block.super }}#}
+{#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
+{#        #}
+{#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
+{#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
+{##}
+{#        <script>#}
+{#            $.endlessPaginate({#}
+{#                paginateOnScroll: true,#}
+{#                paginateOnScrollMargin: 20#}
+{#            });#}
+{#        </script>#}
+{#    {% endblock %}#}
 
 {% endblock %}
 
@@ -267,6 +268,7 @@
 {% block javascript_block %}
 
     <script type="text/javascript">
+
 
         $('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
         var amountScrolled = 300;
@@ -283,6 +285,7 @@
             }, 700);
             return false;
         });
+
 
         function toggleDiv(element, divId) {
             $("#" + divId).slideToggle();
