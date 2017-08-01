@@ -123,6 +123,7 @@
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                     {% if request.user.is_superuser %}
                         <li><a href="/admin"><i class="glyphicon glyphicon-cog"></i></a></li>
+                         <li><a href={% url 'reported_story' %}>Reported Stories</a></li>
                     {% endif %}
 
                 </ul>

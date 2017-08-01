@@ -64,11 +64,11 @@ urlpatterns = [
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
 
     url(r'^answer_delete/$', views.answer_delete, name='answer_delete'),
-
+    url(r'^ownreport/$', views.Own_report, name='own_report'), #s29
     url(r'^edit_answer/$', views.answer_edit, name='answer_edit'),
 
     url(r'^edit_question/$', views.question_edit, name='edit_question'),
-
+    url(r'^reported_story/$', views.reported_story, name='reported_story'), #S29
     url(r'^add_comment/$', views.add_comment, name='add_comment'),
 
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
@@ -94,7 +94,6 @@ urlpatterns = [
     url(r'^story/(?P<story_id>\d+)/image_share_jquery/$', views.image_share_jquery, name='image_share_jquery'),  # New!
 
     url(r'^story/(?P<story_id>\d+)/image_delete/(?P<value_id>\d+)$', views.image_delete, name='delete_pic'),
-
 ]
 
 # urlpatterns = [

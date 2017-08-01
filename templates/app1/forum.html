@@ -6,9 +6,11 @@
         <h1>BDTM Community!</h1>
     </div>
 
+
     <div class="container-fluid gp-container-normal">
+        <!-- only question search
         <div class="gp-side-panel">
-            <form class="navbar-form navbar-left" method="post" action="{% url 'search_ques' %}">{% csrf_token %}
+            <form class="navbar-form navbar-left" method="post" action="
                 <div class="input-group">
                     <input type="text" name="ques" class="form-control" placeholder="Search for Questions">
                     <div class="input-group-btn">
@@ -19,7 +21,7 @@
                 </div>
             </form>
         </div>
-        <hr>
+        <hr>-->
         <div class="gp-side-panel">
             <div class="gp-side-panel-title">
                 Have A Travel Query?
@@ -71,32 +73,32 @@
                                 {% if obj.answers.all.exists %}
                                     <div class="gp-total-comments">
                                         <a onclick="toggleDiv(this, {{ forloop.counter }})" class="gp-flat-link">
-                                            Total {{ obj.answers.all.count }} comments.
+                                            Total {{ obj.answers.all.count }} answers found!
                                         </a>
                                     </div>
                                     <div id={{ forloop.counter }}>
 
-                                    {% for obj2 in obj.answers.all %}
-                                        <div class="gp-ques-ans-block">
-                                            {% if  obj2.answered_by.userprofile.image %}
-                                                <img src="{{ obj2.answered_by.userprofile.image.url }}"
-                                                     alt="{{ obj2.answered_by }}"
-                                                     width="50"
-                                                     height="50">
-                                            {% else %}
-                                                <img src="/media/default-placeholder.png" class="img-circle"
-                                                     alt="{{ obj2.answered_by }}"
-                                                     width="50" height="50">
-                                            {% endif %}
-                                            <h4>
-                                                <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                                            </h4>
-                                            <div id="comment_section{{ obj2.id }}">
-                                                ans id {{ obj2.id }}
-                                                <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                                <p class="gp-ques-ans-date">{{ obj2.created }}</p>
-                                            </div>
-                                            div id{{ forloop.parentloop.counter }}
+                                        {% for obj2 in obj.answers.all %}
+                                            <div class="gp-ques-ans-block">
+                                                {% if  obj2.answered_by.userprofile.image %}
+                                                    <img src="{{ obj2.answered_by.userprofile.image.url }}"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50"
+                                                         height="50">
+                                                {% else %}
+                                                    <img src="/media/default-placeholder.png" class="img-circle"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50" height="50">
+                                                {% endif %}
+                                                <h4>
+                                                    <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                                </h4>
+                                                <div id="comment_section{{ obj2.id }}">
+                                                    ans id {{ obj2.id }}
+                                                    <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                                    <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                                </div>
+                                                div id{{ forloop.parentloop.counter }}
 
                                             <div id="edit_form{{ obj2.id }}" style="display: none">
                                                 form id {{ obj2.id }}
@@ -111,45 +113,43 @@
 
 
 
-                                            {% if obj2.answered_by_id == user_id %}
-                                                <div class="bg-margin-top-10">
-                                                    <button class="btn btn-danger" id="delete{{ obj2.id }}"
-                                                            onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
-                                                        Delete
-                                                    </button>
+                                                {% if obj2.answered_by_id == user_id %}
+                                                    <div class="bg-margin-top-10">
+                                                        <button class="btn btn-danger" id="delete{{ obj2.id }}"
+                                                                onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
+                                                            Delete
+                                                        </button>
 
-                                                    <button class="btn btn-info" id="edit{{ obj2.id }}"
-                                                            onclick="edit_answer( {{ obj2.id }}, {{ obj2.id }})">
-                                                        Edit
-                                                    </button>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-
+                                                        <button class="btn btn-info" id="edit{{ obj2.id }}"
+                                                                onclick="edit_answer( {{ obj2.id }}, {{ obj2.id }})">
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
                                     <p class="gp-ques-ans-count">No answer found yet!</p>
                                 {% endif %}
-
-                                </div>
-
-
-                                <form id="add_answer{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
-                                      class="gp-form-story-comment">
-                                    {% csrf_token %}
-
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" id="text{{ forloop.counter }}"
-                                               maxlength="1000" name="text" required>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" onclick="answerDiv({{ forloop.counter }})"
-                                                    type="submit">
-                                                <i class="glyphicon glyphicon-send"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
+
+
+                            <form id="add_answer{{ forloop.counter }}" data-id={{ obj.id }} method="POST"
+                                  class="gp-form-story-comment">
+                                {% csrf_token %}
+
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="text{{ forloop.counter }}"
+                                           maxlength="1000" name="text" required>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" onclick="answerDiv({{ forloop.counter }})"
+                                                type="submit">
+                                            <i class="glyphicon glyphicon-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -161,12 +161,10 @@
                         </div>
                     </div>
                 {% endif %}
-            </div>
-
         </div>
     </div>
-
     </div>
+
 
 
 

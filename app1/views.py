@@ -9,6 +9,7 @@ from itertools import chain
 
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
+from .models import OwnReport, ReportCounter
 
 try:
     from django.utils import simplejson as json
@@ -63,12 +64,24 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
         user = request.user
+        report_list = OwnReport.objects.filter(u_id=request.user.id)
         # storyByThisUser = stories.likes.filter(id=user.id)
         print("user id= ", user.id)
         # print(storyByThisUser)
         like_list = []
         comment_list = []
+        report_me = []
         follower_list = get_follow_list(request)
+        #S29
+        for u in report_list:
+            if u.u_id == request.user.id:
+                report_me.append(u.story_id)
+        final_report = []
+        for s in recent_story:
+            if s.report >= 5:
+                final_report.append(s.id)
+        print(report_me)
+        #EndS29
         for s in recent_story:
             # print(s.id)
             story_ = Story.objects.get(id=s.id)
@@ -93,6 +106,8 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
             'comment_list': comment_list,
             'form': form,
             'page_template': page_template,
+            'report_list': report_me,
+            'final_report': final_report,
         }
         if request.is_ajax():
             template = page_template
@@ -501,6 +516,51 @@ def answer_delete(request):
         answer.delete()
         return HttpResponse('')
 
+def reported_story(request):
+    report_list =[]
+    stories = Story.objects.all()
+    for s in stories:
+        if s.report >= 5:
+            report_list.append(s.id)
+    return render(
+        request, 'app1/Reported_stories.html', {
+            'stories': stories,
+            'report_list': report_list,
+        }
+    )
+def Own_report(request): #s29
+    if request.method == 'POST':
+        user = request.user
+        story_id = request.POST['story_id']
+        print(story_id)
+        print("khele")
+        print(user.id)
+        # c = OwnReport.objects.create(
+        #    u_id=user.id,
+        #    story_id=story_id
+        # )
+        report = Story.objects.filter(id=story_id)
+        for s in report:
+            print(s.report)
+            s.report += 1
+            s.save()
+            print("after", s.report)
+            print("check", s.id,"->",story_id)
+        c = OwnReport()
+        c.u_id = user.id
+        c.story_id = story_id
+        c.save()
+        if ReportCounter.objects.filter(story_id=story_id):
+            x = ReportCounter.objects.get(story_id=story_id)
+            x.report_count += 1
+            x.save()
+        else:
+            obj = ReportCounter()
+            obj.story_id = story_id
+            obj.report_count = int(1)
+            obj.save()
+        return render(request, 'app1/index.html')
+
 
 def answer_edit(request):
     if request.method == 'POST':
@@ -692,10 +752,12 @@ def search(request):
         if txt == '':
             return redirect('index')
         place = Place.objects.filter(name__contains=txt)
+        question_list = Question.objects.filter(question__contains=txt)
         return render(request, 'app1/search_result.html',
                       {
                           'place': place,
-                          'query': txt
+                          'query': txt,
+                          'question_list': question_list
                       })
 
 

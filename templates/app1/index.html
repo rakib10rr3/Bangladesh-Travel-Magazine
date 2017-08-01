@@ -164,25 +164,31 @@
                                         <p class="card-text-author">Asked by <a
                                                 href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
 
+                                        <a href="{% url 'ques_detail' obj.id %}">view details</a>
+
                                     </div>
 
                                     {# ========Answer loop============= #}
                                     <div id="q{{ forloop.counter }}" class="gp-ques-ans">
 
                                         {% if obj.answers.all.exists %}
-                                            <p class="gp-ques-ans-count">Total {{ obj.answers.all.count }} answer
-                                                found!</p>
-
-                                            {% for obj2 in obj.answers.all %}
-                                                <div class="gp-ques-ans-block">
-                                                    <h4>
-                                                        <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                                                    </h4>
-                                                    <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                                    <p class="gp-ques-ans-date">{{ obj2.created }}</p>
-                                                </div>
-                                            {% endfor %}
-
+                                            <div class="gp-total-comments">
+                                                <a onclick="toggleDiv(this, {{ forloop.counter }})"
+                                                   class="gp-flat-link">
+                                                    Total {{ obj.answers.all.count }} answer found!.
+                                                </a>
+                                            </div>
+                                            <div id="{{ forloop.counter }}">
+                                                {% for obj2 in obj.answers.all %}
+                                                    <div class="gp-ques-ans-block">
+                                                        <h4>
+                                                            <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                                        </h4>
+                                                        <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                                        <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
                                         {% else %}
                                             <p class="gp-ques-ans-count">No answer found yet!</p>
                                         {% endif %}
@@ -191,7 +197,7 @@
                                     {# ========Default Form ============= #}
                                     <form id="answer_form" data-id={{ obj.id }} method="POST"
                                           action="{% url 'save_answer' %}" role="form"
-                                          class="gp-side-panel-form">
+                                          class="gp-side-panel-form" hidden>
                                         {% csrf_token %}
                                         {% for hidden in a_form.hidden_fields %}
                                             {{ hidden }}

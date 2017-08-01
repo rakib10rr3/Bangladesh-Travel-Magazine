@@ -7,9 +7,10 @@
     </div>
 
     <div class=" container-fluid gp-container-normal">
-        {% if place.count %}
+        {% if place.count or question_list.count %}
 
             <ul class="gp-list-search-result">
+            <p>Stories</p>
                 {% for obj in place %}
                     <a href="{% url 'story' obj.give_me_div_slug obj.id %}">
                         <li>
@@ -19,7 +20,29 @@
                     </a>
                 {% endfor %}
             </ul>
+            <p>Questions</p>
+            <div class=" container-fluid gp-container-normal">
 
+                <ul class="gp-list-search-result">
+                    {% for obj in question_list %}
+                        <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
+                        <div class="gp-ques-block">
+                            {% if  obj.author.userprofile.image %}
+                                <img src="{{ obj.author.userprofile.image.url }}" alt="{{ obj.user }}" width="50"
+                                     height="50">
+                            {% else %}
+                                <img src="/media/default-placeholder.png" class="img-circle" alt="{{ obj.author }}"
+                                     width="50" height="50">
+                            {% endif %}
+                            <h2 class="gp-ques-title">{{ obj.question }}</h2>
+                            <p class="gp-ques-date">{{ obj.created }}</p>
+                            <p class="card-text-author">Asked by <a
+                                    href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
+                            <a href="{% url 'ques_detail' obj.id %}">View details</a>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
         {% else %}
             <div class="alert alert-danger">
                 <strong>Sorry!</strong> No result Found!

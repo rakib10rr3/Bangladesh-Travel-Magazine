@@ -76,7 +76,7 @@ class Story(models.Model):
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
-
+    report = models.IntegerField(default=0) #S29
     def give_me_page(self):
         return self.story_page
 
@@ -296,3 +296,12 @@ class Notification(models.Model):
         Here we get the question_id using answer_id
         """
         return Answer.objects.get(id=self.ref_value).answer_of_id
+
+class OwnReport(models.Model): #s29
+    u_id = models.IntegerField()
+    story_id = models.IntegerField()
+
+
+class ReportCounter(models.Model): #s29
+    story_id = models.IntegerField()
+    report_count = models.IntegerField()
