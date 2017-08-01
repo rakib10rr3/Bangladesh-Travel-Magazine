@@ -104,7 +104,7 @@
                                                     {% csrf_token %}
                                                     <input type="text" class="form-control" name="edit"
                                                            id="new_ans{{ obj2.id }}"
-                                                           oninput="answer_edit()"
+
                                                            value="{{ obj2.text }}">
                                                 </form>
                                             </div>

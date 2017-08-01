@@ -58,20 +58,23 @@
 
                 <hr>
 
+                {#             ===============      trending block   ============      #}
+
                 <div class="gp-side-panel">
                     <div class="gp-side-panel-title">
-                        Trending Places
+                        Top 7 Places Visited Last Week
                     </div>
 
                     <div class="gp-side-panel-content">
 
                         {% if page_list %}
                             <!-- trending list start-->
-                            {% for page in page_list %}
-
+                            {% for page,value in page_list.items %}
+                                <h2>Total {{value }} stories shared In this page </h2>
                                 <div class="container-fluid gp-div-post-summery">
 
                                     <!-- image part for each page -->
+
                                     {% if page.pages.all.exists %}
 
                                         <div class="gp-slide-show">

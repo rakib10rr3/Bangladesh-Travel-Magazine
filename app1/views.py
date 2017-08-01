@@ -1,12 +1,11 @@
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
+from datetime import datetime, timedelta
+from collections import Counter
 
 from itertools import chain
-
-from django.template import RequestContext
 
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
@@ -15,6 +14,18 @@ try:
     from django.utils import simplejson as json
 except ImportError:
     import json
+
+
+def trending_list(request):
+    print("*" * 5, "Trending_list function", "*" * 5)
+    story_last_7_day = Story.objects.filter(created_date__gte=datetime.now() - timedelta(days=7))
+    list = []
+    for i in story_last_7_day:
+        list.append(i.give_me_page())
+    save=dict(Counter(list).most_common(5))
+    return  save
+
+print("*" * 5, "Trending_list function end", "*" * 5)
 
 
 def get_follow_list(request):
@@ -39,10 +50,12 @@ def get_follow_list(request):
 #     return render(request, template, context)
 
 
-def index(request,template='app1/index.html',page_template='app1/entry_list_page.html'):
+def index(request, template='app1/index.html', page_template='app1/entry_list_page.html'):
     if request.user.is_authenticated:
         this_user = request.user
-        page_list = Place.objects.order_by('-views')[:3]
+        #page_list = Place.objects.order_by('-views')[:3]
+        page_list = trending_list(request)
+        print(type(page_list))
         recent_story = Story.objects.order_by('-created_date')
         question_list = Question.objects.order_by('-created')[:5]
 
@@ -83,6 +96,7 @@ def index(request,template='app1/index.html',page_template='app1/entry_list_page
         }
         if request.is_ajax():
             template = page_template
+        trending_list(request)
         return render(request, template, context)
 
     else:
@@ -516,7 +530,6 @@ def question_edit(request):
         return HttpResponse('')
 
 
-
 @login_required
 def story_share(request):
     """
@@ -708,7 +721,6 @@ def delete_ques(request, ques_id):
     ques = Question.objects.get(pk=ques_id)
     ques.delete()
     return redirect('forum')
-
 
 
 def notifications(request):
