@@ -303,7 +303,7 @@ def view_profile(request, user_name):
     follower = []
     for i in follower_obj:
         if i.my_id == request.user:
-            following.append(i.following_id)
+            following.append(i.following)
         if i.following_id == request.user.id:
             follower.append(i.my_id)
     print("Following = ", following)

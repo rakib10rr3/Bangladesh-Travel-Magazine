@@ -206,6 +206,10 @@
                 <p class="ts-item-name">Following</p>
                 <p class="ts-item-value">
                     {{ following|length }}
+                    <br>
+                    {% for obj in following %}
+                        <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                    {% endfor %}
                 </p>
             </div>
 
@@ -213,6 +217,9 @@
                 <p class="ts-item-name">Follower</p>
                 <p class="ts-item-value">
                     {{ follower|length }}
+                    {% for obj in follower %}
+                        <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                    {% endfor %}
                 </p>
             </div>
 
