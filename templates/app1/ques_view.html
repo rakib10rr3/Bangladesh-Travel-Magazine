@@ -37,6 +37,7 @@
                             </div>
                             <p class="card-text-author">Asked by <a
                                     href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
+                        {% if user == ques.author_id  %}
                             <form action="{% url 'ques_delete' ques.id %}">
                                 <button id="delete" onclick="del_ques({{ ques.id }})" class="btn btn-danger">Delete
                                 </button>
@@ -44,7 +45,7 @@
                                     Edit
                                 </button>
                             </form>
-
+                        {% endif %}
                         </div>
 
 
@@ -88,7 +89,7 @@
                                                 </form>
                                             </div>
 
-                                            {% if user == ques.author_id  %}
+                                            {% if user == ques.author_id or obj2.answered_by_id == user %}
                                                 <div class="bg-margin-top-10">
                                                     <button type="button" class="btn btn-danger"
                                                             id="delete{{ obj2.id }}"
