@@ -312,6 +312,9 @@ def view_profile(request, user_name):
 
     print(the_user[0])
     tour_list = Story.objects.filter(user=the_user)
+    question_list = ""
+    question_list = Question.objects.filter(author_id=the_user)
+    print("question", question_list)
     print(tour_list)
     follower_obj = Follower.objects.all()
     following = []
@@ -328,6 +331,7 @@ def view_profile(request, user_name):
                       'the_user': the_user[0],
                       # 'user_info': user_info,
                       'tour_list': tour_list,
+                      'question_list': question_list,
                       'following': following,
                       'follower': follower,
                   })
