@@ -2,7 +2,7 @@
 
 {% block body_block %}
 
-    <div class="jumbotron gp-jumbotron">
+    <div class="jumbotron gp-jumbotron" xmlns="http://www.w3.org/1999/html">
         <h1>BDTM Community!</h1>
     </div>
 
@@ -115,10 +115,8 @@
 
                                                 {% if obj2.answered_by_id == user_id %}
                                                     <div class="bg-margin-top-10">
-                                                        <button class="btn btn-danger" id="delete{{ obj2.id }}"
-                                                                onclick="del_answer( {{ forloop.parentloop.counter }}, {{ obj2.id }})">
-                                                            Delete
-                                                        </button>
+                                                    <button id="delete{{ obj2.id }}" class="btn btn-large btn-danger" data-toggle="confirmation" data-btn-ok-label="Yes" data-title="Are you sure you want to delete?"  onfocus="confirmm({{ obj2.id }}, {{ obj2.id }})">Delete</button>
+
 
                                                         <button class="btn btn-info" id="edit{{ obj2.id }}"
                                                                 onclick="edit_answer( {{ obj2.id }}, {{ obj2.id }})">
@@ -295,6 +293,33 @@
             });
             return false;
         });
+
+
+       function confirmm(formId,ans_id) {
+            $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            onConfirm: function () {
+                del_answer(formId,ans_id)
+            }
+            // other options
+        });
+       }
+
+
+{#       $('[data-toggle=confirmation]').confirmation({#}
+{#            rootSelector: '[data-toggle=confirmation]',#}
+{#            onConfirm: function () {#}
+{#                alert($(this).data('id'));#}
+{#                del_answer($(this).data('id'),$(this).data('id'));#}
+{#            }#}
+{#        });#}
+
+{#    function confirmm(a,b) {#}
+{#        alert("yoo")#}
+{#    }#}
+
+
+
     </script>
 
 

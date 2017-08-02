@@ -17,8 +17,13 @@
 
     <link rel="stylesheet" href="{% static "app1/css/bootstrap.min.css" %}">
 
+
     <script src="{% static "app1/js/jquery-3.2.0.min.js" %}"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="{% static 'app1/js/bootstrap.js' %}"></script>
+
+{#    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>#}
+{#    #}
+    <script src="{% static 'app1/js/bootstrap-confirmation.js' %}"></script>
 
     <style>
         @font-face {
@@ -49,6 +54,7 @@
             -moz-border-radius: 30px;
             border-radius: 30px;
         }
+
         a:hover.back-to-top {
             background-color: #000;
         }
@@ -57,7 +63,7 @@
     {% block style_block %}
 
     {% endblock %}
-{#changed#}
+    {#changed#}
 
 </head>
 
@@ -124,7 +130,7 @@
                     <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                     {% if request.user.is_superuser %}
                         <li><a href="/admin"><i class="glyphicon glyphicon-cog"></i></a></li>
-                         <li><a href={% url 'reported_story' %}>Reported Stories</a></li>
+                        <li><a href={% url 'reported_story' %}>Reported Stories</a></li>
                     {% endif %}
 
                 </ul>

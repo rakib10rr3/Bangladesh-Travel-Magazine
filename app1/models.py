@@ -155,7 +155,7 @@ class UserProfile(models.Model):
     GENDER_TYPE = (
         ('M', 'Male'),
         ('F', 'Female'),
-        ('N', 'None'),
+        ('N', 'Other'),
     )
     gender = models.CharField(
         max_length=1,

@@ -37,15 +37,23 @@
                             </div>
                             <p class="card-text-author">Asked by <a
                                     href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
-                        {% if user.id == ques.author_id  %}
-                            <form action="{% url 'ques_delete' ques.id %}">
-                                <button id="delete" onclick="del_ques({{ ques.id }})" class="btn btn-danger">Delete
-                                </button>
-                                <button id="edit" type="button" onclick="edit_ques({{ ques.id }})" class="btn btn-info">
-                                    Edit
-                                </button>
-                            </form>
-                        {% endif %}
+                            {% if user.id == ques.author_id %}
+
+                                <form>
+                                    <button type="button" id="delete" class="btn btn-large btn-danger"
+                                            data-toggle="confirmation"
+                                            onfocus="del_q()" data-title="Are you sure you want to delete?"
+                                            href="{% url 'ques_delete' ques.id %}">Delete
+                                    </button>
+                                    <button id="edit" type="button" onclick="edit_ques({{ ques.id }})"
+                                            class="btn btn-info">
+                                        Edit
+                                    </button>
+                                </form>
+
+
+
+                            {% endif %}
                         </div>
 
 
@@ -91,11 +99,12 @@
 
                                             {% if user.id == ques.author_id or obj2.answered_by_id == user.id %}
                                                 <div class="bg-margin-top-10">
-                                                    <button type="button" class="btn btn-danger"
-                                                            id="delete{{ obj2.id }}"
-                                                            onclick="del_answer({{ obj2.id }})">
-                                                        Delete
+                                                    <button id="delete{{ obj2.id }}" class="btn btn-large btn-danger"
+                                                            data-toggle="confirmation" data-btn-ok-label="Yes"
+                                                            data-title="Are you sure you want to delete?"
+                                                            onfocus="confirmm({{ obj2.id }})">Delete
                                                     </button>
+
                                                     {% if obj2.answered_by_id == user.id %}
                                                         <button class="btn btn-info" id="edit{{ obj2.id }}"
                                                                 onclick="edit_answer({{ obj2.id }}, {{ obj2.id }})">
@@ -278,6 +287,26 @@
                     }
                 });
 
+            });
+        }
+
+
+        function del_q() {
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                // other options
+            });
+        }
+
+        
+        function confirmm(ans_id) {
+            //alert(ans_id);
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                onConfirm: function () {
+                    del_answer(ans_id);
+                }
+                // other options
             });
         }
 
