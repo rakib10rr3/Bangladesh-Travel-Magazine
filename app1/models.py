@@ -87,7 +87,7 @@ class Story(models.Model):
         return reverse('story_detail', args=[str(self.id)])
 
     def __str__(self):
-        return self.title_name
+        return str(self.story_division)
 
     @property
     def total_likes(self):

@@ -318,11 +318,12 @@ def view_profile(request, user_name):
     #     user_info['country'] = user_pro_info[0].get('country')
 
     print(the_user[0])
+    tour_list=[]
     tour_list = Story.objects.filter(user=the_user)
-    question_list = ""
+    question_list = []
     question_list = Question.objects.filter(author_id=the_user)
     print("question", question_list)
-    print(tour_list)
+    print("Tour_list", tour_list)
     follower_obj = Follower.objects.all()
     following = []
     follower = []
