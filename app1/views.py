@@ -846,8 +846,10 @@ def story_edit(request, story_id):
 @login_required
 def ques_detail(request, ques_id):
     ques = Question.objects.get(pk=ques_id)
-    user = request.user
-    return render(request, 'app1/ques_view.html', {'ques': ques, 'user': user.id})
+
+    return render(request, 'app1/ques_view.html', {
+        'ques': ques,
+    })
 
 
 @login_required

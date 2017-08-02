@@ -71,8 +71,8 @@
                                 $ac_list.css("top", $in_place_name.height());
                                 $ac_list.css("width", $in_place_name.width());
 
-                                $('body').on("click", "#auto_complete_list p", function () {
-                                    $in_place_name.val($(this).text());
+                                $("#auto_complete_list").on("click", "p", function () {
+                                    $("#place_name").val($(this).text());
 
                                     console.log($(this).text());
 
@@ -81,7 +81,11 @@
                                 });
 
                                 $("#place_name").blur(function () {
-                                    hide_auto_complete_list();
+
+                                    setTimeout(function () {
+                                        hide_auto_complete_list();
+                                    }, 1000);
+
                                 });
 
 
@@ -545,20 +549,20 @@
 
 
 
-{#    {% block js %}#}
-{#        {{ block.super }}#}
-{#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
-{#        #}
-{#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
-{#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
-{##}
-{#        <script>#}
-{#            $.endlessPaginate({#}
-{#                paginateOnScroll: true,#}
-{#                paginateOnScrollMargin: 20#}
-{#            });#}
-{#        </script>#}
-{#    {% endblock %}#}
+    {#    {% block js %}#}
+    {#        {{ block.super }}#}
+    {#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
+    {#        #}
+    {#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
+    {#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
+    {##}
+    {#        <script>#}
+    {#            $.endlessPaginate({#}
+    {#                paginateOnScroll: true,#}
+    {#                paginateOnScrollMargin: 20#}
+    {#            });#}
+    {#        </script>#}
+    {#    {% endblock %}#}
 
 {% endblock %}
 
