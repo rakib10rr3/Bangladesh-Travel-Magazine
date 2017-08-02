@@ -421,10 +421,24 @@
     <script>
 
         $(function () {
-            if ($(".ts-profile-img-box").height() > $(".ts-story-list").height()) {
-                $(".ts-story-list").height($(".ts-profile-img-box").height());
-            }
+
+            changeHeight();
+
         });
+
+        function changeHeight() {
+
+            if ($(".ts-profile-img-box").css("float") != "none") {
+                if ($(".ts-profile-img-box").outerHeight() > $(".ts-story-list").outerHeight()) {
+
+                    console.log($(".ts-profile-img-box").css("height"));
+                    console.log($(".ts-profile-img-box").outerHeight());
+
+                    $(".ts-story-list").css("min-height", $(".ts-profile-img-box").outerHeight() + "px");
+
+                }
+            }
+        }
 
 
         $(document).ready(function () {

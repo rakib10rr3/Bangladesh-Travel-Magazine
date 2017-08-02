@@ -30,7 +30,7 @@ class Type(models.Model):
 
 
 class Place(models.Model):
-    name = models.TextField(max_length=50, unique=True)
+    name = models.TextField(max_length=50)
     views = models.IntegerField(default=0)
     slug = models.SlugField()
     # description field
@@ -68,11 +68,11 @@ def user_desti(instance, filename):
 class Story(models.Model):
     user = models.ForeignKey(User)
     story_division = models.ForeignKey(Division)
-    story_page = models.ForeignKey(Place)
-    type_name = models.ForeignKey(Type)
-    title_name = models.CharField(max_length=100)
-    budget = models.CharField(max_length=15)
-    member = models.IntegerField(default=0, null=True)
+    story_page = models.ForeignKey(Place, blank=True, null=True)
+    type_name = models.ForeignKey(Type, blank=True, null=True)
+    title_name = models.CharField(max_length=100, blank=True, null=True)
+    budget = models.CharField(max_length=15, blank=True, null=True)
+    member = models.IntegerField(default=0, blank=True, null=True)
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='likes')
@@ -171,7 +171,7 @@ class UserProfile(models.Model):
 
 class Follower(models.Model):
     my_id = models.ForeignKey(User, null=True, related_name="follow")
-    following = models.ForeignKey(User, unique=True,null=True, related_name="following")
+    following = models.ForeignKey(User, unique=True, null=True, related_name="following")
     created_date = models.DateTimeField(auto_now_add=True)
 
 

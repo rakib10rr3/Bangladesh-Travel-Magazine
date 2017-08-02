@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for using the User one to one model
-from django.http import HttpResponse
+from django.core import serializers
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 from datetime import datetime, timedelta
 from collections import Counter
@@ -8,9 +9,11 @@ from collections import Counter
 from itertools import chain
 
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
+from .forms import StoryAddForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
 from .models import OwnReport, ReportCounter
 from django.http import JsonResponse
+from .models import Type
 
 try:
     from django.utils import simplejson as json
@@ -110,6 +113,8 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
             'page_template': page_template,
             'report_list': report_me,
             'final_report': final_report,
+            'divisions': Division.objects.all(),
+            'types': Type.objects.all(),
         }
         if request.is_ajax():
             template = page_template
@@ -597,6 +602,97 @@ def question_edit(request):
         print(question)
         question.save()
         return HttpResponse('')
+
+
+@login_required
+def ajax_get_place_names(request):
+    # https://docs.djangoproject.com/en/1.11/ref/models/querysets/#icontains
+
+    print(request.GET.get("query"))
+
+    if request.method == 'GET':
+        given_place_name = request.GET.get("query")
+        given_division_name = int(request.GET.get("division"))
+
+        if request.is_ajax():
+            result = Place.objects.filter(name__icontains=given_place_name,
+                                          division_id=given_division_name)
+
+            data = [x.name for x in result]
+
+            print(data)
+
+            return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@login_required
+def ajax_add_story(request):
+    if request.method == 'POST':
+
+        print(request.POST)
+
+        form = StoryAddForm(request.POST, request.FILES)
+        if form.is_valid():
+            form_obj = form.save(commit=False)
+            form_obj.user = request.user
+            form_obj.save()
+
+            # 1. Add the Place to db
+            # https://docs.djangoproject.com/en/1.11/ref/models/querysets/#get-or-create
+            obj_place, created = Place.objects.get_or_create(
+                name=request.POST.get("place_name"),
+                division_id=int(request.POST.get("story_division")),
+            )
+
+            # 2. update the form data to add place id
+            new_story_id = form_obj.id
+
+            obj_story = Story.objects.get(pk=new_story_id)
+            obj_story.story_page_id = obj_place.id
+            obj_story.save()
+
+            # 3. Then upload images; Bcoz image model need place id -_-
+            add_story_images(request, form_obj.id)
+
+            if request.is_ajax():
+                data = {
+                    'success': True,
+                }
+                return JsonResponse(data)
+            else:
+                return HttpResponse("Error!")
+        else:
+            if request.is_ajax():
+                return JsonResponse(form.errors, status=400)
+            else:
+                return HttpResponse("Error!")
+
+
+def add_story_images(request, story_id):
+    """
+    Add story images to server.
+    Used in:
+        - ajax_add_story()
+    """
+
+    obj_story = Story.objects.get(id=story_id)
+    page = obj_story.give_me_page()
+    files = request.FILES.getlist('img_files')
+
+    print("Files = ", files)
+
+    if not files:
+        return
+
+    for number, a_file in enumerate(files):
+        instance = Picture(
+            user=request.user,
+            page=page,
+            story=obj_story,
+            file=a_file
+        )
+        instance.save()
+        # request.session['number_of_files'] = number + 1
 
 
 @login_required

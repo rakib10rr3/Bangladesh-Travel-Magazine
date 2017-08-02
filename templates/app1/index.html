@@ -3,21 +3,319 @@
 {#changed#}
 
 {% load staticfiles %}
+
+
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
-        <p>Welcome {{ user.username }}!</p>
-        <h1><a href="{% url 'story_share' %}" class="">
-            <span class="glyphicon glyphicon-tree-conifer"></span>
-            Share Your Tour Story
-            <span class="glyphicon glyphicon-tree-deciduous"></span>
-        </a>
-        </h1>
+        <h1>Welcome {{ user.username }}!</h1>
     </div>
     <div class=" container-fluid gp-container-normal">
 
         <div class="row">
 
             <div class="col-sm-8">
+
+
+                <div class="ts-story-write">
+
+                    <form id="story-write">
+
+                        {% csrf_token %}
+
+                        <div class="ts-story-text">
+                            <textarea id="des" class="form-control" name="des" rows="5" placeholder="Write your awesome story here..." required></textarea>
+                        </div>
+
+                        <div class="ts-story-location">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                                <div class="ts-width-half">
+                                    <select id="story_division" class="form-control" name="story_division" required>
+
+                                        <option value selected>Select a Division...</option>
+
+                                        {% for division in divisions %}
+
+                                            <option value="{{ division.id }}">{{ division.title }}</option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="ts-width-half">
+                                    <input id="place_name" class="form-control col-xs-6" type="text" name="place_name" placeholder="Place name (in English)"
+                                           disabled required>
+
+                                    <div id="auto_complete_list" style="display: none;" class="ts-autocomplete-list">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <script>
+                            $(function () {
+                                $("#story_division").change(function () {
+                                    if ($("#story_division").val()) {
+                                        $("#place_name").prop("disabled", false);
+                                    } else {
+                                        $("#place_name").prop("disabled", true);
+                                        $("#place_name").val("");
+                                    }
+                                });
+
+                                $ac_list = $("#auto_complete_list");
+
+                                $in_place_name = $("#place_name");
+
+                                $ac_list.css("top", $in_place_name.height());
+                                $ac_list.css("width", $in_place_name.width());
+
+                                $('body').on("click", "#auto_complete_list p", function () {
+                                    $in_place_name.val($(this).text());
+
+                                    console.log($(this).text());
+
+                                    hide_auto_complete_list();
+
+                                });
+
+                                $("#place_name").blur(function () {
+                                    hide_auto_complete_list();
+                                });
+
+
+                                $in_place_name.on("input", function () {
+                                    if ($(this).val() != "") {
+
+
+                                        var data = {
+                                            division: $("#story_division").val(),
+                                            query: $("#place_name").val()
+                                        };
+
+                                        $.get("{% url 'ajax_get_place_names' %}", data, function (result) {
+                                            console.log(result);
+
+                                            if ($.isEmptyObject(result) == false) {
+                                                $("#auto_complete_list").empty();
+
+                                                result.forEach(function (element) {
+                                                    $("#auto_complete_list").append("<p>" + element + "</p>")
+                                                });
+
+                                                $("#auto_complete_list").show();
+                                            } else {
+                                                hide_auto_complete_list();
+                                            }
+
+
+                                        });
+                                    }
+                                });
+
+                                function hide_auto_complete_list() {
+                                    $("#auto_complete_list").hide();
+                                }
+                            });
+
+                        </script>
+
+                        <div class="ts-story-optionals">
+                            <div class="ts-story-image" style="display: none;">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                    <label for="image_uploads">Choose images to upload...</label>
+                                    <input id="image_uploads" class="form-control" type="file" accept="image/png, image/jpeg" name="img_files" multiple>
+                                </div>
+
+                                <div class="ts-story-img-preview" style="display: none;">
+
+                                </div>
+                            </div>
+
+
+                            <div class="ts-story-budget input-group" style="display: none;">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+                                <input class="form-control" type="number" name="budget" placeholder="Budget in Taka (Optional)">
+                            </div>
+
+                            <div class="ts-story-member-count input-group" style="display: none;">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input class="form-control" type="number" name="member" placeholder="Total Journey member (Optional)">
+                            </div>
+
+                            <div class="ts-story-tour-type input-group" style="display: none;">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-sunglasses"></i></span>
+                                <select class="form-control" name="type_name">
+                                    <option value>Select the tour type...</option>
+
+                                    {% for type in types %}
+
+                                        <option value="{{ type.id }}">{{ type.type_name }}</option>
+
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ts-story-btn-panel">
+                            <div class="ts-story-optionals-btn">
+                                <a href="#" id="ts-btn-story" data-id="ts-story-image" class="btn ts-btn-left" data-toggle="tooltip" title="Images"><span
+                                        class="glyphicon glyphicon-picture"></span></a>
+                                <a href="#" id="ts-btn-story" data-id="ts-story-budget" class="btn ts-btn-left" data-toggle="tooltip" title="Budget"><span
+                                        class="glyphicon glyphicon-usd"></span></a>
+                                <a href="#" id="ts-btn-story" data-id="ts-story-member-count" class="btn ts-btn-left" data-toggle="tooltip"
+                                   title="Total journty member"><span
+                                        class="glyphicon glyphicon-user"></span></a>
+                                <a href="#" id="ts-btn-story" data-id="ts-story-tour-type" class="btn ts-btn-left" data-toggle="tooltip" title="Tour type"><span
+                                        class="glyphicon glyphicon-sunglasses"></span></a>
+                            </div>
+                            <input href="#" type="submit" class="btn btn-default ts-btn-right" value="Post">
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+
+                <script>
+
+                    $(function () {
+                        // Bootstrap tooltips
+                        $('[data-toggle="tooltip"]').tooltip();
+
+
+                        // story form open close button
+                        $(".ts-story-write").click(function (event) {
+                            if (event.target == this) {
+                                event.preventDefault();
+                                $(".ts-full-screen").removeClass("ts-full-screen");
+                            }
+                        });
+
+                        $("#story-write").click(function () {
+
+                            if ($(".ts-story-write").hasClass("ts-full-screen") == false) {
+                                $(".ts-story-write").addClass("ts-full-screen");
+                            }
+
+                        });
+
+
+                        // submit story form
+                        $("form#story-write").submit(function (event) {
+                            event.preventDefault();
+
+                            // https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
+
+                            var formElement = $("form#story-write")[0];
+
+                            var formData = new FormData(formElement)
+
+                            // http://api.jquery.com/jquery.ajax/
+
+                            $.ajax({
+                                url: "{% url 'ajax_add_story' %}",
+                                data: formData,
+                                type: 'POST',
+                                processData: false,
+                                contentType: false,
+                                success: function (result) {
+                                    if (result.success) {
+                                        location.reload();
+                                    }
+                                },
+                                error: function (result) {
+                                    console.log(result);
+                                }
+                            });
+
+                        });
+
+                        $("a#ts-btn-story").click(function (event) {
+                            event.preventDefault();
+
+                            $the_attr = $(this).attr("data-id");
+
+                            if ($(this).hasClass("ts-btn-enabled")) {
+                                $(this).removeClass("ts-btn-enabled");
+                                $("." + $the_attr + " input").val("");
+                                $("." + $the_attr + " select").val("");
+                            } else {
+                                $(this).addClass("ts-btn-enabled");
+                            }
+
+                            $("." + $the_attr).fadeToggle();
+
+                        });
+                    });
+
+                    /**
+                     * Help doc:
+                     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+                     */
+
+                    var file_input = document.querySelector('#image_uploads');
+                    $file_input_label = $('label[for="image_uploads"]');
+                    var preview = document.querySelector('.ts-story-img-preview');
+
+                    file_input.style.display = "none";
+
+                    file_input.addEventListener('change', updateImageDisplay);
+
+                    function updateImageDisplay() {
+                        while (preview.firstChild) {
+                            preview.removeChild(preview.firstChild);
+                        }
+
+                        //for="image_uploads"
+
+                        var curFiles = file_input.files;
+                        if (curFiles.length === 0) {
+
+                            $file_input_label.text('Choose images to upload...');
+
+                            preview.style.display = "none";
+
+                        } else {
+
+                            $file_input_label.text(curFiles.length + " files selected.");
+
+                            for (var i = 0; i < curFiles.length; i++) {
+                                if (validFileType(curFiles[i])) {
+                                    //para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
+                                    var image = document.createElement('img');
+                                    image.src = window.URL.createObjectURL(curFiles[i]);
+
+                                    preview.appendChild(image);
+                                }
+                            }
+
+                            preview.style.display = "block";
+                        }
+                    }
+
+                    var fileTypes = [
+                        'image/jpg',
+                        'image/jpeg',
+                        'image/png'
+                    ];
+
+                    function validFileType(file) {
+                        for (var i = 0; i < fileTypes.length; i++) {
+                            if (file.type === fileTypes[i]) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    }
+                </script>
+
+
                 {% if stories %}
 
                     {% include page_template %}
@@ -27,6 +325,7 @@
                     <div class="jumbotron gp-jumbotron">
                         <h1>Sorry no stories Shared yet!</h1>
                     </div>
+
                 {% endif %}
 
                 {# story show Ends #}

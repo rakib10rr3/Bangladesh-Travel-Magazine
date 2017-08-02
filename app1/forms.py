@@ -33,17 +33,19 @@ class PageForm(forms.ModelForm):
 class storyForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ('story_division', 'story_page', 'title_name', 'member', 'budget', 'type_name', 'des')
+        # fields = ('story_division', 'story_page', 'title_name', 'member', 'budget', 'type_name', 'des')
+        fields = ('story_division', 'story_page', 'member', 'budget', 'type_name', 'des')
         help_texts = {
+            'des': 'How was your travel?',
             'story_division': 'Select a Division',
             'story_page': 'Select a Place',
             'title_name': 'Give an Awesome title of the Tour!',
             'member': 'How many member traveled with you?',
             'budget': 'What was Your budget ?',
             'type_name': 'Please Select a Type',
-            'des': 'How was your travel?',
         }
         widgets = {
+            'des': Textarea(attrs={'class': 'form-control'}),
             'story_division': Select(attrs={'class': 'form-control'}),
             'story_page': Select(attrs={'class': 'form-control'}),
             'title_name': TextInput(attrs={'class': 'form-control',
@@ -51,15 +53,21 @@ class storyForm(forms.ModelForm):
             'member': NumberInput(attrs={'class': 'form-control'}),
             'budget': TextInput(attrs={'class': 'form-control'}),
             'type_name': Select(attrs={'class': 'form-control'}),
-            'des': Textarea(attrs={'class': 'form-control'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(storyForm, self).__init__(*args, **kwargs)
-        instance = kwargs.get('id_story_division')
-        print(instance)
-        if instance:
-            self.fields['story_page'].queryset = Place.objects.filter(division=instance.story_division)
+    # def __init__(self, *args, **kwargs):
+    #     super(storyForm, self).__init__(*args, **kwargs)
+    #     instance = kwargs.get('id_story_division')
+    #     print(instance)
+    #     if instance:
+    #         self.fields['story_page'].queryset = Place.objects.filter(division=instance.story_division)
+
+
+class StoryAddForm(forms.ModelForm):
+    class Meta:
+        model = Story
+        # fields = ('story_division', 'story_page', 'title_name', 'member', 'budget', 'type_name', 'des')
+        fields = ('story_division', 'member', 'budget', 'type_name', 'des')
 
 
 class DateInput(forms.DateInput):
