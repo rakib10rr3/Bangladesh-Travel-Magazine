@@ -1,9 +1,12 @@
 {% load el_pagination_tags %}
 {% paginate stories %}
+
+{% csrf_token %}
+
 {% for obj in stories %}
     {% if obj.id not in final_report %}
         {% if obj.id not in report_list %}
-            <div id="khaide{{ obj.id }}">
+            <div id="story_id_{{ obj.id }}">
                 {% if  obj.user.userprofile.image %}
                     <img src="{{ obj.user.userprofile.image.url }}" alt="{{ obj.user }}" width="50" height="50">
                 {% else %}
@@ -94,7 +97,7 @@
                             </a>
                         </div>
                         <div class="gp-div-half">
-                            <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                            <a id="ts-share" data-id="{{ obj.id }}" class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
                         </div>
                     </div>
 
@@ -159,12 +162,33 @@
 
 {% block javascript_block %}
 
-    <script type="text/javascript">
+    <script>
+
+
+        $(function () {
+            $("a#ts-share").on('click', function () {
+
+                var story_id = $(this).attr("data-id");
+
+                console.log(story_id);
+
+                var data = {
+                    story_id: story_id,
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                };
+
+                $.post('{% url 'ajax_notify_followers' %}', data, function (data) {
+                    console.log(data)
+                });
+            });
+        });
+
+
         function ownreport(story_id, divid) {
 
             // alert(ques_ans)
             alert("Reported! you will not see this again :)")
-            $("#khaide" + divid).hide();
+            $("#story_id_" + divid).hide();
             //alert(story_id);
             $.ajax({
                 url: '{% url 'own_report' %}',

@@ -2,11 +2,11 @@
 
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
-    {% if notifications %}
-        <h1>Hay {{ user }}! You have {{ unread_count }} new notifications!</h1>
-    {% else %}
-        <h1>Hay {{ user }}! You have no new notification!</h1>
-    {% endif %}
+        {% if notifications %}
+            <h1>Hay {{ user }}! You have {{ unread_count }} new notifications!</h1>
+        {% else %}
+            <h1>Hay {{ user }}! You have no new notification!</h1>
+        {% endif %}
     </div>
 
     <div class="container-fluid gp-container-normal">
@@ -29,10 +29,16 @@
 
                     {% elif item.notify_from == 'q_a' %}
 
-                        {#For future use: item.get_question_id#}
-
-                        <a href="#" class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
+                        <a href="{% url 'ques_detail' item.get_question_id %}"
+                           class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
                         <p class="ts-notify-title"><strong>{{ item.sender }}</strong> gives an answer to your question.</p>
+
+
+                    {% elif item.notify_from == 'story_share' %}
+
+                        <a href="{% url 'story_detail' item.ref_value %}"
+                           class="list-group-item {% if item.id in unread_list %}ts-notify-unread{% endif %}">
+                        <p class="ts-notify-title"><strong>{{ item.sender }}</strong> suggested a tour story.</p>
 
                     {% endif %}
 

@@ -318,7 +318,7 @@ def view_profile(request, user_name):
     #     user_info['country'] = user_pro_info[0].get('country')
 
     print(the_user[0])
-    tour_list=[]
+    tour_list = []
     tour_list = Story.objects.filter(user=the_user)
     question_list = []
     question_list = Question.objects.filter(author_id=the_user)
@@ -518,6 +518,7 @@ def comment_delete(request):
         return HttpResponse('')
 
 
+@login_required
 def answer_delete(request):
     if request.method == 'POST':
         user = request.user
@@ -525,10 +526,18 @@ def answer_delete(request):
         print(answer_id)
         answer = Answer.objects.get(id=answer_id)
         print(answer)
+
+        the_question = Question.objects.get(id=answer.answer_of_id)
+
+        # question_author_id, answer_id, answer_giver_id
+        delete_notify_question_new_comment(the_question.author_id, answer.id, answer.answered_by_id)
+
         answer.delete()
+
         return HttpResponse('')
 
 
+@login_required
 def reported_story(request):
     report_list = []
     stories = Story.objects.all()
@@ -543,6 +552,7 @@ def reported_story(request):
     )
 
 
+@login_required
 def Own_report(request):  # s29
     if request.method == 'POST':
         user = request.user
@@ -577,6 +587,7 @@ def Own_report(request):  # s29
         return render(request, 'app1/index.html')
 
 
+@login_required
 def answer_edit(request):
     if request.method == 'POST':
         user = request.user
@@ -591,6 +602,7 @@ def answer_edit(request):
         return HttpResponse('')
 
 
+@login_required
 def question_edit(request):
     if request.method == 'POST':
         user = request.user
@@ -667,6 +679,26 @@ def ajax_add_story(request):
                 return JsonResponse(form.errors, status=400)
             else:
                 return HttpResponse("Error!")
+
+
+@login_required
+def ajax_notify_followers(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+
+            story_id = request.POST.get("story_id")
+
+            followers = Follower.objects.filter(following=request.user)
+
+            # add_notify_story_share_to_followers(follower_id, story_id, suggestion_giver_id)
+            for follower in followers:
+                add_notify_story_share_to_followers(follower.my_id_id, story_id, request.user.id)
+
+            data = {
+                'success': True,
+            }
+
+            return JsonResponse(data)
 
 
 def add_story_images(request, story_id):
@@ -819,7 +851,7 @@ def save_answer(request):
             print(b)
             # probably better to use a redirect here.
 
-            # add_notify_question_new_comment(question.author_id, ans.id, ans.answered_by_id)
+            add_notify_question_new_comment(question.author_id, ans.id, ans.answered_by_id)
 
         else:
             print(form.errors)
@@ -946,6 +978,12 @@ def about(request):
         notify_from :   'q_a'
         ref_type    :   'answer'
         ref_value   :   int(answer_id)
+        
+    For Story Share to Followers
+    ============================
+        notify_from :   'story_share'
+        ref_type    :   'story'
+        ref_value   :   int(story_id)
 '''
 
 
@@ -992,7 +1030,7 @@ def delete_notify_story_new_like(story_id, story_author_id, liker_id):
 
 
 '''
-Notification for comment in a Question (Not Final)
+Notification for comment in a Question
 '''
 
 
@@ -1001,12 +1039,34 @@ def add_notify_question_new_comment(question_author_id, answer_id, answer_giver_
         add_notification(question_author_id, answer_giver_id, "q_a", "answer", answer_id)
 
 
+def delete_notify_question_new_comment(question_author_id, answer_id, answer_giver_id):
+    if question_author_id != answer_giver_id:
+        delete_notification(question_author_id, answer_giver_id, "q_a", "answer", answer_id)
+
+
+'''
+Notification for Story Share to Followers
+'''
+
+
+def add_notify_story_share_to_followers(follower_id, story_id, suggestion_giver_id):
+    if follower_id != suggestion_giver_id:
+        add_notification(follower_id, suggestion_giver_id, "story_share", "story", story_id)
+
+
+'''
+==================================================
+    View about Follow
+==================================================
+'''
+
+
 def update_follow_list(request):
     if request.is_ajax():
         print("i am in update follow and ajax")
         text = request.GET['text']
         print(text)
-        if (text == "Follow"):
+        if text == "Follow":
             follower_obj = Follower.objects.all()
             follower_list = []
             for i in follower_obj:

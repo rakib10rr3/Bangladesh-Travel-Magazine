@@ -61,6 +61,8 @@ urlpatterns = [
 
     url(r'^api/place/suggestion/$', views.ajax_get_place_names, name='ajax_get_place_names'),
 
+    url(r'^api/share/$', views.ajax_notify_followers, name='ajax_notify_followers'),
+
     url(r'^ques_delete/(?P<ques_id>\d+)/$', views.delete_ques, name='ques_delete'),
 
     # url(r'^ques_edit/(?P<ques_id>\d+)/$', views.edit_ques, name='ques_edit'),
