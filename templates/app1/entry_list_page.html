@@ -1,6 +1,6 @@
 {% load el_pagination_tags %}
-{% paginate stories %}
 
+{% paginate 4 stories %}
 {% csrf_token %}
 
 {% for obj in stories %}
@@ -158,7 +158,7 @@
         {% endif %}
     {% endif %}
 {% endfor %}
-{% show_pages %}
+{% show_more %}
 
 {% block javascript_block %}
 

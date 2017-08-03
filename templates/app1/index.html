@@ -1,10 +1,8 @@
 {% extends 'app1/base.html' %}
+
 {##}
 {#changed#}
-
 {% load staticfiles %}
-
-
 {% block body_block %}
     <div class="jumbotron gp-jumbotron">
         <h1>Welcome {{ user.username }}!</h1>
@@ -23,7 +21,8 @@
                         {% csrf_token %}
 
                         <div class="ts-story-text">
-                            <textarea id="des" class="form-control" name="des" rows="5" placeholder="Write your awesome story here..." required></textarea>
+                            <textarea id="des" class="form-control" name="des" rows="5"
+                                      placeholder="Write your awesome story here..." required></textarea>
                         </div>
 
                         <div class="ts-story-location">
@@ -43,7 +42,8 @@
                                     </select>
                                 </div>
                                 <div class="ts-width-half">
-                                    <input id="place_name" class="form-control col-xs-6" type="text" name="place_name" placeholder="Place name (in English)"
+                                    <input id="place_name" class="form-control col-xs-6" type="text" name="place_name"
+                                           placeholder="Place name (in English)"
                                            disabled required>
 
                                     <div id="auto_complete_list" style="display: none;" class="ts-autocomplete-list">
@@ -130,7 +130,8 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                     <label for="image_uploads">Choose images to upload...</label>
-                                    <input id="image_uploads" class="form-control" type="file" accept="image/png, image/jpeg" name="img_files" multiple>
+                                    <input id="image_uploads" class="form-control" type="file"
+                                           accept="image/png, image/jpeg" name="img_files" multiple>
                                 </div>
 
                                 <div class="ts-story-img-preview" style="display: none;">
@@ -141,12 +142,14 @@
 
                             <div class="ts-story-budget input-group" style="display: none;">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
-                                <input class="form-control" type="number" name="budget" placeholder="Budget in Taka (Optional)">
+                                <input class="form-control" type="number" name="budget"
+                                       placeholder="Budget in Taka (Optional)">
                             </div>
 
                             <div class="ts-story-member-count input-group" style="display: none;">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input class="form-control" type="number" name="member" placeholder="Total Journey member (Optional)">
+                                <input class="form-control" type="number" name="member"
+                                       placeholder="Total Journey member (Optional)">
                             </div>
 
                             <div class="ts-story-tour-type input-group" style="display: none;">
@@ -166,14 +169,18 @@
 
                         <div class="ts-story-btn-panel">
                             <div class="ts-story-optionals-btn">
-                                <a href="#" id="ts-btn-story" data-id="ts-story-image" class="btn ts-btn-left" data-toggle="tooltip" title="Images"><span
+                                <a href="#" id="ts-btn-story" data-id="ts-story-image" class="btn ts-btn-left"
+                                   data-toggle="tooltip" title="Images"><span
                                         class="glyphicon glyphicon-picture"></span></a>
-                                <a href="#" id="ts-btn-story" data-id="ts-story-budget" class="btn ts-btn-left" data-toggle="tooltip" title="Budget"><span
+                                <a href="#" id="ts-btn-story" data-id="ts-story-budget" class="btn ts-btn-left"
+                                   data-toggle="tooltip" title="Budget"><span
                                         class="glyphicon glyphicon-usd"></span></a>
-                                <a href="#" id="ts-btn-story" data-id="ts-story-member-count" class="btn ts-btn-left" data-toggle="tooltip"
+                                <a href="#" id="ts-btn-story" data-id="ts-story-member-count" class="btn ts-btn-left"
+                                   data-toggle="tooltip"
                                    title="Total journty member"><span
                                         class="glyphicon glyphicon-user"></span></a>
-                                <a href="#" id="ts-btn-story" data-id="ts-story-tour-type" class="btn ts-btn-left" data-toggle="tooltip" title="Tour type"><span
+                                <a href="#" id="ts-btn-story" data-id="ts-story-tour-type" class="btn ts-btn-left"
+                                   data-toggle="tooltip" title="Tour type"><span
                                         class="glyphicon glyphicon-sunglasses"></span></a>
                             </div>
                             <input href="#" type="submit" class="btn btn-default ts-btn-right" value="Post">
@@ -549,20 +556,20 @@
 
 
 
-    {#    {% block js %}#}
-    {#        {{ block.super }}#}
-    {#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
-    {#        #}
-    {#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
-    {#        <script src={% static "el-pagination/js/el-pagination.js" %}></script>#}
-    {##}
-    {#        <script>#}
-    {#            $.endlessPaginate({#}
-    {#                paginateOnScroll: true,#}
-    {#                paginateOnScrollMargin: 20#}
-    {#            });#}
-    {#        </script>#}
-    {#    {% endblock %}#}
+    {% block js %}
+        {{ block.super }}
+{#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
+{#        #}
+        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
+        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
+
+        <script>
+            $.endlessPaginate({
+                paginateOnScroll: true,
+                paginateOnScrollMargin: 20
+            });
+        </script>
+    {% endblock %}
 
 {% endblock %}
 
