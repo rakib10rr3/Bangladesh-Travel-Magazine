@@ -11,7 +11,7 @@ from itertools import chain
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .forms import StoryAddForm
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
-from .models import OwnReport, ReportCounter
+from .models import OwnReport, ReportCounter, Favourite
 from django.http import JsonResponse
 from .models import Type
 
@@ -339,6 +339,7 @@ def view_profile(request, user_name):
     follower_obj = Follower.objects.all()
     following = []
     follower = []
+    favourite_list = Favourite.objects.filter(user=request.user)
     for i in follower_obj:
         if i.my_id == request.user:
             following.append(i.following)
@@ -354,6 +355,7 @@ def view_profile(request, user_name):
                       'question_list': question_list,
                       'following': following,
                       'follower': follower,
+                      'favourite_list':favourite_list,
                   })
 
 
@@ -839,17 +841,24 @@ def story_delete(request, story_id):
 def save_question(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
-        print("Division", request.POST['story_division'],"khela", request.POST['place_name'])
+        print("Division", request.POST['story_division'], "khela", request.POST['place_name'])
         print("khele", request.FILES)
         print("Form", form)
+        now_place = request.POST['place_name']
+        div_id = request.POST['story_division']
         if form.is_valid():
+            obj_place, created = Place.objects.get_or_create(
+                name=request.POST.get("place_name"),
+                division_id=int(request.POST.get("story_division")),
+            )
+            print(obj_place.id, "->", obj_place)
             bet = form.save(commit=False)
             bet.author = request.user
+            bet.place = obj_place
             bet.save()
             # probably better to use a redirect here.
         else:
             print(form.errors)
-
     return redirect('forum')
 
 
@@ -938,6 +947,23 @@ def search_ques(request):
 
         # custom change
 
+
+def save_favourite(request):
+    print(request.user, "->", request.POST['story_place'])
+    str = request.POST['story_place']
+    sf = Favourite()
+    sf.user = request.user
+    sf.place = Place.objects.get(name=str)
+    sf.save()
+    return redirect('index')
+
+
+def clear_favourite(request):
+    str = request.POST['story_place']
+    sf = Favourite.objects.get(user=request.user, place=Place.objects.get(name=str))
+    print("unfav->", sf)
+    sf.delete()
+    return redirect('index')
 
 def delete_ques(request, ques_id):
     ques = Question.objects.get(pk=ques_id)

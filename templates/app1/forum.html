@@ -66,6 +66,7 @@
                         </div>
                     </div>
                     <button id="ask" class="btn btn-primary btn-block" type="submit">Ask</button>
+                </div>
             </form>
         </div>
 
@@ -92,6 +93,7 @@
                                 <p class="gp-ques-date">{{ obj.created }}</p>
                                 <p class="card-text-author">Asked by <a
                                         href="{% url 'user_profile' obj.author %}">{{ obj.author }}</a></p>
+                            <p class="gp-ques-date">Tags {{ obj.place }}</p>
                                 <a href="{% url 'ques_detail' obj.id %}">single view</a>
                             </div>
                             <div class="gp-ques-ans">
@@ -380,6 +382,7 @@
     <script>
         var q_form = $("#question_form");
         q_form.submit(function () {
+            //event.preventDefault();
             alert($(this).serialize());
             $.ajax({
                 url: {% url 'save_question' %},

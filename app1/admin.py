@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Division, Place, UserProfile, Story, Comment, Type, Question, Answer, OwnReport, ReportCounter
+from .models import Division, Place, UserProfile, Story, Comment, Type, Question, Answer, OwnReport, ReportCounter, Favourite
 
 
 class DivisionAdmin(admin.ModelAdmin):  # this is for to simplify urls
@@ -25,3 +25,4 @@ admin.site.register(Answer)
 admin.site.register(UserProfile)
 admin.site.register(OwnReport)
 admin.site.register(ReportCounter)
+admin.site.register(Favourite)

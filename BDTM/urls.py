@@ -80,7 +80,8 @@ urlpatterns = [
     # Source: https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
-
+    url(r'^favourite_place/$',views.save_favourite, name='favourite_place'),
+    url(r'^not_favourite_place/$',views.clear_favourite, name='not_favourite_place'),
     url(r'^story_share/$', views.story_share, name='story_share'),
 
     url(r'^update_follow_list/$', views.update_follow_list, name='update_follow_list'),

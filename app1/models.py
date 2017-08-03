@@ -216,10 +216,14 @@ class Question(models.Model):
     author = models.ForeignKey(User)
     question = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
+    place = models.ForeignKey(Place, blank=True, null=True)
 
     def __str__(self):
         return self.question
 
+class Favourite(models.Model):
+    user = models.ForeignKey(User)
+    place = models.ForeignKey(Place, blank=True, null=True)
 
 class Answer(models.Model):
     answered_by = models.ForeignKey(User)

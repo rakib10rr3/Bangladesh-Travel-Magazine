@@ -27,6 +27,15 @@
                                 onclick="ownreport({{ obj.id }},{{ obj.id }})">
                             Report
                         </button>
+                        <button type="button" class="btn btn-danger"
+                                onclick="favourite_place('{{ obj.story_page }}')">
+                            Favourite
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                onclick="not_favourite_place('{{ obj.story_page }}')">
+                            Not favourite
+                        </button>
+
                     {% endif %}
 
                 </div>
@@ -97,7 +106,8 @@
                             </a>
                         </div>
                         <div class="gp-div-half">
-                            <a id="ts-share" data-id="{{ obj.id }}" class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
+                            <a id="ts-share" data-id="{{ obj.id }}" class="gp-share"><span
+                                    class="glyphicon glyphicon-share-alt"></span> Share</a>
                         </div>
                     </div>
 
@@ -195,6 +205,47 @@
                 type: 'POST',
                 data: {
                     story_id: story_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    //alert("Created a New Comment");
+                    //load('index.html');
+                }
+            });
+
+        }
+
+        function favourite_place(story_place) {
+
+            // alert(ques_ans)
+            //alert("Favourite!");
+           // $("#story_id_" + divid).hide();
+            //alert(story_place);
+            $.ajax({
+                url: '{% url 'favourite_place' %}',
+                type: 'POST',
+                data: {
+                    story_place: story_place,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    //alert("Created a New Comment");
+                    //load('index.html');
+                }
+            });
+
+        }
+        function not_favourite_place(story_place) {
+
+            // alert(ques_ans)
+            //alert("Favourite!");
+           // $("#story_id_" + divid).hide();
+            //alert(story_place);
+            $.ajax({
+                url: '{% url 'not_favourite_place' %}',
+                type: 'POST',
+                data: {
+                    story_place: story_place,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 success: function () {
