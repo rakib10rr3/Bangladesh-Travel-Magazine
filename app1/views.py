@@ -135,7 +135,9 @@ def forum(request):
         return render(request, 'app1/forum.html',
                       {'q_form': q_form,
                        'a_form': a_form, 'question_list': question_list,
-                       'user_id': user.id
+                       'user_id': user.id,
+                       'divisions': Division.objects.all(),
+                       'types': Type.objects.all(),
                        })
 
 
@@ -160,7 +162,15 @@ def division_detail(request, division_name_slug):
         # print(storyByThisUser)
         like_list = []
         comment_list = []
-
+        report_me = []
+        report_list = OwnReport.objects.filter(u_id=request.user.id)
+        for u in report_list:
+            if u.u_id == request.user.id:
+                report_me.append(u.story_id)
+        final_report = []
+        for s in stories:
+            if s.report >= 5:
+                final_report.append(s.id)
         for s in stories:
             print(s.id)
             story_ = Story.objects.get(id=s.id)
@@ -182,6 +192,8 @@ def division_detail(request, division_name_slug):
         context_dict['like_list'] = like_list
         context_dict['comment_list'] = comment_list
         context_dict['form'] = form
+        context_dict['report_list'] = report_me
+        context_dict['final_report'] = final_report
     except Division.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
@@ -804,11 +816,16 @@ def story_detail(request, story_id):
     for s2 in story.comments.all():
         if s2.author_id == user.id:
             comment_list.append(s2.id)
-
+    report_me = []
+    report_list = OwnReport.objects.filter(u_id=request.user.id)
+    for u in report_list:
+        if u.u_id == request.user.id:
+            report_me.append(u.story_id)
     like_list = []
     if story.likes.filter(id=user.id).exists():
         like_list.append(story.id)
-    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list, 'comment_list': comment_list})
+    return render(request, 'app1/Story_view.html', {'obj': story, 'like_list': like_list, 'comment_list': comment_list,
+                                                    'report_list': report_me})
 
 
 @login_required
@@ -822,6 +839,9 @@ def story_delete(request, story_id):
 def save_question(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES)
+        print("Division", request.POST['story_division'],"khela", request.POST['place_name'])
+        print("khele", request.FILES)
+        print("Form", form)
         if form.is_valid():
             bet = form.save(commit=False)
             bet.author = request.user

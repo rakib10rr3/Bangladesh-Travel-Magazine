@@ -1,142 +1,180 @@
 {% extends 'app1/base.html' %}
 
 {% block body_block %}
+    {% if obj.id not in report_list %}
+        {% if obj %}
+            <div id="story_id_{{ obj.id }}">
+                <div id="follow{{ forloop.counter }}">
 
-    {% if obj %}
+                    {% load app1_extras %}
 
-        <div class="container-fluid gp-container-normal">
+                    {% if not obj.user == request.user %}
+                        {% pass_follower_list request.user obj.user.id forloop.counter %}
+                        <button type="button" class="btn btn-danger"
+                                onclick="ownreport({{ obj.id }},{{ obj.id }})">
+                            Report
+                        </button>
+                    {% endif %}
 
-            <div class="container gp-div-post-full">
-
-                {% if obj.stories.all.exists %}
-
-                    <div class="gp-slide-show">
-                        <div class="gp-slide-shadow"></div>
-
-                        <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
-                             data-ride="carousel">
-                            <!-- Wrapper for slides -->
-
-                            <div class="carousel-inner" role="listbox">
-
-                                {% for obj2 in  obj.stories.all %}
-                                    <div class="item {% if forloop.first %}active{% endif %}">
-                                        <img class="card-img-top gp-card-img" src="{{ obj2.file.url }}"
-                                             alt="IMAGE GOES HERE">
-                                    </div>
-                                {% endfor %}
-
-                            </div>
-                            <!-- Left and right controls -->
-                            <a class="left carousel-control" id="gp-carousel-control"
-                               href="#myCarousel{{ forloop.counter }}"
-                               role="button"
-                               data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" id="gp-carousel-control"
-                               href="#myCarousel{{ forloop.counter }}"
-                               role="button"
-                               data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                <div class="gp-desc">
-                    <h4 class="card-title">{{ obj.title_name }}</h4>
-                    <p class="card-text-date">{{ obj.created_date }}</p>
-                    <p class="card-text-author">Tour by <a
-                            href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
-                        <strong>{{ obj.member }}</strong> members.</p>
-                    <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
-                    <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
-                    <p class="card-text">
-                        {{ obj.des|linebreaks|safe }}
-                    </p>
                 </div>
-                <div class="gp-util-bar">
-                    <div class="gp-div-half">
-                        <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
+                <div class="container-fluid gp-container-normal">
+
+                    <div class="container gp-div-post-full">
+
+                        {% if obj.stories.all.exists %}
+
+                            <div class="gp-slide-show">
+                                <div class="gp-slide-shadow"></div>
+
+                                <div id="myCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
+                                     data-ride="carousel">
+                                    <!-- Wrapper for slides -->
+
+                                    <div class="carousel-inner" role="listbox">
+
+                                        {% for obj2 in  obj.stories.all %}
+                                            <div class="item {% if forloop.first %}active{% endif %}">
+                                                <img class="card-img-top gp-card-img" src="{{ obj2.file.url }}"
+                                                     alt="IMAGE GOES HERE">
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" id="gp-carousel-control"
+                                       href="#myCarousel{{ forloop.counter }}"
+                                       role="button"
+                                       data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" id="gp-carousel-control"
+                                       href="#myCarousel{{ forloop.counter }}"
+                                       role="button"
+                                       data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="gp-desc">
+                            <h4 class="card-title">{{ obj.title_name }}</h4>
+                            <p class="card-text-date">{{ obj.created_date }}</p>
+                            <p class="card-text-author">Tour by <a
+                                    href="{% url 'user_profile' obj.user %}">{{ obj.user }}</a> with
+                                <strong>{{ obj.member }}</strong> members.</p>
+                            <p class="card-budget"><strong>Budget:</strong> {{ obj.budget }}</p>
+                            <p class="card-type"><strong>Type:</strong> {{ obj.type_name }}</p>
+                            <p class="card-text">
+                                {{ obj.des|linebreaks|safe }}
+                            </p>
+                        </div>
+                        <div class="gp-util-bar">
+                            <div class="gp-div-half">
+                                <a id="likes" data-id="{{ obj.id }}" class="gp-like-button">
                             <span id="gp-like-logo-{{ obj.id }}"
                                   class="glyphicon {% if obj.id in like_list %}glyphicon glyphicon-heart {% else %} glyphicon-heart-empty {% endif %}"></span>
-                            <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
-                        </a>
-                    </div>
-                    <div class="gp-div-half">
-                        <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
-                    </div>
-
-                </div>
-
-                <!-- Comment part start -->
-
-                <div class="gp-comment-group">
-                    <div class="gp-total-comments">
-                        <a onclick="toggleDiv(1)" class="gp-flat-link">
-                            Total {{ obj.comments.count }} comments.
-                        </a>
-                    </div>
-
-
-                    <div id={{ 1 }}>
-                        {% for comment in obj.comments.all %}
-                            <div class="gp-comment">
-
-                                <p class="gp-username"><a
-                                        href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
-                                </p>
-                                <p class="gp-date">{{ comment.created_date }}</p>
-                                <p class="gp-content">{{ comment.text }}</p>
-                                {% if comment.id in comment_list %}
-                                    <div class="bg-margin-top-10">
-                                        <button class="btn btn-danger" onclick="del_comment( {{ 1 }}, {{ comment.id }})">
-                                            Delete
-                                        </button>
-                                    </div>
-                                {% endif %}
+                                    <span id="gp-total-like-{{ obj.id }}">{{ obj.total_likes }}</span>
+                                </a>
                             </div>
-                        {% endfor %}
-                    </div>
-                    <!-- Comment part end -->
-
-
-                    <!-- Adding a comment part start -->
-
-                    <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form-story-comment">
-                        {% csrf_token %}
-
-                        <div class="input-group">
-                            <input class="form-control text" maxlength="1000" type="text" name="text" required>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="commentDiv()" type="submit">
-                                    <i class="glyphicon glyphicon-send"></i>
-                                </button>
+                            <div class="gp-div-half">
+                                <a class="gp-share"><span class="glyphicon glyphicon-share-alt"></span> Share</a>
                             </div>
+
                         </div>
 
-                    </form>
+                        <!-- Comment part start -->
 
-                    <!-- Adding-Comment part end -->
+                        <div class="gp-comment-group">
+                            <div class="gp-total-comments">
+                                <a onclick="toggleDiv(1)" class="gp-flat-link">
+                                    Total {{ obj.comments.count }} comments.
+                                </a>
+                            </div>
 
+
+                            <div id={{ 1 }}>
+                                {% for comment in obj.comments.all %}
+                                    <div class="gp-comment">
+
+                                        <p class="gp-username"><a
+                                                href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
+                                        </p>
+                                        <p class="gp-date">{{ comment.created_date }}</p>
+                                        <p class="gp-content">{{ comment.text }}</p>
+                                        {% if comment.id in comment_list %}
+                                            <div class="bg-margin-top-10">
+                                                <button class="btn btn-danger"
+                                                        onclick="del_comment( {{ 1 }}, {{ comment.id }})">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!-- Comment part end -->
+
+
+                            <!-- Adding a comment part start -->
+
+                            <form id="add_comment" data-id={{ obj.id }} method="POST" class="gp-form-story-comment">
+                                {% csrf_token %}
+
+                                <div class="input-group">
+                                    <input class="form-control text" maxlength="1000" type="text" name="text" required>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" onclick="commentDiv()" type="submit">
+                                            <i class="glyphicon glyphicon-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                            <!-- Adding-Comment part end -->
+
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
 
-        </div>
 
-
+        {% else %}
+            <div class="jumbotron gp-jumbotron">
+                <h1>Sorry no story found!</h1>
+            </div>
+        {% endif %}
     {% else %}
-        <div class="jumbotron gp-jumbotron">
-            <h1>Sorry no story found!</h1>
-        </div>
+        <h1>EROR 404</h1>
     {% endif %}
 
     <script>
+        function ownreport(story_id, divid) {
 
+            // alert(ques_ans)
+            alert("Reported! you will not see this again :)")
+            $("#story_id_" + divid).hide();
+            setTimeout(function(){ window.location = '{% url 'index' %}'; }, 2000);
+            //alert(story_id);
+            $.ajax({
+                url: '{% url 'own_report' %}',
+                type: 'POST',
+                data: {
+                    story_id: story_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    //alert("Created a New Comment");
+                    //load('index.html');
+                }
+            });
+
+        }
         function toggleDiv(divId) {
             $("#" + divId).slideToggle();
         }

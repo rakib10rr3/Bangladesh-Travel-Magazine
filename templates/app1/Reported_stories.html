@@ -4,7 +4,7 @@
     {% for obj in stories %}
         {% if obj.id in report_list %}
             {{ obj.id }}
-            <a href="">
+            <a href="{% url 'story_detail' obj.id %}">
                 <li>
                     <p class="gp-title">{{ obj }}, {{ obj.division }}</p>
                     <p class="gp-desc">{{ obj.des }}</p>

@@ -39,7 +39,33 @@
                         {{ field }}
                     </div>
                 {% endfor %}
-                <button id="ask" class="btn btn-primary btn-block" type="submit">Ask</button>
+                <div class="ts-story-location">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                        <div class="ts-width-half">
+                            <select id="story_division" class="form-control" name="story_division" required>
+
+                                <option value selected>Select a Division...</option>
+
+                                {% for division in divisions %}
+
+                                    <option value="{{ division.id }}">{{ division.title }}</option>
+
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="ts-width-half">
+                            <input id="place_name" class="form-control col-xs-6" type="text" name="place_name"
+                                   placeholder="Place name (in English)"
+                                   disabled required>
+
+                            <div id="auto_complete_list" style="display: none;" class="ts-autocomplete-list">
+
+                            </div>
+                        </div>
+                    </div>
+                    <button id="ask" class="btn btn-primary btn-block" type="submit">Ask</button>
             </form>
         </div>
 
@@ -100,22 +126,27 @@
                                                 </div>
                                                 div id{{ forloop.parentloop.counter }}
 
-                                            <div id="edit_form{{ obj2.id }}" style="display: none">
-                                                form id {{ obj2.id }}
-                                                <form id="edit_answer{{ obj2.id }}">
-                                                    {% csrf_token %}
-                                                    <input type="text" class="form-control" name="edit"
-                                                           id="new_ans{{ obj2.id }}"
+                                                <div id="edit_form{{ obj2.id }}" style="display: none">
+                                                    form id {{ obj2.id }}
+                                                    <form id="edit_answer{{ obj2.id }}">
+                                                        {% csrf_token %}
+                                                        <input type="text" class="form-control" name="edit"
+                                                               id="new_ans{{ obj2.id }}"
 
-                                                           value="{{ obj2.text }}">
-                                                </form>
-                                            </div>
+                                                               value="{{ obj2.text }}">
+                                                    </form>
+                                                </div>
 
 
 
                                                 {% if obj2.answered_by_id == user_id %}
                                                     <div class="bg-margin-top-10">
-                                                    <button id="delete{{ obj2.id }}" class="btn btn-large btn-danger" data-toggle="confirmation" data-btn-ok-label="Yes" data-title="Are you sure you want to delete?"  onfocus="confirmm({{ obj2.id }}, {{ obj2.id }})">Delete</button>
+                                                        <button id="delete{{ obj2.id }}"
+                                                                class="btn btn-large btn-danger"
+                                                                data-toggle="confirmation" data-btn-ok-label="Yes"
+                                                                data-title="Are you sure you want to delete?"
+                                                                onfocus="confirmm({{ obj2.id }}, {{ obj2.id }})">Delete
+                                                        </button>
 
 
                                                         <button class="btn btn-info" id="edit{{ obj2.id }}"
@@ -159,14 +190,83 @@
                         </div>
                     </div>
                 {% endif %}
+            </div>
         </div>
-    </div>
     </div>
 
 
 
 
     <script>
+        $(function () {
+            $("#story_division").change(function () {
+                if ($("#story_division").val()) {
+                    $("#place_name").prop("disabled", false);
+                } else {
+                    $("#place_name").prop("disabled", true);
+                    $("#place_name").val("");
+                }
+            });
+
+            $ac_list = $("#auto_complete_list");
+
+            $in_place_name = $("#place_name");
+
+            $ac_list.css("top", $in_place_name.height());
+            $ac_list.css("width", $in_place_name.width());
+
+            $("#auto_complete_list").on("click", "p", function () {
+                $("#place_name").val($(this).text());
+
+                console.log($(this).text());
+
+                hide_auto_complete_list();
+
+            });
+
+            $("#place_name").blur(function () {
+
+                setTimeout(function () {
+                    hide_auto_complete_list();
+                }, 1000);
+
+            });
+
+
+            $in_place_name.on("input", function () {
+                if ($(this).val() != "") {
+
+
+                    var data = {
+                        division: $("#story_division").val(),
+                        query: $("#place_name").val()
+                    };
+
+                    $.get("{% url 'ajax_get_place_names' %}", data, function (result) {
+                        console.log(result);
+
+                        if ($.isEmptyObject(result) == false) {
+                            $("#auto_complete_list").empty();
+
+                            result.forEach(function (element) {
+                                $("#auto_complete_list").append("<p>" + element + "</p>")
+                            });
+
+                            $("#auto_complete_list").show();
+                        } else {
+                            hide_auto_complete_list();
+                        }
+
+
+                    });
+                }
+            });
+
+            function hide_auto_complete_list() {
+                $("#auto_complete_list").hide();
+            }
+        });
+
         function toggleDiv(element, divId) {
             $("#" + divId).slideToggle();
             {#            $(element).slideUp();#}
@@ -280,6 +380,7 @@
     <script>
         var q_form = $("#question_form");
         q_form.submit(function () {
+            alert($(this).serialize());
             $.ajax({
                 url: {% url 'save_question' %},
                 type: 'POST',
@@ -295,29 +396,28 @@
         });
 
 
-       function confirmm(formId,ans_id) {
+        function confirmm(formId, ans_id) {
             $('[data-toggle=confirmation]').confirmation({
-            rootSelector: '[data-toggle=confirmation]',
-            onConfirm: function () {
-                del_answer(formId,ans_id)
-            }
-            // other options
-        });
-       }
+                rootSelector: '[data-toggle=confirmation]',
+                onConfirm: function () {
+                    del_answer(formId, ans_id)
+                }
+                // other options
+            });
+        }
 
 
-{#       $('[data-toggle=confirmation]').confirmation({#}
-{#            rootSelector: '[data-toggle=confirmation]',#}
-{#            onConfirm: function () {#}
-{#                alert($(this).data('id'));#}
-{#                del_answer($(this).data('id'),$(this).data('id'));#}
-{#            }#}
-{#        });#}
+        {#       $('[data-toggle=confirmation]').confirmation({#}
+        {#            rootSelector: '[data-toggle=confirmation]',#}
+        {#            onConfirm: function () {#}
+        {#                alert($(this).data('id'));#}
+        {#                del_answer($(this).data('id'),$(this).data('id'));#}
+        {#            }#}
+        {#        });#}
 
-{#    function confirmm(a,b) {#}
-{#        alert("yoo")#}
-{#    }#}
-
+        {#    function confirmm(a,b) {#}
+        {#        alert("yoo")#}
+        {#    }#}
 
 
     </script>
