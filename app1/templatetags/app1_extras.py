@@ -28,19 +28,18 @@ def in_page(image_list, page):
 
 
 @register.inclusion_tag('app1/partial/follow_unfollow.html')
-def pass_follower_list(this_user,obj_id,div_id):
-    print("Logged in user = ",this_user)
-    print("Have to delete = ",obj_id)
-    print("Unique div id = ",div_id)
+def pass_follower_list(this_user, obj_id, div_id):
+    print("Logged in user = ", this_user)
+    print("Have to delete = ", obj_id)
+    print("Unique div id = ", div_id)
     follower_obj = Follower.objects.all()
-    #print('follower obj', follower_obj)
+    # print('follower obj', follower_obj)
     follower_list = []
     for i in follower_obj:
         if i.my_id == this_user:
             follower_list.append(i.following_id)
     print(follower_list)
-    return {'follower_list': follower_list,"obj_id":obj_id,"div_id":div_id}
-
+    return {'follower_list': follower_list, "obj_id": obj_id, "div_id": div_id}
 
 
 @register.filter

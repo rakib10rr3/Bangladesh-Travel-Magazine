@@ -88,6 +88,7 @@ urlpatterns = [
     url(r'^update_follow_list/$', views.update_follow_list, name='update_follow_list'),
 
     url(r'^story_detail/(?P<story_id>\d+)/$', views.story_detail, name='story_detail'),  # New!
+    url(r'^picture_details/(?P<story_id>\d+)/$', views.picture_details, name='picture_details'),  # New!
     url(r'^ques_detail/(?P<ques_id>\d+)/$', views.ques_detail, name='ques_detail'),  # New!
     url(r'^(?P<division_name_slug>[\w\-]+)/$', views.division_detail, name='division_detail'),  # New!
 

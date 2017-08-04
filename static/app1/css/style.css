@@ -452,6 +452,124 @@ input[type=submit] {
 }
 
 /**
+ * Story View
+ */
+
+.ts-story-view {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
+    /*overflow: auto;*/
+    margin: 10px 0;
+    position: relative;
+}
+
+.ts-story-top-bar {
+    overflow: auto;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ts-story-author-img {
+    height: 47px;
+    width: 47px;
+    float: left;
+    border-radius: 50%;
+    margin: 3px;
+    background-position: center;
+    background-size: cover;
+}
+
+.ts-story-post-info-top {
+    float: left;
+}
+
+.ts-user-name {
+    padding: 1px 10px;
+    margin: 0;
+}
+
+.ts-user-name span a {
+    font-size: 18px;
+    color: #555;
+    font-weight: bold;
+}
+
+.ts-user-name span a:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+.ts-date-place {
+    margin: 0;
+    padding: 0 10px 0;
+    color: #999;
+}
+
+.ts-story-menu {
+    display: inline-block;
+    right: 0;
+    position: absolute;
+}
+
+.ts-story-menu .btn-default {
+    border-color: transparent;
+}
+
+.ts-story-view-text {
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+.ts-story-img {
+    border-bottom: 1px solid #e5e5e5;
+    overflow: auto;
+    position: relative;
+}
+
+.ts-story-img-more {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border: 0;
+    text-align: center;
+    font-size: 28px;
+    padding: 10px;
+}
+
+.ts-story-img-more a {
+    color: rgba(0,0,0,0);
+    text-shadow: 0 0 25px rgba(0,0,0,.5);
+}
+
+.ts-story-img-more a:hover, .ts-story-img-more a:focus {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 0 0 25px rgba(0,0,0,1);
+}
+
+.ts-story-img-single img {
+    width: 100%;
+}
+
+.ts-story-img-double img {
+    width: 50%;
+    float: left;
+}
+
+.ts-story-bottom-bar p {
+    padding: 5px 10px;
+    border-top: 1px solid #e5e5e5;
+    color: #888;
+    margin: 0;
+}
+
+.ts-image-list img {
+    width: 100%;
+    margin: 5px 10px;
+}
+
+/**
  * Common type style
  */
 
@@ -652,7 +770,7 @@ Comments
 }
 
 .gp-comment-group .gp-date {
-    font-size: 14px;
+    font-size: 12px;
     color: #777;
     margin-bottom: 5px;
 }
@@ -660,6 +778,7 @@ Comments
 .gp-comment-group .gp-content {
     font-size: 16px;
     margin: 0;
+    padding: 0 0 5px;
 }
 
 .gp-total-comments {

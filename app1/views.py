@@ -99,6 +99,16 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         print("like list= ", like_list)
         print("comment list= ", comment_list)
         form = CommentForm()
+
+        favourite_list = Favourite.objects.filter(user=request.user)
+
+        fav_list = []
+
+        for x in favourite_list:
+            fav_list.append(x.place_id)
+
+        print("fav list: ", favourite_list)
+
         context = {
 
             'page_list': page_list,
@@ -115,6 +125,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
             'final_report': final_report,
             'divisions': Division.objects.all(),
             'types': Type.objects.all(),
+            'favourites': fav_list,
         }
         if request.is_ajax():
             template = page_template
@@ -355,7 +366,7 @@ def view_profile(request, user_name):
                       'question_list': question_list,
                       'following': following,
                       'follower': follower,
-                      'favourite_list':favourite_list,
+                      'favourite_list': favourite_list,
                   })
 
 
@@ -545,6 +556,7 @@ def comment_edit(request):
         comment.save()
         return HttpResponse('')
 
+
 @login_required
 def answer_delete(request):
     if request.method == 'POST':
@@ -562,9 +574,6 @@ def answer_delete(request):
         answer.delete()
 
         return HttpResponse('')
-
-
-
 
 
 @login_required
@@ -967,11 +976,14 @@ def search_ques(request):
 def save_favourite(request):
     print(request.user, "->", request.POST['story_place'])
     str = request.POST['story_place']
+
+    print(str)
+
     sf = Favourite()
     sf.user = request.user
-    sf.place = Place.objects.get(name=str)
+    sf.place = Place.objects.get(id=str)
     sf.save()
-    return redirect('index')
+    return HttpResponse("")
 
 
 def clear_favourite(request):
@@ -980,6 +992,7 @@ def clear_favourite(request):
     print("unfav->", sf)
     sf.delete()
     return redirect('index')
+
 
 def delete_ques(request, ques_id):
     ques = Question.objects.get(pk=ques_id)
@@ -1185,3 +1198,8 @@ def autocomplete(request):
             'list': list,
         }
         return JsonResponse(data)
+
+
+def picture_details(request, story_id):
+    picture = Picture.objects.filter(story_id=story_id)
+    return render(request, 'app1/images.html', {'picture': picture})

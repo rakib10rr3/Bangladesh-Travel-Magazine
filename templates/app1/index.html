@@ -4,15 +4,107 @@
 {#changed#}
 {% load staticfiles %}
 {% block body_block %}
-    <div class="jumbotron gp-jumbotron">
-        <h1>Welcome {{ user.username }}!</h1>
-    </div>
+    {#    <div class="jumbotron gp-jumbotron">#}
+    {#        <h1>Welcome {{ user.username }}!</h1>#}
+    {#    </div>#}
     <div class=" container-fluid gp-container-normal">
 
         <div class="row">
 
-            <div class="col-sm-8">
+            {#             ===============      trending block   ============      #}
 
+            <div class="col-sm-3 gp-side-panel-container">
+
+                <div class="gp-side-panel">
+                    <div class="gp-side-panel-title">
+                        Top 7 Places Visited Last Week
+                    </div>
+
+                    <div class="gp-side-panel-content">
+
+                        {% if page_list %}
+                            <!-- trending list start-->
+                            {% for page,value in page_list.items %}
+
+                                <div class="container-fluid gp-div-post-summery">
+
+                                    <!-- image part for each page -->
+
+                                    {% if page.pages.all.exists %}
+
+                                        <div class="gp-slide-show">
+
+                                            <div class="gp-slide-shadow">
+                                                <h4 class="card-title">
+                                                    <a href="{% url 'story' page.division page.id %}">{{ page.name }}</a>
+                                                </h4>
+                                                <p class="card-text">Total {{ value }} stories shared here.</p>
+                                            </div>
+                                            <div id="gp-carousel{{ forloop.counter }}"
+                                                 class="carousel slide gp-carousel"
+                                                 data-ride="carousel">
+                                                <!-- Wrapper for slides -->
+                                                <div class="carousel-inner" role="listbox">
+
+                                                    <!-- showing every image in that page -->
+                                                    {% for image_obj in page.pages.all %}
+
+                                                        {% if forloop.first %}
+                                                            <div class="item active">
+                                                                <img class="card-img-top gp-card-img"
+                                                                     src="{{ image_obj.file.url }}">
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="item">
+                                                                <img class="card-img-top gp-card-img"
+                                                                     src="{{ image_obj.file.url }}">
+                                                            </div>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- Left and right controls -->
+
+                                            </div>
+
+                                        </div>
+
+                                    {% else %}
+
+
+                                        <div class="gp-desc">
+
+                                            <h4 class="card-title">
+                                                <a href="{% url 'story' page.division page.id %}">{{ page.name }}</a>
+                                            </h4>
+                                            <p class="card-text">Total {{ value }} stories shared here.</p>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+                        {% else %}
+                            <div class="container-fluid gp-div-post-summery gp-center">
+                                <div class="gp-desc">
+                                    Looks like people are not going Anywhere! O.o
+                                </div>
+                            </div>
+                        {% endif %}
+                        {# End of trend Block #}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {# ------------------------------------------------------------ #}
+
+            <div class="col-sm-6" id="ts-story-timeline">
 
                 <div class="ts-story-write">
 
@@ -152,19 +244,19 @@
                                        placeholder="Total Journey member (Optional)">
                             </div>
 
-                            <div class="ts-story-tour-type input-group" style="display: none;">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-sunglasses"></i></span>
-                                <select class="form-control" name="type_name">
-                                    <option value>Select the tour type...</option>
-
-                                    {% for type in types %}
-
-                                        <option value="{{ type.id }}">{{ type.type_name }}</option>
-
-                                    {% endfor %}
-
-                                </select>
-                            </div>
+                            {#                            <div class="ts-story-tour-type input-group" style="display: none;">#}
+                            {#                                <span class="input-group-addon"><i class="glyphicon glyphicon-sunglasses"></i></span>#}
+                            {#                                <select class="form-control" name="type_name">#}
+                            {#                                    <option value>Select the tour type...</option>#}
+                            {##}
+                            {#                                    {% for type in types %}#}
+                            {##}
+                            {#                                        <option value="{{ type.id }}">{{ type.type_name }}</option>#}
+                            {##}
+                            {#                                    {% endfor %}#}
+                            {##}
+                            {#                                </select>#}
+                            {#                            </div>#}
                         </div>
 
                         <div class="ts-story-btn-panel">
@@ -179,18 +271,16 @@
                                    data-toggle="tooltip"
                                    title="Total journty member"><span
                                         class="glyphicon glyphicon-user"></span></a>
-                                <a href="#" id="ts-btn-story" data-id="ts-story-tour-type" class="btn ts-btn-left"
-                                   data-toggle="tooltip" title="Tour type"><span
-                                        class="glyphicon glyphicon-sunglasses"></span></a>
+                                {#                                <a href="#" id="ts-btn-story" data-id="ts-story-tour-type" class="btn ts-btn-left"#}
+                                {#                                   data-toggle="tooltip" title="Tour type"><span#}
+                                {#                                        class="glyphicon glyphicon-sunglasses"></span></a>#}
                             </div>
                             <input href="#" type="submit" class="btn btn-default ts-btn-right" value="Post">
                         </div>
 
                     </form>
 
-
                 </div>
-
 
                 <script>
 
@@ -219,6 +309,17 @@
                         // submit story form
                         $("form#story-write").submit(function (event) {
                             event.preventDefault();
+
+                            /**
+                             * Validation Check
+                             */
+                            if (parseInt($("input[name='budget']").val()) < 0) {
+                                modal_open("Error!", "Budget can't be negative!");
+                                return;
+                            } else if (parseInt($("input[name='member']").val()) < 0) {
+                                modal_open("Error!", "Member number can't be negative!");
+                                return;
+                            }
 
                             // https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
 
@@ -345,118 +446,11 @@
 
             {# ------------------------------------------------------------ #}
 
-            <div class="col-sm-4 gp-side-panel-container">
+            {#  Recently Asked Questions #}
 
-                <div class="gp-side-panel">
-                    <div class="gp-side-panel-title">
-                        View stories form
-                    </div>
-
-                    <div class="gp-side-panel-content">
-                        <ul class="gp-side-panel-list">
-                            <li><a href="{% url 'division_detail' "dhaka" %}">Dhaka</a></li>
-                            <li><a href="{% url 'division_detail' "chittagong" %}">Chittagong</a></li>
-                            <li><a href="{% url 'division_detail' "rajshahi" %}">Rajshahi</a></li>
-                            <li><a href="{% url 'division_detail' "sylhet" %}">Sylhet</a></li>
-                            <li><a href="{% url 'division_detail' "khulna" %}">Khulna</a></li>
-                            <li><a href="{% url 'division_detail' "barisal" %}">Barisal</a></li>
-                            <li><a href="{% url 'division_detail' "rangpur" %}">Rangpur</a></li>
-                            <li><a href="{% url 'division_detail' "mymensingh" %}">Mymensingh</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <hr>
-
-                {#             ===============      trending block   ============      #}
-
-                <div class="gp-side-panel">
-                    <div class="gp-side-panel-title">
-                        Top 7 Places Visited Last Week
-                    </div>
-
-                    <div class="gp-side-panel-content">
-
-                        {% if page_list %}
-                            <!-- trending list start-->
-                            {% for page,value in page_list.items %}
-                                <h2>Total {{ value }} stories shared In this page </h2>
-                                <div class="container-fluid gp-div-post-summery">
-
-                                    <!-- image part for each page -->
-
-                                    {% if page.pages.all.exists %}
-
-                                        <div class="gp-slide-show">
-
-                                            <div class="gp-slide-shadow">
-                                                <h4 class="card-title">
-                                                    <a href="{% url 'story' page.division page.id %}">{{ page.name }}</a>
-                                                </h4>
-                                                <p class="card-text">{{ page.des }}</p>
-                                            </div>
-                                            <div id="gp-carousel{{ forloop.counter }}"
-                                                 class="carousel slide gp-carousel"
-                                                 data-ride="carousel">
-                                                <!-- Wrapper for slides -->
-                                                <div class="carousel-inner" role="listbox">
-
-                                                    <!-- showing every image in that page -->
-                                                    {% for image_obj in page.pages.all %}
-
-                                                        {% if forloop.first %}
-                                                            <div class="item active">
-                                                                <img class="card-img-top gp-card-img"
-                                                                     src="{{ image_obj.file.url }}">
-                                                            </div>
-                                                        {% else %}
-                                                            <div class="item">
-                                                                <img class="card-img-top gp-card-img"
-                                                                     src="{{ image_obj.file.url }}">
-                                                            </div>
-                                                        {% endif %}
-
-                                                    {% endfor %}
-                                                </div>
-                                                <!-- Left and right controls -->
-
-                                            </div>
-
-                                        </div>
-
-                                    {% else %}
-
-
-                                        <div class="gp-desc">
-
-                                            <h4 class="card-title">
-                                                <a href="{% url 'story' page.division page.id %}">{{ page.name }}</a>
-                                            </h4>
-                                            <p class="card-text">{{ page.des }}</p>
-
-                                        </div>
-
-                                    {% endif %}
-
-                                </div>
-
-                            {% endfor %}
-                        {% else %}
-                            <div class="container-fluid gp-div-post-summery gp-center">
-                                <div class="gp-desc">
-                                    Looks like people are not going Anywhere! O.o
-                                </div>
-                            </div>
-                        {% endif %}
-                        {# End of trend Block #}
-
-
-                    </div>
-
-                </div>
+            <div class="col-sm-3 gp-side-panel-container">
 
                 {# ------------------------------------------------------------ #}
-                <hr>
 
                 <div class="gp-side-panel">
                     <div class="gp-side-panel-title">
@@ -558,10 +552,8 @@
 
     {% block js %}
         {{ block.super }}
-{#        <script src="http://code.jquery.com/jquery-latest.js"></script>#}
-{#        #}
-        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
-        <script src={% static "el-pagination/js/el-pagination.js" %}></script>
+
+        <script src="{% static "el-pagination/js/el-pagination.js" %}"></script>
 
         <script>
             $.endlessPaginate({
@@ -618,8 +610,42 @@
 
         }
 
+        /**
+         * Post comment in Story
+         */
+{#        $("#ts-story-timeline").on('click', "#ts-story-comment", function (event) {#}
+{#            event.preventDefault();#}
+{##}
+{#            console.log("hi");#}
+{##}
+{#            var element = $(this);#}
+{#            var _id = element.attr("data-id");#}
+{#            var formId = element.attr("data-form-id");#}
+{##}
+{#            console.log(formId);#}
+{##}
+{#            console.log(_id);#}
+{##}
+{#            $.ajax({#}
+{#                url: '{% url 'add_comment' %}',#}
+{#                type: 'POST',#}
+{#                data: {#}
+{#                    text: $('#text' + formId).val(),#}
+{#                    story_id: _id,#}
+{#                    csrfmiddlewaretoken: '{{ csrf_token }}'#}
+{#                },#}
+{#                success: function () {#}
+{#                    // alert("Created a New Comment");#}
+{#                    $("#ts-comment-list-" + _id).load("#ts-comment-list-" + _id);#}
+{#                }#}
+{#            });#}
+{##}
+{#        });#}
+
 
         function commentDiv(formId) {
+
+            console.log(formId);
 
             $("#add_comment" + formId).on('submit', function (event) {
 
@@ -638,13 +664,14 @@
                     success: function () {
                         // alert("Created a New Comment");
                         $("#" + formId).load(" #" + formId);
+                        $('#text' + formId).val("");
                     }
                 });
             });
         }
 
 
-        $('a.gp-like-button').on('click', function (event) {
+        $('#ts-story-timeline').on('click', 'a.gp-like-button', function (event) {
             event.preventDefault();
             var element = $(this);
             var _id = element.attr("data-id");

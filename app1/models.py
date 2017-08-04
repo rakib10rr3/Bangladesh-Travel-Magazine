@@ -71,7 +71,7 @@ class Story(models.Model):
     story_page = models.ForeignKey(Place, blank=True, null=True)
     type_name = models.ForeignKey(Type, blank=True, null=True)
     title_name = models.CharField(max_length=100, blank=True, null=True)
-    budget = models.CharField(max_length=15, blank=True, null=True)
+    budget = models.CharField(default=0, max_length=15, blank=True, null=True)
     member = models.IntegerField(default=0, blank=True, null=True)
     des = models.TextField(max_length=5000, default='')
     created_date = models.DateTimeField(auto_now_add=True)
@@ -221,9 +221,11 @@ class Question(models.Model):
     def __str__(self):
         return self.question
 
+
 class Favourite(models.Model):
     user = models.ForeignKey(User)
     place = models.ForeignKey(Place, blank=True, null=True)
+
 
 class Answer(models.Model):
     answered_by = models.ForeignKey(User)

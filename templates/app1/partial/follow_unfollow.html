@@ -7,8 +7,8 @@
 {#{% endif %}#}
 
 
-
-<button onclick="change({{ div_id }})" data-action={{ obj_id }} id="text{{ div_id }}" {% if obj_id in follower_list %}class="btn btn-danger">Unfollow{% else %}class="btn btn-primary">Follow{% endif %}</button>
+<button onclick="change({{ div_id }})" data-id="follow{{ obj_id }}" data-action={{ obj_id }} id="text{{ div_id }}"
+        {% if obj_id in follower_list %}class="btn btn-danger btn-xs">Unfollow{% else %}class="btn btn-default btn-xs">Follow{% endif %}</button>
 
 
 {#    <button onclick="change({{ div_id }})" data-action={{ obj_id }} id="text{{ div_id }}"#}
@@ -18,9 +18,15 @@
 <script type="text/javascript">
 
     function change(Id) {
-        console.log("Function is Running ")
+
+
+        console.log("Function is Running ");
         var propty = $('#text' + Id);
         var action_id = propty.data("action");
+
+
+        console.log($('button[data-id="follow' + action_id + '"]'));
+
         var text = propty.text();
         console.log(text)
         console.log(action_id)
@@ -34,21 +40,24 @@
                 action_id: action_id
             },
             success: function (resp) {
-                console.log("success " +resp.result)
+                console.log("success " + resp.result)
                 //$("#follow" + Id).load(" #follow" + Id);
-                                if (resp.result == "Added") {
-                                    propty.removeClass("btn btn-primary");
-                                    propty.addClass("btn btn-danger");
-                                    propty.text("Unfollow");
 
-                                } else if (resp.result == "Deleted") {
-                                    propty.removeClass("btn btn-danger");
-                                    propty.addClass("btn btn-primary");
-                                    propty.text("Follow");
-                                }
+                var change_element = $('button[data-id="follow' + action_id + '"]');
+
+                if (resp.result == "Added") {
+                    change_element.removeClass("btn-default");
+                    change_element.addClass("btn-danger");
+                    change_element.text("Unfollow");
+
+                } else if (resp.result == "Deleted") {
+                    change_element.removeClass("btn-danger");
+                    change_element.addClass("btn-default");
+                    change_element.text("Follow");
+                }
             },
             error: function (resp) {
-                console.log("Not a Success "+resp.result)
+                console.log("Not a Success " + resp.result)
             }
         });
     }
