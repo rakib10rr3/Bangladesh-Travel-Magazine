@@ -136,18 +136,6 @@
             </div>
             <img id="ts-pro-img-hide"
                  src="
-
-
-
-
-
-
-
-
-
-
-
-
                          {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
                  style="display: none">
         </div>
@@ -326,8 +314,14 @@
 
                             <li class="list-group-item">
 
-                                <span class="gp-text-title"><a
-                                        href="{% url 'story_detail' obj.id %}">{{ obj.title_name }}</a></span>
+                                <p class="card-text">
+                                    {% if obj.des|length > 50 %}
+                                        {{ obj.des|linebreaks|safe|truncatewords:"50" }}
+                                        <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
+                                        {% else %}
+                                            <a href="{% url 'story_detail' obj.id %}">{{ obj.des }}</a>
+                                    {% endif %}
+                                </p>
                                 <span class="gp-text-date">{{ obj.created_date }}</span>
                                 <span class="ts-text-comment">{{ obj.comments.count }} comment
                                     {% if obj.comments.count %}s{% endif %}.</span>

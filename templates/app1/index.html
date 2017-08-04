@@ -477,22 +477,22 @@
 
                                         {% if obj.answers.all.exists %}
                                             <div class="gp-total-comments">
-                                                <a onclick="toggleDiv(this, {{ forloop.counter }})"
-                                                   class="gp-flat-link">
+{#                                                <a onclick="toggleDiv(this, {{ forloop.counter }})"#}
+{#                                                   class="gp-flat-link">#}
                                                     Total {{ obj.answers.all.count }} answer found!.
-                                                </a>
+{#                                                </a>#}
                                             </div>
-                                            <div id="{{ forloop.counter }}">
-                                                {% for obj2 in obj.answers.all %}
-                                                    <div class="gp-ques-ans-block">
-                                                        <h4>
-                                                            <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                                                        </h4>
-                                                        <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                                        <p class="gp-ques-ans-date">{{ obj2.created }}</p>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
+{#                                            <div id="{{ forloop.counter }}">#}
+{#                                                {% for obj2 in obj.answers.all %}#}
+{#                                                    <div class="gp-ques-ans-block">#}
+{#                                                        <h4>#}
+{#                                                            <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>#}
+{#                                                        </h4>#}
+{#                                                        <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>#}
+{#                                                        <p class="gp-ques-ans-date">{{ obj2.created }}</p>#}
+{#                                                    </div>#}
+{#                                                {% endfor %}#}
+{#                                            </div>#}
                                         {% else %}
                                             <p class="gp-ques-ans-count">No answer found yet!</p>
                                         {% endif %}
@@ -613,34 +613,34 @@
         /**
          * Post comment in Story
          */
-{#        $("#ts-story-timeline").on('click', "#ts-story-comment", function (event) {#}
-{#            event.preventDefault();#}
-{##}
-{#            console.log("hi");#}
-{##}
-{#            var element = $(this);#}
-{#            var _id = element.attr("data-id");#}
-{#            var formId = element.attr("data-form-id");#}
-{##}
-{#            console.log(formId);#}
-{##}
-{#            console.log(_id);#}
-{##}
-{#            $.ajax({#}
-{#                url: '{% url 'add_comment' %}',#}
-{#                type: 'POST',#}
-{#                data: {#}
-{#                    text: $('#text' + formId).val(),#}
-{#                    story_id: _id,#}
-{#                    csrfmiddlewaretoken: '{{ csrf_token }}'#}
-{#                },#}
-{#                success: function () {#}
-{#                    // alert("Created a New Comment");#}
-{#                    $("#ts-comment-list-" + _id).load("#ts-comment-list-" + _id);#}
-{#                }#}
-{#            });#}
-{##}
-{#        });#}
+        {#        $("#ts-story-timeline").on('click', "#ts-story-comment", function (event) {#}
+        {#            event.preventDefault();#}
+        {##}
+        {#            console.log("hi");#}
+        {##}
+        {#            var element = $(this);#}
+        {#            var _id = element.attr("data-id");#}
+        {#            var formId = element.attr("data-form-id");#}
+        {##}
+        {#            console.log(formId);#}
+        {##}
+        {#            console.log(_id);#}
+        {##}
+        {#            $.ajax({#}
+        {#                url: '{% url 'add_comment' %}',#}
+        {#                type: 'POST',#}
+        {#                data: {#}
+        {#                    text: $('#text' + formId).val(),#}
+        {#                    story_id: _id,#}
+        {#                    csrfmiddlewaretoken: '{{ csrf_token }}'#}
+        {#                },#}
+        {#                success: function () {#}
+        {#                    // alert("Created a New Comment");#}
+        {#                    $("#ts-comment-list-" + _id).load("#ts-comment-list-" + _id);#}
+        {#                }#}
+        {#            });#}
+        {##}
+        {#        });#}
 
 
         function commentDiv(formId) {
@@ -657,14 +657,14 @@
                     url: '{% url 'add_comment' %}',
                     type: 'POST',
                     data: {
-                        text: $('#text' + formId).val(),
+                        text: $('#ttext' + formId).val(),
                         story_id: _id,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function () {
                         // alert("Created a New Comment");
                         $("#" + formId).load(" #" + formId);
-                        $('#text' + formId).val("");
+                        $('#ttext' + formId).val("");
                     }
                 });
             });

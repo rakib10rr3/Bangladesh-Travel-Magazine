@@ -93,30 +93,37 @@ def get_follow_list(request):
 
 def timeline_algo(request, context):
     print("##Timeline Algorithm ##")
+
     following_list = get_follow_list(request)
     favourite_list = context['favourites']
-    print('Following list', following_list)
-    print('Favourite list', favourite_list)
+    print('My Following list', following_list)
+    print('My Favourite places  list', favourite_list)
     my_story = []
 
     for x in favourite_list:
         place = Place.objects.get(pk=x.place_id)
         obj = Story.objects.filter(story_page=place).order_by('-id')[0]
         print('His story = ', obj.give_me_page())
-        if obj not in my_story:
-            my_story.append(obj)
+        if obj.id not in my_story:
+            my_story.append(obj.id)
 
     for i in following_list:
-        i = Story.objects.filter(user=i).order_by('-id')[0]
+        obj = Story.objects.filter(user=i).order_by('-id')[0]
         print('His story = ', obj)
-        if i not in my_story:
-            my_story.append(obj)
+        if obj.id not in my_story:
+            my_story.append(obj.id)
 
     recent_story = Story.objects.order_by('-created_date')
+
     for i in recent_story:
-        if i not in my_story:
-            my_story.append(obj)
-    return my_story
+        if i.id not in my_story:
+            my_story.append(i.id)
+    print("##Timeline Algorithm End ##")
+    return_list = []
+    for i in my_story:
+        obj = Story.objects.get(pk=i)
+        return_list.append(obj)
+    return return_list
 
 
 def index(request, template='app1/index.html', page_template='app1/entry_list_page.html'):
@@ -126,14 +133,11 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         context = trending_list(request)
         page_list = context
         print(type(page_list))
-        recent_story = Story.objects.order_by('-created_date')
-        # favrt_list=Favourite.objects.filter(user=request.user)
 
         favourite_list = Favourite.objects.filter(user=request.user)
-        #
-        # print("Favourite list = ", favourite_list)
-
+        print("Favourite list = ", favourite_list)
         recent_story = timeline_algo(request, {'favourites': favourite_list})
+
         question_list = Question.objects.order_by('-created')[:5]
         q_form = QuestionForm()
         a_form = AnswerForm()
@@ -147,6 +151,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         comment_list = []
         report_me = []
         follower_list = get_follow_list(request)
+
         # S29
         for u in report_list:
             if u.u_id == request.user.id:
@@ -166,21 +171,15 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
             if story_.likes.filter(id=user.id).exists():
                 like_list.append(s.id)
 
-        print("like list= ", like_list)
-        print("comment list= ", comment_list)
+        # print("like list= ", like_list)
+        # print("comment list= ", comment_list)
         form = CommentForm()
 
-        favourite_list = Favourite.objects.filter(user=request.user)
-
         fav_list = []
-
         for x in favourite_list:
             fav_list.append(x.place_id)
-
         print("fav list: ", favourite_list)
-
         context = {
-
             'page_list': page_list,
             'question_list': question_list,
             'stories': recent_story,

@@ -4,7 +4,9 @@
 {% csrf_token %}
 
 {% for obj in stories %}
+
     {% if obj.id not in final_report %}
+{#        {{ obj.id }}#}
         {% if obj.id not in report_list %}
 
             <div id="story_id_{{ obj.id }}" class="ts-story-view">
@@ -183,11 +185,11 @@
 
                     <!-- Adding a comment part start -->
 
-                    <form id="add_comment{{ forloop.counter }}" data-id='{{ obj.id }}' method="POST"
+                    <form id="add_comment{{ forloop.counter }}" data-id='{{ obj.id }}' method="POST" autocomplete="off"
                           class="gp-form-story-comment">
                         {% csrf_token %}
                         <div class="input-group">
-                            <input class="form-control" type="text" id="text{{ forloop.counter }}"
+                            <input class="form-control" type="text" id="ttext{{ forloop.counter }}"
                                    maxlength="1000" name="text" required>
                             <div class="input-group-btn">
                                 <button class="btn btn-default"

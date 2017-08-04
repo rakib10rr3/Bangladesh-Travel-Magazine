@@ -83,7 +83,7 @@ class UserProfileForm(forms.ModelForm):
             'display_name': 'Display Name',
             'birth_date': 'Your Birthdate',
             'gender': 'Gender',
-            'country': 'Country',
+            'country': 'Division',
             'image': 'Give an image',
         }
         widgets = {

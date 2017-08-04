@@ -166,8 +166,7 @@ class UserProfile(models.Model):
         choices=GENDER_TYPE,
         blank=True, null=True,
     )
-    country = models.CharField(max_length=50, blank=True, null=True)
-
+    country = models.ForeignKey(Division,null=True)
     # The additional attributes we wish to include.
     def __str__(self):
         return self.display_name
