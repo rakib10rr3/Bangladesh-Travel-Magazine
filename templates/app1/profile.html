@@ -405,9 +405,9 @@
         </div>
         <div class="ts-shared-stories">
             {% if favourite_list %}
-                <p>Yout favourite places!</p>
+                <p>Your favourite places!</p>
                 {% for obj in favourite_list %}
-                    <a href="">{{ obj.place }}</a>
+                    <a href="{% url 'story' obj.place.give_me_div_slug obj.place_id %}">{{ obj.place }}</a>
                     <br>
                 {% endfor %}
             {% else %}
