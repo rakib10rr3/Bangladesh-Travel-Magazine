@@ -5,11 +5,11 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, render_to_response
 from datetime import datetime, timedelta
 from collections import Counter
-
-from itertools import chain
-
 from .forms import PageForm, CommentForm, UserProfileForm, storyForm, imageForm, ProfileForm, QuestionForm, AnswerForm
 from .forms import StoryAddForm
+from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower, \
+    Click_url_track
+from .models import OwnReport, ReportCounter
 from .models import Division, Place, Picture, Story, UserProfile, Comment, Question, Answer, Notification, Follower
 from .models import OwnReport, ReportCounter, Favourite
 from django.http import JsonResponse
@@ -21,17 +21,52 @@ except ImportError:
     import json
 
 
+def trending_list_division(request, division):
+    take = trending_list(request)
+    new_dict = {}
+    for pl, value in take.items():
+        if pl.division == division:
+            new_dict[pl] = value
+    print("New dict = ", new_dict)
+    return new_dict
+
+
 def trending_list(request):
     print("*" * 5, "Trending_list function", "*" * 5)
-    story_last_7_day = Story.objects.filter(created_date__gte=datetime.now() - timedelta(days=7))
-    list = []
-    for i in story_last_7_day:
-        list.append(i.give_me_page())
-    save = dict(Counter(list).most_common(7))
-    print(save)
-    print("*" * 5, "Trending_list function end", "*" * 5)
+    story_last_n_day = Story.objects.filter(created_date__gte=datetime.now() - timedelta(days=10))
+    track_last_n_day = Click_url_track.objects.filter(created__gte=datetime.now() - timedelta(days=10))
 
-    return save
+    print('story track = ', story_last_n_day)
+    print('click  track = ', track_last_n_day)
+
+    story_submit_list = []
+    track_list = []
+    like_dict = {}
+    ans = {}
+    for i in story_last_n_day:
+        story_submit_list.append(i.give_me_page())
+    for i in track_last_n_day:
+        track_list.append(i.give_me_page())
+    new_submit_list = dict(Counter(story_submit_list).most_common(7))
+    print('new submit list ', new_submit_list)
+    new_track_url_list = dict(Counter(track_list).most_common(7))
+    print('click  track = ', new_track_url_list)
+    for i in new_submit_list.keys():
+        all_stories = Story.objects.filter(story_page=i)
+        # print("all stories of ", i, "= ", all_stories)
+        take = 0
+        for j in all_stories:
+            take += j.total_likes
+        # print("Likes for ", i, "= ", take)
+        like_dict[i] = take
+        ans[i] = like_dict[i] + new_submit_list[i]
+        if i in new_track_url_list.keys():
+            ans[i] += new_track_url_list[i]
+        print('[', i, '] = ', ans[i])
+
+    final_list = dict(Counter(ans).most_common(7))
+    print("Final list = ", final_list)
+    return final_list
 
 
 def get_follow_list(request):
@@ -56,15 +91,50 @@ def get_follow_list(request):
 #     return render(request, template, context)
 
 
+def timeline_algo(request, context):
+    print("##Timeline Algorithm ##")
+    following_list = get_follow_list(request)
+    favourite_list = context['favourites']
+    print('Following list', following_list)
+    print('Favourite list', favourite_list)
+    my_story = []
+
+    for x in favourite_list:
+        place = Place.objects.get(pk=x.place_id)
+        obj = Story.objects.filter(story_page=place).order_by('-id')[0]
+        print('His story = ', obj.give_me_page())
+        if obj not in my_story:
+            my_story.append(obj)
+
+    for i in following_list:
+        i = Story.objects.filter(user=i).order_by('-id')[0]
+        print('His story = ', obj)
+        if i not in my_story:
+            my_story.append(obj)
+
+    recent_story = Story.objects.order_by('-created_date')
+    for i in recent_story:
+        if i not in my_story:
+            my_story.append(obj)
+    return my_story
+
+
 def index(request, template='app1/index.html', page_template='app1/entry_list_page.html'):
     if request.user.is_authenticated:
         this_user = request.user
         # page_list = Place.objects.order_by('-views')[:3]
-        page_list = trending_list(request)
+        context = trending_list(request)
+        page_list = context
         print(type(page_list))
         recent_story = Story.objects.order_by('-created_date')
-        question_list = Question.objects.order_by('-created')[:5]
+        # favrt_list=Favourite.objects.filter(user=request.user)
 
+        favourite_list = Favourite.objects.filter(user=request.user)
+        #
+        # print("Favourite list = ", favourite_list)
+
+        recent_story = timeline_algo(request, {'favourites': favourite_list})
+        question_list = Question.objects.order_by('-created')[:5]
         q_form = QuestionForm()
         a_form = AnswerForm()
         user_profile = UserProfile.objects.filter(user=request.user)
@@ -129,7 +199,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         }
         if request.is_ajax():
             template = page_template
-        trending_list(request)
+            # trending_list(request)
         return render(request, template, context)
 
     else:
@@ -158,14 +228,9 @@ def division_detail(request, division_name_slug):
 
     context_dict = {}
     try:
-        # Can we find a category name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        # So the .get() method returns one model instance or raises an exception.
         division = Division.objects.get(slug=division_name_slug)
-        # Retrieve all of the associated pages.
-        # Note that filter returns >= 1 model instance.
-
-        pages = Place.objects.filter(division=division).order_by('-views')
+        pages = trending_list_division(request, division)
+        print('pages', pages)
         stories = Story.objects.filter(story_division=division).order_by('-created_date')[:5]
         user = request.user
         # storyByThisUser = stories.likes.filter(id=user.id)
@@ -215,9 +280,10 @@ def division_detail(request, division_name_slug):
 
 @login_required
 def track_url(request, page_id):
-    what = Place.objects.get(id=page_id)
-    what.views += 1
-    what.save()
+    place = Place.objects.get(id=page_id)
+    obj = Click_url_track.objects.create(by=request.user, page_name=place)
+    print("Click url is working ", obj)
+
     return
 
 

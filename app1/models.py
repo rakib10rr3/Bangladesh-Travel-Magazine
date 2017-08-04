@@ -81,6 +81,9 @@ class Story(models.Model):
     def give_me_page(self):
         return self.story_page
 
+    def give_me_likes(self):
+        return self.total_likes
+
     def give_me_div(self):
         return self.story_page.division
 
@@ -226,6 +229,9 @@ class Favourite(models.Model):
     user = models.ForeignKey(User)
     place = models.ForeignKey(Place, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.place)
+
 
 class Answer(models.Model):
     answered_by = models.ForeignKey(User)
@@ -313,3 +319,17 @@ class OwnReport(models.Model):  # s29
 class ReportCounter(models.Model):  # s29
     story_id = models.IntegerField()
     report_count = models.IntegerField()
+
+
+class Click_url_track(models.Model):
+    by = models.ForeignKey(User, null=True)
+    page_name = models.ForeignKey(Place, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def give_me_page(self):
+        return self.page_name
+
+    def __str__(self):
+        return "Created by  " \
+               + self.by.username + " to "
+        + self.page_name.name + "."
