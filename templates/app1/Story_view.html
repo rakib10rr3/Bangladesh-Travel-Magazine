@@ -95,25 +95,38 @@
                             </div>
 
 
-                            <div id={{ 1 }}>
-                                {% for comment in obj.comments.all %}
-                                    <div class="gp-comment">
+                    <div id={{ 1 }}>
+                        {% for comment in obj.comments.all %}
+                            <div class="gp-comment" id="comments">
 
-                                        <p class="gp-username"><a
-                                                href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
-                                        </p>
-                                        <p class="gp-date">{{ comment.created_date }}</p>
-                                        <p class="gp-content">{{ comment.text }}</p>
-                                        {% if comment.id in comment_list %}
-                                            <div class="bg-margin-top-10">
-                                                <button class="btn btn-danger"
-                                                        onclick="del_comment( {{ 1 }}, {{ comment.id }})">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        {% endif %}
+                                <p class="gp-username"><a
+                                        href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
+                                </p>
+                                <p class="gp-date">{{ comment.created_date }}</p>
+                                <p id="comment{{ comment.id }}" class="gp-content">{{ comment.text }}</p>
+                                {% if comment.id in comment_list %}
+                                    <div class="bg-margin-top-10">
+                                        <div id="comment_buttons{{ comment.id }}">
+                                            <a class="btn btn-danger" id="delete_story_comment"
+                                               data-toggle="confirmation"
+                                               data-id1="{{ 1 }}"
+                                               data-id2="{{ comment.id }}">
+                                                Delete
+                                            </a>
+                                            <button class="btn btn-info"
+                                                    onclick="edit_comment({{ 1 }}, {{ comment.id }})">Edit
+                                            </button>
+                                        </div>
                                     </div>
-                                {% endfor %}
+
+                                    <div id="comment_edit_form_div{{ comment.id }}" style="display: none">
+                                        <form id="comment_edit_form{{ comment.id }}">
+                                            <input type="text" name="comment_edit"
+                                                   id="comment_edit_text{{ comment.id }}"
+                                                   value="{{ comment.text }}" class="form-control">
+                                        </form>
+                                    </div>
+                                {% endif %}
                             </div>
                             <!-- Comment part end -->
 
@@ -253,6 +266,50 @@
                 }
             });
         });
+
+
+        function edit_comment(divID, comment_id) {
+            $("#comment_buttons" + comment_id).hide();
+            $("#comment_edit_form_div" + comment_id).show();
+            $("#comment" + comment_id).hide();
+            $("#comment_edit_form" + comment_id).on('submit', function (event) {
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var text = $("#comment_edit_text" + comment_id).val();
+                //alert(text);
+                $.ajax({
+                    url: '{% url 'comment_edit' %}',
+                    type: 'POST',
+                    data: {
+                        comment_id: comment_id,
+                        new_comment: text,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        //alert("yoo yoo wassup?");
+                        // $("#" + comments).load("#" + "comments");
+                        $("#comment_edit_form_div" + comment_id).hide();
+                        $("#comment" + comment_id).show();
+                        $("#comment_buttons" + comment_id).show();
+                        $("#comment" + comment_id).text($("#comment_edit_text" + comment_id).val());
+
+                    }
+                });
+            });
+        }
+
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]'
+            // other options
+        });
+
+        $("body").on("click", "#delete_story_comment", function () {
+            var divID = $(this).attr('data-id1');
+            var comment_id = $(this).attr('data-id2');
+            del_comment(divID, comment_id);
+        });
+
     </script>
 
 

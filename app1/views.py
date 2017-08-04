@@ -532,6 +532,19 @@ def comment_delete(request):
         return HttpResponse('')
 
 
+def comment_edit(request):
+    if request.method == 'POST':
+        user = request.user
+        comment_id = request.POST['comment_id']
+        new_comment = request.POST['new_comment']
+
+        print(new_comment)
+        comment = Comment.objects.get(id=comment_id)
+        comment.text = new_comment
+        print(comment)
+        comment.save()
+        return HttpResponse('')
+
 @login_required
 def answer_delete(request):
     if request.method == 'POST':
@@ -549,6 +562,9 @@ def answer_delete(request):
         answer.delete()
 
         return HttpResponse('')
+
+
+
 
 
 @login_required

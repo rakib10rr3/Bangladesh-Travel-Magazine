@@ -43,7 +43,6 @@
                 <div class="gp-div-post-full">
 
                     {% if obj.stories.all.exists %}
-
                         <div class="gp-slide-show">
                             <div class="gp-slide-shadow"></div>
                             <div id="storyCarousel{{ forloop.counter }}" class="carousel slide gp-carousel"
@@ -113,9 +112,9 @@
 
                     <!-- Comment show start -->
                     <div class="gp-comment-group">
-                        <div class="gp-total-comments">
-                            <a onclick="toggleDiv(this,{{ forloop.counter }})" class="gp-flat-link">
-                                Total {{ obj.comments.count }} comments.
+                        <div id="total_comments{{ forloop.parentloop.counter }}" class="gp-total-comments">
+                            <a  onclick="toggleDiv(this,{{ forloop.counter }})" class="gp-flat-link">
+                                <p>Total {{ obj.comments.count }} comments.</p>
                             </a>
                         </div>
 
@@ -126,14 +125,32 @@
                                             href="{% url 'user_profile' comment.author.username %}">{{ comment.author.username }}</a>
                                     </p>
                                     <p class="gp-date">{{ comment.created_date }}</p>
-                                    <p class="gp-content">{{ comment.text }}</p>
+                                    <p id="comment{{ comment.id }}" class="gp-content">{{ comment.text }}</p>
 
+                                    {{ forloop.parentloop.counter }}
                                     {% if comment.id in comment_list %}
-                                        <div class="bg-margin-top-10">
-                                            <button class="btn btn-danger"
-                                                    onclick="del_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
-                                                Delete
-                                            </button>
+                                        <div id="comment_buttons{{ comment.id }}">
+                                            <div class="bg-margin-top-10">
+                                                <a class="btn btn-danger" id="delete_story_comment"
+                                                   data-toggle="confirmation"
+                                                   data-id1="{{ forloop.parentloop.counter }}"
+                                                   data-id2="{{ comment.id }}">
+                                                    Delete
+                                                </a>
+
+                                                <button class="btn btn-info" id="edit"
+                                                        onclick="edit_comment( {{ forloop.parentloop.counter }}, {{ comment.id }})">
+                                                    Edit
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div id="comment_edit_form_div{{ comment.id }}" style="display: none">
+                                            <form id="comment_edit_form{{ comment.id }}">
+                                                <input type="text" name="comment_edit"
+                                                       id="comment_edit_text{{ comment.id }}"
+                                                       value="{{ comment.text }}" class="form-control">
+                                            </form>
                                         </div>
                                     {% endif %}
 
@@ -214,6 +231,71 @@
             });
 
         }
+
+        function edit_comment(divID, comment_id) {
+            $("#comment_buttons" + comment_id).hide();
+            $("#comment_edit_form_div" + comment_id).show();
+            $("#comment" + comment_id).hide();
+            $("#comment_edit_form" + comment_id).on('submit', function (event) {
+                event.preventDefault();
+                var element = $(this);
+                element.off('submit');
+                var text = $("#comment_edit_text" + comment_id).val();
+                //alert(text);
+                $.ajax({
+                    url: '{% url 'comment_edit' %}',
+                    type: 'POST',
+                    data: {
+                        comment_id: comment_id,
+                        new_comment: text,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function () {
+                        //alert("yoo yoo wassup?");
+                        $("#comment_edit_form_div" + comment_id).hide();
+                        $("#comment" + comment_id).show();
+                        $("#comment_buttons" + comment_id).show();
+                        $("#comment" + comment_id).text($("#comment_edit_text" + comment_id).val());
+                    }
+                });
+            });
+
+        }
+
+
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]'
+            // other options
+        });
+
+
+        function del_comment(divId, CommentId) {
+            //console.log(divId);
+            $.ajax({
+                url: '{% url 'comment_delete' %}',
+                type: 'POST',
+                data: {
+                    comment_id: CommentId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function () {
+                    // alert("Created a New Comment");
+                   // console.log(divId);
+                    //$("#total_comments"+divId).hide();
+                    $("#" + divId).load(" #" + divId);
+                }
+            });
+
+        }
+
+
+        $("body").on("click", "#delete_story_comment", function () {
+            var divID = $(this).attr('data-id1');
+            var comment_id = $(this).attr('data-id2');
+            del_comment(divID, comment_id);
+        });
+
+
 
         function favourite_place(story_place) {
 

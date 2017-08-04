@@ -68,6 +68,7 @@ urlpatterns = [
     # url(r'^ques_edit/(?P<ques_id>\d+)/$', views.edit_ques, name='ques_edit'),
 
     url(r'^del_comment/$', views.comment_delete, name='comment_delete'),
+    url(r'^edit_comment/$', views.comment_edit, name='comment_edit'),
 
     url(r'^answer_delete/$', views.answer_delete, name='answer_delete'),
     url(r'^ownreport/$', views.Own_report, name='own_report'),  # s29
