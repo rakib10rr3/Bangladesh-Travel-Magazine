@@ -20,7 +20,7 @@ try:
 except ImportError:
     import json
 
-
+@login_required
 def trending_list_division(request, division):
     take = trending_list(request)
     new_dict = {}
@@ -30,7 +30,7 @@ def trending_list_division(request, division):
     print("New dict = ", new_dict)
     return new_dict
 
-
+@login_required
 def trending_list(request):
     print("*" * 5, "Trending_list function", "*" * 5)
     story_last_n_day = Story.objects.filter(created_date__gte=datetime.now() - timedelta(days=10))
@@ -68,7 +68,7 @@ def trending_list(request):
     print("Final list = ", final_list)
     return final_list
 
-
+@login_required
 def get_follow_list(request):
     follower_obj = Follower.objects.all()
     follower_list = []
@@ -90,7 +90,7 @@ def get_follow_list(request):
 #         template = page_template
 #     return render(request, template, context)
 
-
+@login_required
 def timeline_algo(request, context):
     print("##Timeline Algorithm ##")
 
@@ -205,7 +205,7 @@ def index(request, template='app1/index.html', page_template='app1/entry_list_pa
         return render(request, 'app1/index_default.html',
                       {})
 
-
+@login_required
 def forum(request):
     if request.user.is_authenticated:
         user = request.user
@@ -383,10 +383,15 @@ def view_profile(request, user_name):
     #         print('Result: ' + str(result_))
     #
     # # =====================================================
-
-    the_user = User.objects.filter(username=user_name)
-
-    # user_info = {
+    try:
+        the_user = User.objects.filter(username=user_name)
+    except User.DoesNotExist:
+        the_user = None
+        return render(request, 'app1/profile.html',
+                      {
+                          'the_user': the_user
+                      })
+        # user_info = {
     #     'display_name': '',
     #     'gender': '',
     #     'birth_date': '',
@@ -405,7 +410,6 @@ def view_profile(request, user_name):
     #         0].get('birth_date')
     #     user_info['country'] = user_pro_info[0].get('country')
 
-    print(the_user[0])
     tour_list = []
     tour_list = Story.objects.filter(user=the_user)
     question_list = []
@@ -425,7 +429,7 @@ def view_profile(request, user_name):
     print("Follower = ", follower)
     return render(request, 'app1/profile.html',
                   {
-                      'the_user': the_user[0],
+                      'the_user': the_user,
                       # 'user_info': user_info,
                       'tour_list': tour_list,
                       'question_list': question_list,
@@ -494,7 +498,7 @@ def image_share(request, story_id):
     context_dict2 = {'form': form, 'story_obj': story, 'page': page}
     return render(request, 'app1/image_upload.html', context_dict2)
 
-
+@login_required
 def image_share_jquery(request, story_id):
     story = Story.objects.get(id=story_id)
     page = story.give_me_page()
@@ -513,7 +517,7 @@ def image_share_jquery(request, story_id):
     else:
         return render(request, 'app1/add_attachment.html', {})
 
-
+@login_required
 def image_share_jquery2(request, story_id):
     story = Story.objects.get(id=story_id)
     page = story.give_me_page()
@@ -607,7 +611,7 @@ def comment_delete(request):
 
         return HttpResponse('')
 
-
+@login_required
 def comment_edit(request):
     if request.method == 'POST':
         user = request.user
@@ -996,8 +1000,10 @@ def story_edit(request, story_id):
 
 @login_required
 def ques_detail(request, ques_id):
-    ques = Question.objects.get(pk=ques_id)
-
+    try:
+        ques = Question.objects.get(pk=ques_id)
+    except Question.DoesNotExist:
+        ques = None
     return render(request, 'app1/ques_view.html', {
         'ques': ques,
     })
@@ -1037,7 +1043,7 @@ def search_ques(request):
 
         # custom change
 
-
+@login_required
 def save_favourite(request):
     print(request.user, "->", request.POST['story_place'])
     str = request.POST['story_place']
@@ -1064,7 +1070,7 @@ def delete_ques(request, ques_id):
     ques.delete()
     return redirect('forum')
 
-
+@login_required
 def notifications(request):
     user = request.user
     n = Notification.objects.filter(recipient_id=user.id).order_by('-date_created')
@@ -1221,7 +1227,7 @@ def update_follow_list(request):
         template = 'app1/partial/follow_unfollow.html'
         return render(request, template, {'follower_list': follower_list})
 
-
+@login_required
 def follow_unfollow(request):
     result = "null"
     text = ""
@@ -1264,7 +1270,7 @@ def autocomplete(request):
         }
         return JsonResponse(data)
 
-
+@login_required
 def picture_details(request, story_id):
     picture = Picture.objects.filter(story_id=story_id)
     return render(request, 'app1/images.html', {'picture': picture})

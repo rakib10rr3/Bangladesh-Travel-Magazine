@@ -6,143 +6,151 @@
         <h1>BDTM Community!</h1>
     </div>
     {% if ques %}
-        <div class="container-fluid gp-container-normal">
+        {% if ques %}
+            <div class="container-fluid gp-container-normal">
 
-            <div class="container gp-div-post-full">
-                <div class="gp-side-panel" id="ques_ans">
-                    <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
-                        <div class="gp-ques-block">
-                            {% if  ques.author.userprofile.image %}
-                                <img src="{{ ques.author.userprofile.image.url }}" alt="{{ ques.author }}"
-                                     width="50"
-                                     height="50">
-                            {% else %}
-                                <img src="/media/default-placeholder.png" class="img-circle"
-                                     alt="{{ ques.author }}"
-                                     width="50" height="50">
-                            {% endif %}
-                            <div id="ques_section">
-                                <h2 class="gp-ques-title">{{ ques.question }}</h2>
-                                <p class="gp-ques-date">{{ ques.created }}</p>
-                                <p class="gp-ques-date">Tags {{ ques.place }}</p>
-                            </div>
-                            <div id="edit_ques_form" style="display: none">
-                                form id {{ ques.id }}
-                                <form id="edit_ques">
-                                    {% csrf_token %}
-                                    <input type="text" class="form-control" name="edit_ques"
-                                           id="new_ques"
-                                           oninput="question_edit()"
-                                           value="{{ ques.question }}">
-                                </form>
-                            </div>
-                            <p class="card-text-author">Asked by <a
-                                    href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
-                            {% if user.id == ques.author_id %}
-
-                                <form>
-                                    <button type="button" id="delete" class="btn btn-large btn-danger"
-                                            data-toggle="confirmation"
-                                            onfocus="del_q()" data-title="Are you sure you want to delete?"
-                                            href="{% url 'ques_delete' ques.id %}">Delete
-                                    </button>
-                                    <button id="edit" type="button" onclick="edit_ques({{ ques.id }})"
-                                            class="btn btn-info">
-                                        Edit
-                                    </button>
-                                </form>
-
-
-
-                            {% endif %}
-                        </div>
-
-
-                        <div class="gp-ques-ans">
-                            {% if ques.answers.all.exists %}
-                                <div class="gp-total-comments">
-                                    <a onclick="toggleDiv(1)" class="gp-flat-link">
-                                        Total {{ ques.answers.all.count }} answer found!
-                                    </a>
+                <div class="container gp-div-post-full">
+                    <div class="gp-side-panel" id="ques_ans">
+                        <div class="gp-ques-ans-panel-block" id="q{{ forloop.counter0 }}">
+                            <div class="gp-ques-block">
+                                {% if  ques.author.userprofile.image %}
+                                    <img src="{{ ques.author.userprofile.image.url }}" alt="{{ ques.author }}"
+                                         width="50"
+                                         height="50">
+                                {% else %}
+                                    <img src="/media/default-placeholder.png" class="img-circle"
+                                         alt="{{ ques.author }}"
+                                         width="50" height="50">
+                                {% endif %}
+                                <div id="ques_section">
+                                    <h2 class="gp-ques-title">{{ ques.question }}</h2>
+                                    <p class="gp-ques-date">{{ ques.created }}</p>
+                                    <p class="gp-ques-date">Tags {{ ques.place }}</p>
                                 </div>
-
-
-                                <div>
-                                    {% for obj2 in ques.answers.all %}
-                                        <div class="gp-ques-ans-block">
-                                            {% if  obj2.answered_by.userprofile.image %}
-                                                <img src="{{ obj2.answered_by.userprofile.image.url }}"
-                                                     alt="{{ obj2.answered_by }}"
-                                                     width="50"
-                                                     height="50">
-                                            {% else %}
-                                                <img src="/media/default-placeholder.png" class="img-circle"
-                                                     alt="{{ obj2.answered_by }}"
-                                                     width="50" height="50">
-                                            {% endif %}
-                                            <h4>
-                                                <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
-                                            </h4>
-                                            <div id="comment_section{{ obj2.id }}">
-                                                <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
-                                                <p class="gp-ques-ans-date">{{ obj2.created }}</p>
-                                            </div>
-                                            <div id="edit_form{{ obj2.id }}" style="display: none">
-                                                form id {{ obj2.id }}
-                                                <form id="edit_answer{{ obj2.id }}">
-                                                    {% csrf_token %}
-                                                    <input type="text" class="form-control" name="edit"
-                                                           id="new_ans{{ obj2.id }}"
-
-                                                           value="{{ obj2.text }}">
-                                                </form>
-                                            </div>
-
-                                            {% if user.id == ques.author_id or obj2.answered_by_id == user.id %}
-                                                <div class="bg-margin-top-10">
-                                                    <button id="delete{{ obj2.id }}" class="btn btn-large btn-danger"
-                                                            data-toggle="confirmation" data-btn-ok-label="Yes"
-                                                            data-title="Are you sure you want to delete?"
-                                                            onfocus="confirmm({{ obj2.id }})">Delete
-                                                    </button>
-
-                                                    {% if obj2.answered_by_id == user.id %}
-                                                        <button class="btn btn-info" id="edit{{ obj2.id }}"
-                                                                onclick="edit_answer({{ obj2.id }}, {{ obj2.id }})">
-                                                            Edit
-                                                        </button>
-                                                    {% endif %}
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
+                                <div id="edit_ques_form" style="display: none">
+                                    form id {{ ques.id }}
+                                    <form id="edit_ques">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="edit_ques"
+                                               id="new_ques"
+                                               oninput="question_edit()"
+                                               value="{{ ques.question }}">
+                                    </form>
                                 </div>
-                            {% else %}
-                                <p class="gp-ques-ans-count">No answer found yet!</p>
-                            {% endif %}
-                            <form id="add_answer" data-id={{ ques.id }} method="POST" class="gp-form-story-comment">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input class="form-control" type="text" id="text"
-                                           maxlength="1000" name="text" required>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default" onclick="answerDiv()" type="submit">
-                                            <i class="glyphicon glyphicon-send"></i>
+                                <p class="card-text-author">Asked by <a
+                                        href="{% url 'user_profile' ques.author %}">{{ ques.author }}</a></p>
+                                {% if user.id == ques.author_id %}
+
+                                    <form>
+                                        <button type="button" id="delete" class="btn btn-large btn-danger"
+                                                data-toggle="confirmation"
+                                                onfocus="del_q()" data-title="Are you sure you want to delete?"
+                                                href="{% url 'ques_delete' ques.id %}">Delete
                                         </button>
-                                    </div>
-                                </div>
-                            </form>
+                                        <button id="edit" type="button" onclick="edit_ques({{ ques.id }})"
+                                                class="btn btn-info">
+                                            Edit
+                                        </button>
+                                    </form>
 
+
+
+                                {% endif %}
+                            </div>
+
+
+                            <div class="gp-ques-ans">
+                                {% if ques.answers.all.exists %}
+                                    <div class="gp-total-comments">
+                                        <a onclick="toggleDiv(1)" class="gp-flat-link">
+                                            Total {{ ques.answers.all.count }} answer found!
+                                        </a>
+                                    </div>
+
+
+                                    <div>
+                                        {% for obj2 in ques.answers.all %}
+                                            <div class="gp-ques-ans-block">
+                                                {% if  obj2.answered_by.userprofile.image %}
+                                                    <img src="{{ obj2.answered_by.userprofile.image.url }}"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50"
+                                                         height="50">
+                                                {% else %}
+                                                    <img src="/media/default-placeholder.png" class="img-circle"
+                                                         alt="{{ obj2.answered_by }}"
+                                                         width="50" height="50">
+                                                {% endif %}
+                                                <h4>
+                                                    <a href="{% url 'user_profile' obj2.answered_by %}">{{ obj2.answered_by }}</a>
+                                                </h4>
+                                                <div id="comment_section{{ obj2.id }}">
+                                                    <h3 class="gp-ques-ans-text">{{ obj2.text }}</h3>
+                                                    <p class="gp-ques-ans-date">{{ obj2.created }}</p>
+                                                </div>
+                                                <div id="edit_form{{ obj2.id }}" style="display: none">
+                                                    form id {{ obj2.id }}
+                                                    <form id="edit_answer{{ obj2.id }}">
+                                                        {% csrf_token %}
+                                                        <input type="text" class="form-control" name="edit"
+                                                               id="new_ans{{ obj2.id }}"
+
+                                                               value="{{ obj2.text }}">
+                                                    </form>
+                                                </div>
+
+                                                {% if user.id == ques.author_id or obj2.answered_by_id == user.id %}
+                                                    <div class="bg-margin-top-10">
+                                                        <button id="delete{{ obj2.id }}"
+                                                                class="btn btn-large btn-danger"
+                                                                data-toggle="confirmation" data-btn-ok-label="Yes"
+                                                                data-title="Are you sure you want to delete?"
+                                                                onfocus="confirmm({{ obj2.id }})">Delete
+                                                        </button>
+
+                                                        {% if obj2.answered_by_id == user.id %}
+                                                            <button class="btn btn-info" id="edit{{ obj2.id }}"
+                                                                    onclick="edit_answer({{ obj2.id }}, {{ obj2.id }})">
+                                                                Edit
+                                                            </button>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="gp-ques-ans-count">No answer found yet!</p>
+                                {% endif %}
+                                <form id="add_answer" data-id={{ ques.id }} method="POST" class="gp-form-story-comment">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" id="text"
+                                               maxlength="1000" name="text" required>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" onclick="answerDiv()" type="submit">
+                                                <i class="glyphicon glyphicon-send"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% else %}
-                <div class="jumbotron gp-jumbotron">
-                    <h1>Sorry no story found!</h1>
+                    {% else %}
+                    <div class="jumbotron gp-jumbotron">
+                        <h1>Sorry no story found!</h1>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        {% endif %}
+    {% else %}
+
+        <div class="jumbotron gp-jumbotron gp-danger">
+            <h1>This question does not exist!</h1>
+        </div>
     {% endif %}
     <script>
 

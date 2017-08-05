@@ -125,301 +125,309 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="ts-profile-img-box" id="ts-profile-pic-bg">
+    {% if the_user %}
+        <div class="ts-profile-img-box" id="ts-profile-pic-bg">
 
-        <div class="ts-profile-img">
+            <div class="ts-profile-img">
 
-            <div class="ts-img"
-                 style="background-image: url(
-                         {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}'/media/default-placeholder.png'{% endif %})"
-                 data-adaptive-background data-ab-css-background>
+                <div class="ts-img"
+                     style="background-image: url(
+                             {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}'/media/default-placeholder.png'{% endif %})"
+                     data-adaptive-background data-ab-css-background>
+                </div>
+                <img id="ts-pro-img-hide"
+                     src="
+
+                             {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
+                     style="display: none">
             </div>
-            <img id="ts-pro-img-hide"
-                 src="
-                         {% if the_user.userprofile.image %}{{ the_user.userprofile.image.url }}{% else %}/media/default-placeholder.png{% endif %}"
-                 style="display: none">
+
+            <div class="ts-bottom-up-shadow"></div>
+
+            <div class="ts-profile-info">
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Name</p>
+                    <p class="ts-item-value">
+                        {% if the_user.userprofile.display_name %}
+                            {{ the_user.userprofile.display_name }}
+                        {% else %}
+                            {{ None }}
+                        {% endif %}
+                    </p>
+                </div>
+
+                {% if the_user == user %}
+
+                    <div class="ts-profile-view-item">
+                        <p class="ts-item-name">Username</p>
+                        <p class="ts-item-value">
+                            {{ the_user.username }}
+                        </p>
+                    </div>
+
+                    <div class="ts-profile-view-item">
+                        <p class="ts-item-name">E-mail</p>
+                        <p class="ts-item-value">
+                            {{ the_user.email }}
+                        </p>
+                    </div>
+
+                {% endif %}
+
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Gender</p>
+                    <p class="ts-item-value">
+                        {% if the_user.userprofile.gender == 'M' %}
+                            Male
+                        {% elif the_user.userprofile.gender == 'F' %}
+                            Female
+                        {% else %}
+                            None
+                        {% endif %}
+                    </p>
+                </div>
+
+                {% if the_user == user %}
+
+                    <div class="ts-profile-view-item">
+                        <p class="ts-item-name">Birthday</p>
+                        <p class="ts-item-value">
+                            {{ the_user.userprofile.birth_date }}
+                        </p>
+                    </div>
+
+                {% endif %}
+
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Country</p>
+                    <p class="ts-item-value">
+                        {{ the_user.userprofile.country }}
+                    </p>
+                </div>
+
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Following</p>
+                    <p class="ts-item-value">
+                        {{ following|length }}
+                        <br>
+                        <!-- Trigger the modal with a button -->
+                        {% if the_user == user %}
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                    data-target="#following">
+                                View Following
+                            </button>
+
+                            <!-- Modal -->
+                            <div id="following" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Following List</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for obj in following %}
+                                                <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                                                <br>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    </p>
+                </div>
+
+
+                <div class="ts-profile-view-item">
+                    <p class="ts-item-name">Follower</p>
+                    <p class="ts-item-value">
+                        {{ follower|length }}
+                        <br>
+                        <!-- Trigger the modal with a button -->
+                        {% if the_user == user %}
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                    data-target="#follower">
+                                View Followers
+                            </button>
+
+                            <!-- Modal -->
+                            <div id="follower" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Follower List</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for obj in follower %}
+                                                <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
+                                                <br>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    </p>
+                </div>
+
+                {% if the_user == user %}
+                    <div class="ts-align-right">
+                        <a href="{% url 'update_userprofile' user.id %}" class="btn btn-default">Edit Your Profile </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
         </div>
 
-        <div class="ts-bottom-up-shadow"></div>
+        <div class="container-fluid gp-container-normal ts-story-list">
 
-        <div class="ts-profile-info">
-            <div class="ts-profile-view-item">
-                <p class="ts-item-name">Name</p>
-                <p class="ts-item-value">
-                    {% if the_user.userprofile.display_name %}
-                        {{ the_user.userprofile.display_name }}
-                    {% else %}
-                        {{ None }}
-                    {% endif %}
-                </p>
-            </div>
+            <div class="ts-shared-stories">
+                {% if the_user == request.user %}
+                    <div class="ts-button-box">
+                        <a href="{% url 'story_share' %}" class="btn btn-primary btn-block">
+                            Share a New Tour Story
+                        </a>
+                    </div>
+                {% endif %}
 
-            {% if the_user == user %}
+                <div class="list-group gp-list-group-tour">
+                    {% if tour_list.count > 0 %}
+                        <ul class="list-group">
 
-                <div class="ts-profile-view-item">
-                    <p class="ts-item-name">Username</p>
-                    <p class="ts-item-value">
-                        {{ the_user.username }}
-                    </p>
-                </div>
+                            {% for obj in tour_list %}
 
-                <div class="ts-profile-view-item">
-                    <p class="ts-item-name">E-mail</p>
-                    <p class="ts-item-value">
-                        {{ the_user.email }}
-                    </p>
-                </div>
+                                <li class="list-group-item">
 
-            {% endif %}
-
-            <div class="ts-profile-view-item">
-                <p class="ts-item-name">Gender</p>
-                <p class="ts-item-value">
-                    {% if the_user.userprofile.gender == 'M' %}
-                        Male
-                    {% elif the_user.userprofile.gender == 'F' %}
-                        Female
-                    {% else %}
-                        None
-                    {% endif %}
-                </p>
-            </div>
-
-            {% if the_user == user %}
-
-                <div class="ts-profile-view-item">
-                    <p class="ts-item-name">Birthday</p>
-                    <p class="ts-item-value">
-                        {{ the_user.userprofile.birth_date }}
-                    </p>
-                </div>
-
-            {% endif %}
-
-            <div class="ts-profile-view-item">
-                <p class="ts-item-name">Country</p>
-                <p class="ts-item-value">
-                    {{ the_user.userprofile.country }}
-                </p>
-            </div>
-
-            <div class="ts-profile-view-item">
-                <p class="ts-item-name">Following</p>
-                <p class="ts-item-value">
-                    {{ following|length }}
-                    <br>
-                    <!-- Trigger the modal with a button -->
-                    {% if the_user == user %}
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                                data-target="#following">
-                            View Following
-                        </button>
-
-                        <!-- Modal -->
-                        <div id="following" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Following List</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        {% for obj in following %}
-                                            <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
-                                            <br>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    {% endif %}
-                </p>
-            </div>
-
-
-            <div class="ts-profile-view-item">
-                <p class="ts-item-name">Follower</p>
-                <p class="ts-item-value">
-                    {{ follower|length }}
-                    <br>
-                    <!-- Trigger the modal with a button -->
-                    {% if the_user == user %}
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                                data-target="#follower">
-                            View Followers
-                        </button>
-
-                        <!-- Modal -->
-                        <div id="follower" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Follower List</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        {% for obj in follower %}
-                                            <a href="{% url 'user_profile' obj %}">{{ obj }}</a>
-                                            <br>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    {% endif %}
-                </p>
-            </div>
-
-            {% if the_user == user %}
-                <div class="ts-align-right">
-                    <a href="{% url 'update_userprofile' user.id %}" class="btn btn-default">Edit Your Profile </a>
-                </div>
-            {% endif %}
-
-        </div>
-
-
-    </div>
-
-    <div class="container-fluid gp-container-normal ts-story-list">
-
-        <div class="ts-shared-stories">
-            {% if the_user == request.user %}
-                <div class="ts-button-box">
-                    <a href="{% url 'story_share' %}" class="btn btn-primary btn-block">
-                        Share a New Tour Story
-                    </a>
-                </div>
-            {% endif %}
-
-            <div class="list-group gp-list-group-tour">
-                {% if tour_list.count > 0 %}
-                    <ul class="list-group">
-
-                        {% for obj in tour_list %}
-
-                            <li class="list-group-item">
-
-                                <p class="card-text">
-                                    {% if obj.des|length > 50 %}
-                                        {{ obj.des|linebreaks|safe|truncatewords:"50" }}
-                                        <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
+                                    <p class="card-text">
+                                        {% if obj.des|length > 50 %}
+                                            {{ obj.des|linebreaks|safe|truncatewords:"50" }}
+                                            <a href="{% url 'story_detail' obj.id %}">Read Full Story</a>
                                         {% else %}
                                             <a href="{% url 'story_detail' obj.id %}">{{ obj.des }}</a>
+                                        {% endif %}
+                                    </p>
+                                    <span class="gp-text-date">{{ obj.created_date }}</span>
+                                    <span class="ts-text-comment">{{ obj.comments.count }} comment
+                                        {% if obj.comments.count %}s{% endif %}.</span>
+
+                                    {% if  the_user == request.user %}
+                                        <div class="gp-margin-top-10">
+                                            <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">
+                                                <span class="glyphicon glyphicon-remove-sign"></span> Delete
+                                            </a>
+                                            <a href="{% url 'image_share' obj.id %}" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-picture"></span> Image
+                                            </a>
+                                            <a class="btn btn-default" href="{% url 'story_edit' obj.id %}">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </div>
                                     {% endif %}
-                                </p>
-                                <span class="gp-text-date">{{ obj.created_date }}</span>
-                                <span class="ts-text-comment">{{ obj.comments.count }} comment
-                                    {% if obj.comments.count %}s{% endif %}.</span>
 
-                                {% if  the_user == request.user %}
-                                    <div class="gp-margin-top-10">
-                                        <a href="{% url 'story_delete' obj.id %}" class="btn btn-danger">
-                                            <span class="glyphicon glyphicon-remove-sign"></span> Delete
-                                        </a>
-                                        <a href="{% url 'image_share' obj.id %}" class="btn btn-default">
-                                            <span class="glyphicon glyphicon-picture"></span> Image
-                                        </a>
-                                        <a class="btn btn-default" href="{% url 'story_edit' obj.id %}">
-                                            <span class="glyphicon glyphicon-pencil"></span>
-                                        </a>
-                                    </div>
-                                {% endif %}
+                                </li>
 
-                            </li>
+                            {% endfor %}
 
-                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="gp-profile-story-list-item">
+                            <div class="gp-center">
+                                You have no story shared!
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
 
-                    </ul>
+            <hr style="border: 1px solid lightgrey">
+
+            <div class="ts-shared-stories">
+                {% if the_user == request.user %}
+                    <div class="ts-button-box">
+                        <a href="{% url 'save_question' %}" class="btn btn-primary btn-block">
+                            Ask a New Question
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div class="list-group gp-list-group-tour">
+                    {% if question_list.count > 0 %}
+                        <ul class="list-group">
+                            {% for obj in question_list %}
+                                <li class="list-group-item">
+                                <span class="gp-text-title"><a
+                                        href="{% url 'ques_detail' obj.id %}">{{ obj.question }}</a></span>
+                                    <span class="gp-text-date">{{ obj.created }}</span>
+                                    <span class="ts-text-comment">{{ obj.answers.count }} answer
+                                        {% if obj.answers.count %}s{% endif %}.</span>
+
+                                    {% if  the_user == request.user %}
+                                        <div class="gp-margin-top-10">
+                                            <a href="{% url 'ques_delete' obj.id %}" class="btn btn-danger">
+                                                <span class="glyphicon glyphicon-remove-sign"></span> Delete
+                                            </a>
+                                            <a class="btn btn-default" href="{% url 'ques_detail' obj.id %}">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+                        <div class="gp-profile-story-list-item">
+                            <div class="gp-center">
+                                You have no Questions!
+                            </div>
+                        </div>
+                        </div>
+                    {% endif %}
+            </div>
+            <div class="ts-shared-stories">
+                {% if favourite_list %}
+                    <p>Your favourite places!</p>
+                    {% for obj in favourite_list %}
+                        <a href="{% url 'story' obj.place.give_me_div_slug obj.place_id %}">{{ obj.place }}</a>
+                        <br>
+                    {% endfor %}
                 {% else %}
                     <div class="gp-profile-story-list-item">
                         <div class="gp-center">
-                            You have no story shared!
+                            You have no favourite places!
                         </div>
                     </div>
                 {% endif %}
             </div>
+
         </div>
+    {% else %}
 
-        <hr style="border: 1px solid lightgrey">
-
-        <div class="ts-shared-stories">
-            {% if the_user == request.user %}
-                <div class="ts-button-box">
-                    <a href="{% url 'save_question' %}" class="btn btn-primary btn-block">
-                        Ask a New Question
-                    </a>
-                </div>
-            {% endif %}
-
-            <div class="list-group gp-list-group-tour">
-                {% if question_list.count > 0 %}
-                    <ul class="list-group">
-                        {% for obj in question_list %}
-                            <li class="list-group-item">
-                                <span class="gp-text-title"><a
-                                        href="{% url 'ques_detail' obj.id %}">{{ obj.question }}</a></span>
-                                <span class="gp-text-date">{{ obj.created }}</span>
-                                <span class="ts-text-comment">{{ obj.answers.count }} answer
-                                    {% if obj.answers.count %}s{% endif %}.</span>
-
-                                {% if  the_user == request.user %}
-                                    <div class="gp-margin-top-10">
-                                        <a href="{% url 'ques_delete' obj.id %}" class="btn btn-danger">
-                                            <span class="glyphicon glyphicon-remove-sign"></span> Delete
-                                        </a>
-                                        <a class="btn btn-default" href="{% url 'ques_detail' obj.id %}">
-                                            <span class="glyphicon glyphicon-pencil"></span>
-                                        </a>
-                                    </div>
-                                {% endif %}
-
-                            </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                {% else %}
-                    <div class="gp-profile-story-list-item">
-                        <div class="gp-center">
-                            You have no Questions!
-                        </div>
-                    </div>
-                    </div>
-                {% endif %}
+        <div class="jumbotron gp-jumbotron gp-danger">
+            <h1>The user does to exists.</h1>
         </div>
-        <div class="ts-shared-stories">
-            {% if favourite_list %}
-                <p>Your favourite places!</p>
-                {% for obj in favourite_list %}
-                    <a href="{% url 'story' obj.place.give_me_div_slug obj.place_id %}">{{ obj.place }}</a>
-                    <br>
-                {% endfor %}
-            {% else %}
-                <div class="gp-profile-story-list-item">
-                    <div class="gp-center">
-                        You have no favourite places!
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-
-    </div>
+    {% endif %}
 
 {% endblock %}
 
