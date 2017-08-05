@@ -429,7 +429,7 @@ def view_profile(request, user_name):
     print("Follower = ", follower)
     return render(request, 'app1/profile.html',
                   {
-                      'the_user': the_user,
+                      'the_user': the_user[0],
                       # 'user_info': user_info,
                       'tour_list': tour_list,
                       'question_list': question_list,
